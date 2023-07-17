@@ -1,7 +1,13 @@
-import React from 'react'
+import React from 'react';
+import Map from '../components/map/Map';
 
 const Home = () => {
-  return <div>Home</div>
-}
+  return (
+    <div>
+      <h1>Home</h1>
+      <Map />
+    </div>
+  );
+};
 
-export default Home
+export default Home;
