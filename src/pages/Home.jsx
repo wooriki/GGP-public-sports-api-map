@@ -8,18 +8,18 @@ import Search from '../components/Search';
 
 export const Home = () => {
   const dispatch = useDispatch();
-  const location = useCurrentLocation();
+  const { location, error } = useCurrentLocation();
 
   useEffect(() => {
     if (location) {
       dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
     }
-  }, [dispatch, location]);  
+  }, [location]);  
 
   return (
     <>
       <h1>Home</h1>
-      {/* <Facilities /> */}
+      <Facilities />
     </>
   );
 }

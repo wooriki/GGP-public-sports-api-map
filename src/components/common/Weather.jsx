@@ -6,6 +6,7 @@ import { getWeatherData } from "../../axios/weatherApi";
 
 export const Weather = () => {
   const { location, error } = useCurrentLocation();
+  // console.log("Weather => ", location)
 
   const dateBuilder = (d) => {
     let months = [

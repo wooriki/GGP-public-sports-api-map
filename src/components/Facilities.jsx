@@ -18,6 +18,8 @@ const Facilities = () => {
 
   if (isLoading || isFetching) return `로딩 중 입니다`;
 
+  console.log("쿼리 데이터 좌표 => ", facilities[0].Y, facilities[0].X)
+
   // 거리 계산 함수
   const calculateDistance = (lat1, lng1, lat2, lng2) => {
     const R = 6371; // 지구의 반지름 (단위: km)
