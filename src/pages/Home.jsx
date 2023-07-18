@@ -8,8 +8,7 @@ import Search from '../components/Search';
 
 export const Home = () => {
   const dispatch = useDispatch();
-  const { location } = useCurrentLocation();
-  console.log("Home.jsx => ", location)
+  const location = useCurrentLocation();
 
   useEffect(() => {
     if (location) {
@@ -20,7 +19,7 @@ export const Home = () => {
   return (
     <>
       <h1>Home</h1>
-      {/* <Facilities /> */}
+      <Facilities />
     </>
   );
-};
+}
