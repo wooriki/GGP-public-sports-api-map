@@ -7,7 +7,8 @@ export const useCurrentLocation = (options = {}) => {
 
   const successHandler = (position) => {
     // latitude: 위도 , longitude: 경도
-    // coords Geolocation API에서 제공하는 위치 정보 객체의 하위 속성
+    // coords : Geolocation API에서 제공하는 위치 정보 객체의 하위 속성
+    //
     const { latitude, longitude } = position.coords;
 
     setLocation({
