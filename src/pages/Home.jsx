@@ -1,26 +1,26 @@
 import { useEffect } from "react";
-import useGeolocation from "../hooks/useGeolocation";
 import { useDispatch } from "react-redux";
+import { useCurrentLocation } from "../hooks/useCurrentLocation";
 import { setLocation } from "../redux/modules/userLocation";
 
-import Reservation from "../components/Reservation";
+import Facilities from "../components/Facilities";
+import Search from '../components/Search';
 
-const Home = () => {
+export const Home = () => {
   const dispatch = useDispatch();
-  const location = useGeolocation();
+  const { location } = useCurrentLocation();
+  console.log("Home.jsx => ", location)
 
   useEffect(() => {
-    if (location.loaded) {
-      dispatch(setLocation(location.coordinates));
+    if (location) {
+      dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
     }
-  }, [dispatch, location]);
+  }, [dispatch, location]);  
 
   return (
     <>
       <h1>Home</h1>
-      <Reservation />
+      {/* <Facilities /> */}
     </>
   );
-}
-
-export default Home;
+};

@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   // 남산타워 위치
-  lat: 37.551086,
-  lng: 126.988033,
+  latitude: 37.551086,
+  longitude: 126.988033,
 };
 
 const userLocationSlice = createSlice({
@@ -11,8 +11,8 @@ const userLocationSlice = createSlice({
   initialState,
   reducers: {
     setLocation: (state, action) => {
-      state.lat = action.payload.lat;
-      state.lng = action.payload.lng;
+      state.latitude = action.payload.latitude;
+      state.longitude = action.payload.longitude;
     },
   },
 });
