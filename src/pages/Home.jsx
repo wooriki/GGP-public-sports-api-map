@@ -1,6 +1,6 @@
 import React from 'react';
-import Map from '../components/map/Map';
 import { styled } from 'styled-components';
+import MapComponent from '../components/map/MapComponent';
 
 const Home = () => {
   return (
@@ -8,7 +8,7 @@ const Home = () => {
       <div>
         <div className="home-temp-div"></div>
         {/* <div className="home-temp-div"></div> */}
-        <Map />
+        <MapComponent />
       </div>
     </StyledMain>
   );
