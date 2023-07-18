@@ -2,11 +2,11 @@ import React from "react";
 import { styled } from "styled-components";
 import { useQuery } from "react-query";
 import { useCurrentLocation } from "../../hooks/useCurrentLocation";
-import { positionOption } from "../../constants/positionOption";
 import { getWeatherData } from "../../axios/weatherApi";
 
 export const Weather = () => {
-  const { location, error } = useCurrentLocation(positionOption);
+  const { location, error } = useCurrentLocation();
+  // console.log("Weather => ", location)
 
   const dateBuilder = (d) => {
     let months = [
