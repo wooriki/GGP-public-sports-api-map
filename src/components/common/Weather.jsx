@@ -1,7 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
 import { useQuery } from "react-query";
-
 import { useCurrentLocation } from "../../hooks/useCurrentLocation";
 import { positionOption } from "../../constants/positionOption";
 import { getWeatherData } from "../../axios/weatherApi";
@@ -30,6 +29,7 @@ export const Weather = () => {
     let month = months[d.getMonth()];
     let year = d.getFullYear();
     let date = d.getDate();
+    // return `${day} ${date} ${month} ${year}`;
     return `${day} ${date} ${month} ${year}`;
   };
 
@@ -64,16 +64,46 @@ export const Weather = () => {
   const { name, weather, main } = weatherData;
 
   return (
-    <StWeather>
-      <img
-        src={`http://openweathermap.org/img/wn/${weather[0].icon}.png`}
-        alt="Weather Icon"
-      />
-      <span>{`${main.temp}°C`}</span>
-      <p>{name}</p>
-      <p>{dateBuilder(new Date())}</p>
-    </StWeather>
+    <WeatherContainer>
+      <WeatherWrapper>
+        <WeatherInner>
+          <WeatherImg
+            src={`http://openweathermap.org/img/wn/${weather[0].icon}.png`}
+            alt="Weather Icon"
+          />
+          <span>{`${main.temp}°C`}</span>
+          <WeatherDate>{dateBuilder(new Date())}</WeatherDate>
+        </WeatherInner>
+        <div>{name}</div>
+      </WeatherWrapper>
+    </WeatherContainer>
   );
 };
 
-const StWeather = styled.div``;
+const WeatherContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  padding-right: 50px;
+`;
+
+const WeatherWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const WeatherImg = styled.img`
+  width: 50px;
+`;
+
+const WeatherInner = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const WeatherDate = styled.div`
+  margin: 0 0 0 10px;
+`;
