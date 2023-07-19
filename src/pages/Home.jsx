@@ -1,9 +1,9 @@
 import React from 'react';
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useCurrentLocation } from "../hooks/useCurrentLocation";
-import { setLocation } from "../redux/modules/userLocation";
-import Facilities from "../components/Facilities";
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useCurrentLocation } from '../hooks/useCurrentLocation';
+import { setLocation } from '../redux/modules/userLocation';
+import Facilities from '../components/Facilities';
 import Search from '../components/Search';
 import { styled } from 'styled-components';
 import MapComponent from '../components/map/MapComponent';
@@ -11,27 +11,27 @@ import MapComponent from '../components/map/MapComponent';
 const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
-
+  console.log(location);
   useEffect(() => {
     if (location) {
       dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
     }
-  }, [location]);  
+  }, [location]);
 
   return (
     <>
       <h1>Home</h1>
       <Facilities />
       <StyledMain>
-      <div>
-        <MapComponent />
-      </div>
-    </StyledMain>
+        <div>
+          <MapComponent />
+        </div>
+      </StyledMain>
     </>
   );
-}
+};
 
-export default Home
+export default Home;
 
 const StyledMain = styled.main`
   height: 100vh;
