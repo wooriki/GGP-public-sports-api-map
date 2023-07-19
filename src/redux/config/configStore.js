@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userLocationReducer from '../modules/userLocation';
+import getCurrentLocationSlice from '../modules/getCurrentLocation';
+import getPublicDataSlice from '../modules/publicData';
+import userLocationReducer from "../modules/userLocation"
 import reviewsReducer from '../modules/reviewSlice';
 
 const store = configureStore({
   reducer: {
+    currentLocation: getCurrentLocationSlice.reducer,
+    getPublicData: getPublicDataSlice.reducer,
     location: userLocationReducer,
     reviews: reviewsReducer
   },
