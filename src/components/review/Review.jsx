@@ -203,6 +203,7 @@ const ReviewContainer = styled.div`
   padding: 10px;
   margin: 10px;
   width: 500px;
+  margin: 0 auto;
 `;
 
 const ReviewWrapper = styled.div`
