@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps } from 'react-naver-maps';
+import { useSelector } from 'react-redux';
 
 const Maps = ({ coords }) => {
   const navermaps = useNavermaps();
   const [map, setMap] = useState(null);
+  const { latitude, longitude } = useSelector((state) => state.location);
 
   return (
     <>
       <StyledDiv>
         <MapDiv style={mapStyle}>
-          <NaverMap defaultCenter={new navermaps.LatLng(37.5667, 126.9784)} defaultZoom={11} ref={setMap}>
-            <Marker position={new navermaps.LatLng(37.5667, 126.9784)} />
-            {coords.map((location) => {
-              return <Marker key={location.id} position={new navermaps.LatLng(+location.X, +location.Y)} />;
-            })}
+          <NaverMap
+            defaultCenter={new navermaps.LatLng(latitude, longitude)}
+            defaultZoom={14}
+            ref={setMap}
+            disableKineticPan={false}
+          >
+            {/* <Marker position={new navermaps.LatLng(latitude, longitude)} /> */}
           </NaverMap>
         </MapDiv>
       </StyledDiv>
