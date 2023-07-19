@@ -31,7 +31,7 @@ export const Weather = () => {
     isLoading,
     isError
   } = useQuery(
-    // query key는 유니크해야 하므로
+    // query key는 유니크해야함.
     // location이 변경될 때마다 새로운 weather의 쿼리를 트리거하고 싶을때 배열 형태로 사용
     ['weather', location],
     () => getWeatherData(location.latitude, location.longitude),
