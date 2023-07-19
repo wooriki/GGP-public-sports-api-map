@@ -9,7 +9,10 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {}
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false
+    }
   }
 });
 

@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import Maps from './Maps';
-import useFetchPublicData from '../../hooks/useFetchPublicData';
+import useGetCoords from '../../hooks/mapHooks/useGetCoords';
 
 const MapComponent = () => {
-  const { data, isLoading, isError, error } = useFetchPublicData();
-  console.log({ data, isLoading, isError, error });
+  const fetchedCoords = useGetCoords(1, 20);
+  const [coords, setCoords] = useState([]);
+
+  useEffect(() => {
+    setCoords(fetchedCoords);
+  }, [fetchedCoords]);
+
   return (
-    <StyledDiv className="home-temp-div second">
-      <Maps />
+    <StyledDiv>
+      <Maps coords={coords} />
     </StyledDiv>
   );
 };
