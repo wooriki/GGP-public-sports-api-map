@@ -1,26 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import Maps from './Maps';
-import publicAPI from '../../axios/publicDataAPI';
-import axios from 'axios';
+import useFetchPublicData from '../../hooks/useFetchPublicData';
 
 const MapComponent = () => {
-  useEffect(() => {
-    const getData = async () => {
-      const res = await publicAPI('/1/500/');
-      console.log(res);
-      const geoCoords = `${res.data.ListPublicReservationSport.row[0].X},${res.data.ListPublicReservationSport.row[0].Y}`;
-
-      const resp = await axios('http://localhost:3001', {
-        params: {
-          coords: geoCoords
-        }
-      });
-      console.log(resp.data.results);
-    };
-    getData();
-  }, []);
-
+  const { data, isLoading, isError, error } = useFetchPublicData();
+  console.log({ data, isLoading, isError, error });
   return (
     <StyledDiv className="home-temp-div second">
       <Maps />

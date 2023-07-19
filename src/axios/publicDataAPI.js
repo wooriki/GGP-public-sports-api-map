@@ -9,3 +9,9 @@ const api = axios.create({
 });
 
 export default api;
+
+// 리액트 쿼리
+export const getData = async (from, to) => {
+  const res = (await api(`/${from}/${to}/`)).data.ListPublicReservationSport.row;
+  return res;
+};
