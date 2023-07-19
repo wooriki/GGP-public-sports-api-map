@@ -85,7 +85,7 @@ const Search = () => {
       </div>
       <br />
       <div>
-        <button>구이름</button>
+        <button>구 이름</button>
       </div>
     </div>
   );
