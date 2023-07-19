@@ -1,10 +1,14 @@
 {
   "reviews": [
     {
-      "id": "1",
-      "postId": "1",
-      "writer": "12",
-      "contents": "12"
+      "id": "1yxf7RqJk",
+      "writer": "테스트1",
+      "contents": "테스트1"
+    },
+    {
+      "id": "9pstyLo7G",
+      "writer": "테스트2",
+      "contents": "테스트23"
     }
   ]
 }

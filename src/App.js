@@ -1,6 +1,7 @@
-import './App.css'
-import Router from './shared/Router'
-import { QueryClient, QueryClientProvider } from "react-query"
+// App.js
+import './App.css';
+import Router from './shared/Router';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 const queryClient = new QueryClient();
@@ -11,7 +12,7 @@ const App = () => {
       <ReactQueryDevtools initialIsOpen={false} />
       <Router />
     </QueryClientProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

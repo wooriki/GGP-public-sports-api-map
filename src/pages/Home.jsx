@@ -1,20 +1,21 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useCurrentLocation } from "../hooks/useCurrentLocation";
-import { setLocation } from "../redux/modules/userLocation";
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useCurrentLocation } from '../hooks/useCurrentLocation';
+import { setLocation } from '../redux/modules/userLocation';
 
-import Facilities from "../components/Facilities";
+import Facilities from '../components/Facilities';
 import Search from '../components/Search';
 
-export const Home = () => {
+const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
+  console.log(useCurrentLocation());
 
   useEffect(() => {
     if (location) {
       dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
     }
-  }, [location]);  
+  }, [location]);
 
   return (
     <>
@@ -22,5 +23,6 @@ export const Home = () => {
       {/* <Facilities /> */}
     </>
   );
-}
+};
 
+export default Home;
