@@ -1,10 +1,11 @@
 import React from 'react';
-import { Review } from '../components/review/Review';
+
+import Comments from '../components/comments/Comments';
 
 const Detail = () => {
   return (
     <div>
-      <Review />
+      <Comments />
     </div>
   );
 };

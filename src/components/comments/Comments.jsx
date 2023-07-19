@@ -6,7 +6,7 @@ import { getReviews, createReview, removeReview, updateReview } from '../../axio
 import { setReviews } from '../../redux/modules/reviewSlice';
 import { styled } from 'styled-components';
 
-export const Review = () => {
+const Comments = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews);
 
@@ -198,6 +198,8 @@ export const Review = () => {
     </ReviewContainer>
   );
 };
+
+export default Comments;
 
 const ReviewContainer = styled.div`
   padding: 10px;
