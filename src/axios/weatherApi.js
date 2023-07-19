@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const weather_KEY = "a2bb51d7a710556557d870a641343a46";
+const weather_KEY = process.env.REACT_APP_WEATHER_KEY;
 
 export const getWeatherData = async (latitude, longitude) => {
   const response = await axios.get(

@@ -1,6 +1,6 @@
 // import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { getReservations } from '../axios/seoulApi';
+import { getReservations } from '../axios/publicDataAPI';
 
 export const Search = () => {
   const { data: reservations, isLoading } = useQuery(['reservations'], getReservations);

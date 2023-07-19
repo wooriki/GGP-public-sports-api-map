@@ -1,8 +1,8 @@
-import { useQuery, useQueryClient } from "react-query";
-import { getFacilitiesForPagination } from "../axios/seoulApi";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { LastPage } from "@mui/icons-material";
+import { useQuery, useQueryClient } from 'react-query';
+import { getFacilitiesForPagination } from '../axios/publicDataAPI';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { LastPage } from '@mui/icons-material';
 
 const Facilities = () => {
   const location = useSelector((state) => state.location);
@@ -14,43 +14,44 @@ const Facilities = () => {
   const queryClient = useQueryClient();
   useEffect(() => {
     for (let page = currentPage; page <= currentPage + 4; page++) {
-      queryClient.prefetchQuery(["facilities", page], () =>
-        getFacilitiesForPagination(maxPageItems, page)
-      );
+      queryClient.prefetchQuery(['facilities', page], () => getFacilitiesForPagination(maxPageItems, page));
     }
   }, [currentPage, maxPageItems, queryClient]);
 
-  const { isLoading, isFetching, data: facilities, isError, error } = useQuery(
-    ["facilities", currentPage],
-    () => getFacilitiesForPagination(maxPageItems, currentPage),
-    {
-      refetchOnWindowFocus: false,
-      staleTime: 2000,
-      keepPreviousData: true,
-    }
-  );
+  const {
+    isLoading,
+    isFetching,
+    data: facilities,
+    isError,
+    error
+  } = useQuery(['facilities', currentPage], () => getFacilitiesForPagination(maxPageItems, currentPage), {
+    refetchOnWindowFocus: false,
+    staleTime: 2000,
+    keepPreviousData: true
+  });
 
   const onPreviousPageClick = () => {
-    setCurrentPage((prev) => (Math.ceil(prev/5) - 1)*5 - 4)
-  }
+    setCurrentPage((prev) => (Math.ceil(prev / 5) - 1) * 5 - 4);
+  };
 
   const onNextPageClick = () => {
-    setCurrentPage((prev) => (Math.ceil(prev/5))*5 + 1)
-  }
+    setCurrentPage((prev) => Math.ceil(prev / 5) * 5 + 1);
+  };
 
   const onPageButtonClick = (page) => {
     setCurrentPage(page);
   };
 
   if (isLoading) return <h3>로딩 중 입니다</h3>;
-  if (isError) return (
-    <>
-      <p>에러가 발생하였습니다</p>
-      <p>{error.toString()}</p>
-    </>
-  )
+  if (isError)
+    return (
+      <>
+        <p>에러가 발생하였습니다</p>
+        <p>{error.toString()}</p>
+      </>
+    );
 
-  const pageNumbers = [1, 2, 3, 4, 5].map((page) => page + (Math.floor((currentPage - 1) / 5) * 5));
+  const pageNumbers = [1, 2, 3, 4, 5].map((page) => page + Math.floor((currentPage - 1) / 5) * 5);
 
   return (
     <>
@@ -64,22 +65,15 @@ const Facilities = () => {
         ))}
       </ul>
       <div className="pages">
-        <button
-          disabled={currentPage <= 5}
-          onClick={onPreviousPageClick}>
+        <button disabled={currentPage <= 5} onClick={onPreviousPageClick}>
           이전 페이지
         </button>
         {pageNumbers.map((page) => (
-          <button
-            key={page}
-            onClick={() => onPageButtonClick(page)}
-          >
+          <button key={page} onClick={() => onPageButtonClick(page)}>
             {page}
           </button>
         ))}
-        <button
-          disabled={currentPage <= LastPage}
-          onClick={onNextPageClick}>
+        <button disabled={currentPage <= LastPage} onClick={onNextPageClick}>
           다음 페이지
         </button>
       </div>
