@@ -1,0 +1,10 @@
+{
+  "reviews": [
+    {
+      "id": "1",
+      "postId": "1",
+      "writer": "12",
+      "contents": "12"
+    }
+  ]
+}
