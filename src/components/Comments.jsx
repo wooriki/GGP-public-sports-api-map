@@ -1,7 +1,9 @@
-import React from 'react';
+import styled from 'styled-components';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Comments = () => {
-  return <div></div>;
+  return <div>comments</div>;
 };
 
 export default Comments;

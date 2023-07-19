@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { useQuery } from 'react-query';
 import { useCurrentLocation } from '../../hooks/useCurrentLocation';
+
 import { getWeatherData } from '../../axios/weatherApi';
 
 export const Weather = () => {
@@ -17,7 +18,6 @@ export const Weather = () => {
     let date = d.getDate();
     let hours = d.getHours().toString().padStart(2, '0');
     let minutes = d.getMinutes().toString().padStart(2, '0');
-
     return (
       <DateBuild>
         <h3>&nbsp;{`${hours}:${minutes}`}&nbsp;&nbsp;&nbsp;</h3>
@@ -42,6 +42,7 @@ export const Weather = () => {
     }
   );
 
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -63,6 +64,7 @@ export const Weather = () => {
   }
 
   const { name, weather, main } = weatherData;
+  // const currentDate = new Date();
 
   return (
     <WeatherContainer>
@@ -104,6 +106,7 @@ const WeatherContainer = styled.div`
   padding: 20px 30px;
   border-radius: 20px;
 `;
+
 const WeatherWrapper = styled.div`
   display: flex;
   flex-direction: column;
