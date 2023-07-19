@@ -12,7 +12,7 @@ const Comments = () => {
 
   // 댓글 목록 조회하는 쿼리
   const { isLoading, isError } = useQuery('reviews', getReviews, {
-    // 성공적으로 데이터를 가져왔을 때 Redux 상태 업데이트
+    // 성공적으로 데이터를 가져왔을 때 Redux 상태 업데이트!
     onSuccess: (data) => {
       dispatch(setReviews(data));
     }
