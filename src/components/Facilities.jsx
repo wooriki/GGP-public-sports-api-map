@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "react-query";
-import { getReservations } from "../axios/seoulApi";
+import { getFacilitiesForPagination } from "../axios/seoulApi";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { LastPage } from "@mui/icons-material";
@@ -15,14 +15,14 @@ const Facilities = () => {
   useEffect(() => {
     for (let page = currentPage; page <= currentPage + 4; page++) {
       queryClient.prefetchQuery(["facilities", page], () =>
-        getReservations(maxPageItems, page)
+        getFacilitiesForPagination(maxPageItems, page)
       );
     }
   }, [currentPage, maxPageItems, queryClient]);
 
   const { isLoading, isFetching, data: facilities, isError, error } = useQuery(
     ["facilities", currentPage],
-    () => getReservations(maxPageItems, currentPage),
+    () => getFacilitiesForPagination(maxPageItems, currentPage),
     {
       refetchOnWindowFocus: false,
       staleTime: 2000,
