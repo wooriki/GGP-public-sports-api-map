@@ -10,7 +10,7 @@ const Maps = ({ coords }) => {
     <>
       <StyledDiv>
         <MapDiv style={mapStyle}>
-          <NaverMap defaultCenter={new navermaps.LatLng(37.5667, 126.9784)} defaultZoom={8} ref={setMap}>
+          <NaverMap defaultCenter={new navermaps.LatLng(37.5667, 126.9784)} defaultZoom={11} ref={setMap}>
             <Marker position={new navermaps.LatLng(37.5667, 126.9784)} />
             {coords.map((location) => {
               return <Marker key={location.id} position={new navermaps.LatLng(+location.X, +location.Y)} />;
