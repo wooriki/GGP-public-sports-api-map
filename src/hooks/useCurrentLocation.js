@@ -1,36 +1,28 @@
-import React, { useEffect, useState } from "react";
+import { useQuery } from 'react-query';
 
-// option을 받되, 빈 객체를 사용하도록 설정 => 매개변수를 생략하거나 값을 전달하지 않아도 기본값으로 설정
-export const useCurrentLocation = (options = {}) => {
-  const [location, setLocation] = useState();
-  const [error, setError] = useState();
+export const useCurrentLocation = () => {
+  const options = {
+    // 높은 정확도로 위치 정보를 가져올지 여부를 설정
+    enableHighAccuracy: true,
 
-  const successHandler = (position) => {
-    // latitude: 위도 , longitude: 경도
-    // coords : Geolocation API에서 제공하는 위치 정보 객체의 하위 속성
-    //
-    const { latitude, longitude } = position.coords;
+    // 위치 정보를 가져오기까지 허용되는 시간을 설정하는 옵션
+    // timeout: 1000 * 60 * 1, // 1 minute
 
-    setLocation({
-      latitude,
-      longitude,
+    // 이전에 가져온 위치 정보가 얼마나 오래 사용될 수 있는지를 설정하는 옵션
+    maximumAge: 1000 * 3600 * 24 // 24 hours
+  };
+
+  const getLocation = async () => {
+    const position = await new Promise((resolve, reject) => {
+      // getCurrentPosition : 브라우저의 Geolocation API의 메소드!!
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
     });
+
+    const { latitude, longitude } = position.coords;
+    return { latitude, longitude };
   };
 
-  const errorHandler = (error) => {
-    setError(error.message);
-  };
-
-  useEffect(() => {
-    const { geolocation } = navigator;
-
-    if (!geolocation) {
-      setError("GeoLocation is not supported!");
-      return;
-    }
-
-    geolocation.getCurrentPosition(successHandler, errorHandler, options);
-  }, [options]);
+  const { data: location, error } = useQuery('currentLocation', getLocation);
 
   return { location, error };
 };
