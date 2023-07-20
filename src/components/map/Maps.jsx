@@ -1,20 +1,35 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps } from 'react-naver-maps';
+import { useSelector } from 'react-redux';
+import MarkPins from './MarkPins';
+import useSetBoundary from '../../hooks/mapHooks/setBoundaries';
 
 const Maps = ({ coords }) => {
   const navermaps = useNavermaps();
   const [map, setMap] = useState(null);
+  const { latitude, longitude } = useSelector((state) => state.location);
+
+  //===================================//
+  // pins => 좌표를 찍을 핀 모음
+  // boundary => 핀 전체를 고르게 보여주기 위한 border 설정
+  const pins = useSelector((state) => state.coordsGroup.data);
+  const boundary = useSetBoundary(pins);
+  // 이후 MarkPins에 props로 map과 boundary를 보내면
+  // pin이 생성되면서 전체적으로 고르게 보여준다.
+  //===================================//
 
   return (
     <>
       <StyledDiv>
         <MapDiv style={mapStyle}>
-          <NaverMap defaultCenter={new navermaps.LatLng(37.5667, 126.9784)} defaultZoom={11} ref={setMap}>
-            <Marker position={new navermaps.LatLng(37.5667, 126.9784)} />
-            {coords.map((location) => {
-              return <Marker key={location.id} position={new navermaps.LatLng(+location.X, +location.Y)} />;
-            })}
+          <NaverMap
+            defaultCenter={new navermaps.LatLng(latitude, longitude)}
+            defaultZoom={10}
+            ref={setMap}
+            disableKineticPan={false}
+          >
+            <MarkPins map={map} boundary={boundary} />
           </NaverMap>
         </MapDiv>
       </StyledDiv>
