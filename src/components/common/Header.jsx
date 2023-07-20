@@ -2,21 +2,20 @@ import React from 'react';
 import { styled, keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import Weather from './Weather';
-import { InputSearch } from '../InputSearch';
 import Search from '../Search';
 
-const Header = () => {
+const Header = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
   return (
     <WeatherContainer>
       <Link to="/">
         <ImgTag src={process.env.PUBLIC_URL + 'img/Logo.png'} width="180" alt="로고" />
       </Link>
-      {/* <InputSearch /> */}
-      <Search />
+      <Search setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <Weather />
     </WeatherContainer>
   );
 };
+
 const growAnimation = keyframes`
   0% {
     transform: scale(1);

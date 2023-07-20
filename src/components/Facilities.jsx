@@ -1,30 +1,86 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useFetchPublicData from '../hooks/useFetchPublicData';
 import { useDispatch, useSelector } from 'react-redux';
+import { setSortedData } from '../redux/modules/publicData';
 import { styled, keyframes } from 'styled-components';
-import { save10Location } from '../redux/modules/maps/save10Location';
 import { calDistance } from '../helper/calDistance';
-
 import { Paging } from './Paging';
 
-const Facilities = () => {
+const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => {
+  const selectedArea = filteredGlobalDataByArea?.selectedArea;
+  const selectedSports = filteredGlobalDataByArea?.selectedSports;
+
+  const navDetailPage = (facility) => {
+    setFacility(facility);
+  };
+
   const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
   const { data: publicData, isLoading, isError } = useFetchPublicData();
+
   // 페이지네이션 관련 변수 및 state 선언
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = publicData?.length;
-  const totalPage = Math.ceil(publicData?.length / itemsPerPage);
+  const totalItems = !globalSearch
+    ? filteredGlobalDataByArea
+      ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length
+      : publicData?.length || []
+    : publicData?.filter(
+        (data) =>
+          (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+          (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+          (data.MINCLASSNM.includes(globalSearch) ||
+            data.SVCNM.includes(globalSearch) ||
+            data.AREANM.includes(globalSearch))
+      ).length || null;
 
-  // useFetchPublicData훅으로 불러온 api 데이터를 현재 사용자 위치와 가까운 순으로 정렬
-  const sortPublicDataByDis =
-    publicData &&
-    [...publicData].sort((a, b) => {
+  const totalPage = !globalSearch
+    ? filteredGlobalDataByArea
+      ? Math.ceil(
+          publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length /
+            itemsPerPage
+        )
+      : Math.ceil(publicData?.length / itemsPerPage) || []
+    : Math.ceil(
+        publicData?.filter(
+          (data) =>
+            (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (data.MINCLASSNM.includes(globalSearch) ||
+              data.SVCNM.includes(globalSearch) ||
+              data.AREANM.includes(globalSearch))
+        ).length / itemsPerPage
+      ) || null;
+
+  const [sortPublicDataByDis, setSortPublicDataByDis] = useState([]);
+
+  useEffect(() => {
+    // filteredGlobalDataByArea가 true이면 필터링된 데이터를 사용하고,
+    // false이면 전체 데이터를 사용합니다.
+    const filteredData = !globalSearch
+      ? filteredGlobalDataByArea
+        ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
+        : publicData || []
+      : publicData?.filter(
+          (data) =>
+            (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (data.MINCLASSNM.includes(globalSearch) ||
+              data.SVCNM.includes(globalSearch) ||
+              data.AREANM.includes(globalSearch))
+        ) || null;
+
+    // 거리를 기준으로 데이터 정렬!!
+    const sortPublicDataByDis = [...filteredData].sort((a, b) => {
       const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
       const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
-      return dx - dy;
+      return dx - dy; // 거리 값을 비교하여 정렬
     });
+
+    setSortPublicDataByDis(sortPublicDataByDis);
+
+    dispatch(setSortedData(sortPublicDataByDis));
+  }, [dispatch, filteredGlobalDataByArea, publicData, selectedArea, selectedSports, location, globalSearch]);
 
   if (isLoading) return <h3>로딩 중 입니다</h3>;
   if (isError) {
@@ -41,29 +97,30 @@ const Facilities = () => {
   const endIndex = startIndex + itemsPerPage;
   const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
 
-  dispatch(save10Location(sliceData));
-
   return (
     <>
       <StyledFacilitiesContainer>
-        <h2>Reservation Data</h2>
+        <Title>Reservation Data</Title>
         <StyledItemListBox>
-          <p>총 {totalItems}개</p>
-          <p>
-            현재 페이지 {currentPage}/{totalPage}
-          </p>
-          <ul>
+          <SubTitlte>
+            <p>총 {totalItems}개</p>
+            <p>
+              <br />
+              현재 페이지 {currentPage}/{totalPage}
+            </p>
+          </SubTitlte>
+          <UlTag>
             {sliceData.map((facility) => (
               <StyledItemBox key={facility.SVCID}>
-                <li>
-                  <p>
+                <LiTag onClick={() => navDetailPage(facility)}>
+                  <TextTag>
                     <span>{facility.AREANM}</span> <span>{facility.MINCLASSNM}</span>
-                  </p>
-                  <p>{facility.SVCNM}</p>
-                </li>
+                  </TextTag>
+                  <TextTag>{facility.SVCNM}</TextTag>
+                </LiTag>
               </StyledItemBox>
             ))}
-          </ul>
+          </UlTag>
         </StyledItemListBox>
         <Paging currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} />
       </StyledFacilitiesContainer>
@@ -77,58 +134,43 @@ export default Facilities;
 //   border: 1px solid black;
 // `;
 const StyledFacilitiesContainer = styled.div`
+  width: 25%;
+  height: 1000px;
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   color: white;
+  background-color: rgba(41, 41, 41, 0.747);
+  border-radius: 0 30px 30px 0;
+  padding: 20px 5px 20px 30px;
 `;
 
-const StyledItemListBox = styled.div``;
+const StyledItemListBox = styled.div`
+  margin: 0 auto;
+`;
+const Title = styled.h2`
+  font-size: 1.2rem;
+  font-weight: bold;
+`;
+const SubTitlte = styled.div`
+  margin: 10px 0;
+`;
 
 const StyledItemBox = styled.div`
-  width: 350px;
-  height: 70px;
-  margin: 5px;
-  padding: 10px;
+  // width: 90%;
+
+  margin: 0 auto;
+  margin: 10px 0;
+  // padding: 4px 10px;
   background-color: grey;
-  color: white;
   border-radius: 10px;
 
   display: flex;
-  align-items: center;
-`;
-
-const FacilityTag = styled.div`
-  width: 450px;
-  color: rgba(236, 236, 236, 0.89);
-  background-color: rgba(41, 41, 41, 0.747);
-  border-radius: 0 30px 30px 0;
-  padding-bottom: 10px;
-  margin: 4px;
-`;
-const TitleTag = styled.h2`
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0 0 10px 10px;
-  padding-top: 10px;
-`;
-const NowPage = styled.p`
-  margin: 0 auto;
-  margin-top: 10px;
-  display: flex;
   justify-content: center;
   align-items: center;
-
-  width: 200px;
-  font-weight: 600;
-  border-radius: 30px;
-  // margin: 10px 0;
-  padding: 10px 0px;
-  background-color: rgba(236, 236, 236);
-  color: black;
-  text-align: center;
 `;
-
 const growAnimation = keyframes`
   0% {
     transform: scale(1);
@@ -139,48 +181,40 @@ const growAnimation = keyframes`
   100% {
     transform: scale(1);
   }
-`;
 
+`;
+const UlTag = styled.ul`
+  width: 90%;
+
+  margin: 0 auto;
+  height: 70px;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    animation: ${growAnimation} 0.5s ease-in-out;
+    background-color: rgba(225, 225, 225, 0.45);
+  }
+`;
 const LiTag = styled.li`
-  width: 80%;
-  border-radius: 10px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+
   margin: 0 auto;
   margin-top: 10px;
-  padding: 14px 6px;
-  background-color: rgba(123, 123, 123, 0.733);
-  text-align: center;
-  line-height: 1.5;
-  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
-  cursor: pointer;
-  &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(101, 101, 101, 0.933);
-    color: rgba(236, 236, 236);
-    font-weight: 600;
-  }
-`;
-
-const BtnContainer = styled.div`
-  margin: 20px 0 20px;
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-`;
-const Btn = styled.button`
-  width: 20px;
-  padding: 4px;
-  border-radius: 4px;
-  border: none;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  background-color: rgba(101, 101, 101, 0.933);
+  height: 70px;
   color: white;
-  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
   cursor: pointer;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(196, 196, 196, 0.733);
-    color: black;
+    background-color: rgba(225, 225, 225, 0.45);
   }
+`;
+const TextTag = styled.p`
+  text-align: center;
+  // height: 20px;
+  // overflow: hidden;
+  // white-space: nowrap;
+  // text-overflow: ellipsis;
+  padding: 0 4px;
 `;
