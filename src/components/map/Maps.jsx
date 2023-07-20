@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import { Container as MapDiv, NaverMap, Marker, useNavermaps } from 'react-naver-maps';
+import { Container as MapDiv, NaverMap, useNavermaps } from 'react-naver-maps';
 import { useSelector } from 'react-redux';
 import MarkPins from './MarkPins';
 import useSetBoundary from '../../hooks/mapHooks/setBoundaries';
@@ -10,6 +10,15 @@ const Maps = () => {
   const navermaps = useNavermaps();
   const [map, setMap] = useState(null);
   const { latitude, longitude } = useSelector((state) => state.location);
+  const [isItLoading, setIsItLoading] = useState(true);
+
+  useEffect(() => {
+    if (latitude === 37.551086 && longitude === 126.988033) {
+      setIsItLoading(true);
+    } else {
+      setIsItLoading(false);
+    }
+  }, [latitude, longitude]);
 
   //===================================//
   // pins => 좌표를 찍을 핀 모음
@@ -37,21 +46,28 @@ const Maps = () => {
   //-----------------------------------//
   return (
     <>
-      <StyledDiv>
-        <MapDiv style={mapStyle}>
-          <NaverMap
-            defaultCenter={new navermaps.LatLng(latitude, longitude)}
-            defaultZoom={9}
-            minZoom={6}
-            maxZoom={15}
-            ref={setMap}
-            disableKineticPan={false}
-          >
-            <MarkPins map={map} boundary={boundary} />
-            <MyLocationIcon onClick={() => currentLocationIconClickHandler()} id="map-current-location" />
-          </NaverMap>
-        </MapDiv>
-      </StyledDiv>
+      {isItLoading ? (
+        <StyledLoadingDiv>
+          <div id="loading"></div>
+          <h1>Map is loading</h1>
+        </StyledLoadingDiv>
+      ) : (
+        <StyledDiv>
+          <MapDiv style={mapStyle}>
+            <NaverMap
+              defaultCenter={new navermaps.LatLng(latitude, longitude)}
+              defaultZoom={9}
+              minZoom={6}
+              maxZoom={15}
+              ref={setMap}
+              disableKineticPan={false}
+            >
+              <MarkPins map={map} boundary={boundary} />
+              <MyLocationIcon onClick={() => currentLocationIconClickHandler()} id="map-current-location" />
+            </NaverMap>
+          </MapDiv>
+        </StyledDiv>
+      )}
     </>
   );
 };
@@ -59,8 +75,6 @@ const Maps = () => {
 export default Maps;
 
 const StyledDiv = styled.div`
-  // display: flex;
-  // align-items: center;
   overflow: hidden;
   width: 750px;
   height: 500px;
@@ -92,6 +106,39 @@ const StyledDiv = styled.div`
   #map-current-location:hover {
     color: #222;
     background-color: #dadada;
+  }
+`;
+
+const StyledLoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+  width: 750px;
+  height: 500px;
+  border-radius: 15px;
+  box-shadow: 1px 1px 10px 0 rgba(39, 39, 39, 0.6);
+
+  #loading {
+    border: 6px solid rgba(0, 0, 0, 0.3); /* 스피너 테두리 스타일 */
+    border-top: 6px solid #284a58; /* 스피너 상단 테두리 스타일 (로딩 효과 색상) */
+    border-radius: 50%; /* 원형 스피너 모양을 위해 반지름 설정 */
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite; /* @keyframes 이름, 시간, 타이밍 함수, 무한 반복 설정 */
+  }
+  /* @keyframes 정의로 로딩 스피너 애니메이션 설정 */
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    } /* 360도 회전 */
+  }
+  h1 {
+    font-size: 1.2rem;
   }
 `;
 

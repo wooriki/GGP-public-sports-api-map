@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Marker, useNavermaps } from 'react-naver-maps';
 import { useSelector } from 'react-redux';
 import useSaveBoundary from '../../hooks/mapHooks/saveBoundary';
 import { styled } from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
 
 // 특정 좌표가 주어 졌을 때, 그 좌표들에 핀을 놓고,
 // 좌표들이 모두 표시될 수 있는 위치에 맵을 보인다.
@@ -20,24 +21,49 @@ const MarkPins = ({ map, boundary }) => {
   useEffect(() => {
     if (map && boundary) {
       map.panToBounds(boundary);
+      setInfoWindowOpen(false); // 움직일 때 (페이지 변경할 때 모달창 열려있으면 닫기)
     }
   }, [map, boundary]);
+
+  // =================================== //
   // 핀 클릭시 이벤트
-  const markerClickHandler = (location) => {
+  const markerClickHandler = async (location) => {
+    const coords = `${location.longitude},${location.latitude}`;
+    const res = (
+      await axios('http://localhost:3001', {
+        params: {
+          coords
+        }
+      })
+    ).data.results;
+    // e.g. addressInKorean => 서울특별시 영등포구 여의도동
+    const addressInKorean = `${res[0].region.area1.name} ${res[0].region.area2.name} ${res[0].region.area3.name}`;
+    //
     setInfoWindowOpen(!infoWindowOpen);
     setLocationDetail((prev) => {
       const info = {
         name: location.name,
         reservStatus: location.reservStatus,
         reservURL: location.reservURL,
-        img: location.img
+        img: location.img,
+        address: addressInKorean
       };
       return info;
     });
   };
+  // --------------------------------------- //
   // 핀 클릭시 나타나는 상세 페이지
-  const Something = () => {
-    console.log(locationDetail, 333);
+  const MapInfoModal = () => {
+    const filteredName = locationDetail.name.split('>')[0];
+    const backgroundColor =
+      locationDetail.reservStatus === '접수중'
+        ? { backgroundColor: '#223060' }
+        : locationDetail.reservStatus === '안내중'
+        ? { backgroundColor: '#22562d' }
+        : locationDetail.reservStatus === '예약마감'
+        ? { backgroundColor: '#d70011', color: '#fff' }
+        : null;
+
     return (
       <StyledDiv>
         <CloseIcon
@@ -47,11 +73,13 @@ const MarkPins = ({ map, boundary }) => {
           }}
         />
         <img src={locationDetail.img} alt="체육시설 사진" />
-        <h1>{locationDetail.name}</h1>
+        <h1>{filteredName}</h1>
+        <p>{locationDetail.address}</p>
         <h2
           onClick={() => {
             window.open(locationDetail.reservURL, '_blank');
           }}
+          style={backgroundColor}
         >
           {locationDetail.reservStatus}
         </h2>
@@ -59,8 +87,15 @@ const MarkPins = ({ map, boundary }) => {
           onClick={() => {
             window.open(locationDetail.reservURL, '_blank');
           }}
+          style={backgroundColor}
         >
-          예약하기
+          {locationDetail.reservStatus === '접수중'
+            ? '예약하기'
+            : locationDetail.reservStatus === '안내중'
+            ? '예약하기'
+            : locationDetail.reservStatus === '예약마감'
+            ? '예약마감'
+            : null}
         </button>
       </StyledDiv>
     );
@@ -68,11 +103,10 @@ const MarkPins = ({ map, boundary }) => {
   //
   return (
     <>
-      {infoWindowOpen && <Something />}
+      {infoWindowOpen && <MapInfoModal />}
       {fetchedgroup?.map((location) => {
         return (
           <div key={location.id}>
-            {/* <Marker key={location.id} position={new navermaps.LatLng(+location.latitude, +location.longitude)} /> */}
             <Marker
               key={location.id}
               position={new navermaps.LatLng(+location.latitude, +location.longitude)}
@@ -89,16 +123,16 @@ export default MarkPins;
 
 const StyledDiv = styled.div`
   width: 300px;
-  height: 220px;
+  height: 250px;
   display: flex;
   flex-direction: column;
   position: absolute;
   align-items: center;
   top: 50%;
-  gap: 11px;
+  gap: 13px;
   left: 50%;
   border-radius: 15px;
-  background-color: rgba(220, 220, 225, 0.9);
+  background-color: rgba(255, 255, 255, 0.9);
   transform: translate(-50%, -50%);
   box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
 
@@ -109,26 +143,32 @@ const StyledDiv = styled.div`
     margin-top: 10px;
   }
   h1 {
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 700;
     color: #444;
+  }
+  p {
+    color: #333;
+    font-weight: 600;
+    font-size: 0.75rem;
   }
   h2 {
     position: absolute;
     top: 3px;
     display: inline-flex;
     background-color: #202124;
-    border: 1px solid #777;
     color: #fff;
-    padding: 7px;
+    padding: 8px;
     border-radius: 15px;
     font-size: 12px;
     cursor: pointer;
+    letter-spacing: 0.5px;
+    font-weight: 600;
   }
   button {
     background-color: #202853;
     color: white;
-    padding: 5px 30px;
+    padding: 5px 50px;
     border: none;
     box-shadow: 0 0 4px 0 #999;
     border-radius: 8px;
@@ -150,14 +190,19 @@ const StyledDiv = styled.div`
     position: absolute;
     top: 3px;
     right: 5px;
-    font-size: 1.75rem;
+    font-size: 2rem;
+    font-weight: 700;
+    padding: 2px;
+    background-color: #ffffff88;
+    border-radius: 10px;
     color: #333;
-    opacity: 0.75;
+    opacity: 0.9;
     transition: cubic-bezier(0, 0, 0.2, 1) 0.3s;
     cursor: pointer;
   }
   #map-info-modal-close-icon:hover {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1.05);
+    background-color: #ffffff;
   }
 `;
