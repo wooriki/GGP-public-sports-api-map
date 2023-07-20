@@ -42,6 +42,8 @@ const Maps = () => {
           <NaverMap
             defaultCenter={new navermaps.LatLng(latitude, longitude)}
             defaultZoom={9}
+            minZoom={6}
+            maxZoom={15}
             ref={setMap}
             disableKineticPan={false}
           >
