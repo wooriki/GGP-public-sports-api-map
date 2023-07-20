@@ -4,7 +4,7 @@ import Maps from './Maps';
 import useGetCoords from '../../hooks/mapHooks/useGetCoords';
 
 const MapComponent = () => {
-  const fetchedCoords = useGetCoords(1, 20);
+  const fetchedCoords = useGetCoords(1, 10);
   const [coords, setCoords] = useState([]);
 
   useEffect(() => {
@@ -21,6 +21,6 @@ const MapComponent = () => {
 export default MapComponent;
 
 const StyledDiv = styled.div`
-  width: 500px;
-  height: 500px;
+  width: 700px;
+  height: 700px;
 `;

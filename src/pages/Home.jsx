@@ -12,17 +12,35 @@ import MapComponent from '../components/map/MapComponent';
 const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
+
+
+  // const [isMarked, setIsMarked] = useState(false);
+
+  console.log(location);
+
   useEffect(() => {
     if (location) {
       dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
     }
-  }, [location]);
+  }, [dispatch, location]);
 
   return (
     <>
       <h1>Home</h1>
       <Facilities />
       <StyledMain>
+        {/* <div style={{
+          display: 'flex'
+        }}>
+          <MapComponent setIsMarked={} />
+          {
+            isMarked ? <디테일 /> : <전체 />
+          }
+          <div>
+
+          </div>
+
+        </div> */}
         <div>
           <MapComponent />
           <Search />
@@ -31,6 +49,8 @@ const Home = () => {
     </>
   );
 };
+// 마커에 대한 state
+//
 
 export default Home;
 
