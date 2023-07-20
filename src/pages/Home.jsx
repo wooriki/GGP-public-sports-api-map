@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
@@ -38,7 +39,10 @@ const Home = () => {
           </div>
 
         </div> */}
-        <MapComponent />
+        <div>
+          <MapComponent />
+          <Search />
+        </div>
       </StyledMain>
     </>
   );
