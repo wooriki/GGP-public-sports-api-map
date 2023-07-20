@@ -13,14 +13,16 @@ const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
 
+
   // const [isMarked, setIsMarked] = useState(false);
 
   console.log(location);
+
   useEffect(() => {
     if (location) {
       dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
     }
-  }, [location]);
+  }, [dispatch, location]);
 
   return (
     <>
