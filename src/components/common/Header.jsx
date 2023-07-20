@@ -3,6 +3,7 @@ import { styled, keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import Weather from './Weather';
 import { InputSearch } from '../InputSearch';
+import Search from '../Search';
 
 const Header = () => {
   return (
@@ -10,7 +11,8 @@ const Header = () => {
       <Link to="/">
         <ImgTag src={process.env.PUBLIC_URL + 'img/Logo.png'} width="180" alt="로고" />
       </Link>
-      <InputSearch />
+      {/* <InputSearch /> */}
+      <Search />
       <Weather />
     </WeatherContainer>
   );

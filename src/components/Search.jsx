@@ -1,6 +1,6 @@
 // import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-
+import { styled } from 'styled-components';
 // import { getReservations } from '../axios/seoulApi';
 import { useState } from 'react';
 import axios from 'axios';
@@ -79,7 +79,7 @@ const Search = () => {
   // });
 
   return (
-    <div>
+    <SelectTag>
       {/* {reservations.map((item) => {
         return <div>{item.AREANM}</div>;
       })} */}
@@ -115,7 +115,7 @@ const Search = () => {
           <button>{item}</button>
         </div>
       ))}
-    </div>
+    </SelectTag>
   );
 };
 
@@ -136,3 +136,7 @@ export default Search;
 // useEffect(() => {
 //   //db로부터 값 가져오기
 // }, []);
+
+const SelectTag = styled.div`
+  display: flex;
+`;
