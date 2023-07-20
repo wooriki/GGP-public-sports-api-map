@@ -21,6 +21,5 @@ const MapComponent = () => {
 export default MapComponent;
 
 const StyledDiv = styled.div`
-  width: 500px;
-  height: 500px;
+  margin: 0 auto;
 `;

@@ -20,7 +20,7 @@ const Weather = () => {
     let minutes = d.getMinutes().toString().padStart(2, '0');
     return (
       <DateBuild>
-        <h3>&nbsp;{`${hours}:${minutes}`}&nbsp;&nbsp;&nbsp;</h3>
+        <Timmer>{`${hours}:${minutes}`}&nbsp;&nbsp;&nbsp;</Timmer>
         {`${day} ${date} ${month} ${year}`}
       </DateBuild>
     );
@@ -43,23 +43,19 @@ const Weather = () => {
   );
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <Alert>Error: {error}</Alert>;
   }
 
   if (!location) {
-    return <div>Loading...</div>;
+    return <Alert>Loading...</Alert>;
   }
 
   if (isLoading) {
-    return (
-      <div>
-        <Alert>Loading weather data...</Alert>
-      </div>
-    );
+    return <Alert>Loading weather data...</Alert>;
   }
 
   if (isError) {
-    return <div>Error occurred while fetching weather data</div>;
+    return <Alert>Error occurred while fetching weather data</Alert>;
   }
 
   const { name, weather, main } = weatherData;
@@ -110,7 +106,7 @@ const WeatherWrapper = styled.div`
   vertical-align: middle;
   background-color: rgba(225, 225, 225, 0.362);
   border-radius: 20px;
-  box-shadow: 10px 10px 10px rgba(70, 70, 70, 0.72);
+  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
   cursor: pointer;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
@@ -126,12 +122,12 @@ const WeatherInner = styled.div`
   align-items: center;
   justify-content: center;
   background-color: rgba(225, 225, 225, 0.362);
-  padding: 0px 20px;
+  padding: 0px 20px 0 6px;
   border-radius: 20px 20px 0 0;
-  margin-top: 6px;
+  // margin-top: 2px;
 `;
 const LocationName = styled.div`
-  padding: 2px 0 12px;
+  padding: 6px 0 12px;
   font-weight: 600;
 `;
 const WeatherDate = styled.div`
@@ -141,6 +137,11 @@ const DateBuild = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  letter-spacing: -1px;
+`;
+const Timmer = styled.p`
+  font-weight: bold;
+  font-size: 1.2rem;
 `;
 
 export default Weather;

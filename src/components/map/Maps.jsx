@@ -25,23 +25,23 @@ const Maps = ({ coords }) => {
 export default Maps;
 
 const StyledDiv = styled.div`
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
   overflow: hidden;
-  width: 700px;
-  height: 400px;
+  width: 100%;
+  height: 500px;
   border-radius: 15px;
-  box-shadow: 1px 1px 10px 0 #aaa;
+  box-shadow: 1px 1px 10px 0 rgba(39, 39, 39, 0.6);
 
-  #test,
-  .marker-test {
-    color: white;
-    text-shadow: 1px 1px 1px #777;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    font-size: 1rem;
-  }
+  // #test,
+  // .marker-test {
+  //   color: white;
+  //   text-shadow: 1px 1px 1px #777;
+  //   display: flex;
+  //   flex-direction: column;
+  //   position: absolute;
+  //   font-size: 1rem;
+  // }
 `;
 
 const mapStyle = {
