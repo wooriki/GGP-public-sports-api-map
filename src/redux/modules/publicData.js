@@ -13,11 +13,14 @@ const content = {
   reducers: {
     getPublicData: (state, action) => {
       return { ...state, ...action.payload };
-    }
-  }
+    },
+    setSortedData: (state, action) => {
+      return { ...state, sortedData: action.payload };
+    }, // Added reducer to store sorted data
+  },
 };
 
 const getPublicDataSlice = createSlice(content);
 
 export default getPublicDataSlice;
-export const { getPublicData } = getPublicDataSlice.actions;
+export const { getPublicData, setSortedData } = getPublicDataSlice.actions;
