@@ -1,84 +1,86 @@
 import { useQuery, useQueryClient } from 'react-query';
-import { getFacilitiesForPagination } from '../axios/publicDataAPI';
+import { getReservations } from '../axios/publicDataAPI';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { LastPage } from '@mui/icons-material';
+import { styled } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Facilities = () => {
+  const navigate = useNavigate();
+
+  const navDetailPage = (facility) => {
+    navigate(`/${facility.SVCID}`, {
+      state: {
+        facility: facility
+      }
+    });
+  };
+
   const location = useSelector((state) => state.location);
+  console.log('store에서 불러온 위치 => ', location);
 
   // 페이지네이션 관련 변수 및 state 설정
-  const maxPageItems = 10;
+  const maxPageItems = 5;
   const [currentPage, setCurrentPage] = useState(1);
-
-  const queryClient = useQueryClient();
-  useEffect(() => {
-    for (let page = currentPage; page <= currentPage + 4; page++) {
-      queryClient.prefetchQuery(['facilities', page], () => getFacilitiesForPagination(maxPageItems, page));
-    }
-  }, [currentPage, maxPageItems, queryClient]);
 
   const {
     isLoading,
     isFetching,
-    data: facilities,
-    isError,
-    error
-  } = useQuery(['facilities', currentPage], () => getFacilitiesForPagination(maxPageItems, currentPage), {
-    refetchOnWindowFocus: false,
-    staleTime: 2000,
-    keepPreviousData: true
-  });
+    data: facilities
+  } = useQuery(['facilities', location], () => getReservations(maxPageItems, currentPage));
 
-  const onPreviousPageClick = () => {
-    setCurrentPage((prev) => (Math.ceil(prev / 5) - 1) * 5 - 4);
+  if (isLoading || isFetching) return `로딩 중 입니다`;
+
+  console.log('쿼리 데이터 좌표 => ', facilities[0].Y, facilities[0].X);
+  console.log('facilities', facilities);
+
+  // 거리 계산 함수
+  const calculateDistance = (lat1, lng1, lat2, lng2) => {
+    const R = 6371; // 지구의 반지름 (단위: km)
+    const dLat = toRadians(lat2 - lat1);
+    const dLng = toRadians(lng2 - lng1);
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return distance; // 두 지점 사이의 거리 반환 (단위: km)
   };
 
-  const onNextPageClick = () => {
-    setCurrentPage((prev) => Math.ceil(prev / 5) * 5 + 1);
+  const toRadians = (degrees) => {
+    return degrees * (Math.PI / 180);
   };
 
-  const onPageButtonClick = (page) => {
-    setCurrentPage(page);
+  // 현재 위치와 각 시설들과의 거리를 계산하여 정렬
+  const sortFacilitiesByDistance = (facilities) => {
+    return facilities.slice().sort((a, b) => {
+      const distanceA = calculateDistance(location.latitude, location.longitude, parseFloat(a.Y), parseFloat(a.X));
+      const distanceB = calculateDistance(location.latitude, location.longitude, parseFloat(b.Y), parseFloat(b.X));
+
+      return distanceA - distanceB;
+    });
   };
 
-  if (isLoading) return <h3>로딩 중 입니다</h3>;
-  if (isError)
-    return (
-      <>
-        <p>에러가 발생하였습니다</p>
-        <p>{error.toString()}</p>
-      </>
-    );
-
-  const pageNumbers = [1, 2, 3, 4, 5].map((page) => page + Math.floor((currentPage - 1) / 5) * 5);
+  const sortedFacilities = sortFacilitiesByDistance(facilities);
 
   return (
     <>
       <div>Reservation Data</div>
-      <p>현재 페이지 {currentPage}</p>
       <ul>
-        {facilities.map((facility) => (
-          <li key={facility.SVCID}>
+        {sortedFacilities.map((facility) => (
+          <StLi key={facility.SVCID} onClick={() => navDetailPage(facility)}>
             {facility.AREANM} {facility.SVCNM}
-          </li>
+          </StLi>
         ))}
       </ul>
-      <div className="pages">
-        <button disabled={currentPage <= 5} onClick={onPreviousPageClick}>
-          이전 페이지
-        </button>
-        {pageNumbers.map((page) => (
-          <button key={page} onClick={() => onPageButtonClick(page)}>
-            {page}
-          </button>
-        ))}
-        <button disabled={currentPage <= LastPage} onClick={onNextPageClick}>
-          다음 페이지
-        </button>
-      </div>
     </>
   );
 };
 
 export default Facilities;
+
+const StLi = styled.li`
+  border: 1px solid black;
+`;

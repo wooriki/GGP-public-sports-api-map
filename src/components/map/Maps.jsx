@@ -6,6 +6,11 @@ const Maps = ({ coords }) => {
   const navermaps = useNavermaps();
   const [map, setMap] = useState(null);
 
+  // onClick!!
+  // const handleMarkerClick = () => {
+  //   setIsMarked(prev => !prev)
+  // }
+
   return (
     <>
       <StyledDiv>

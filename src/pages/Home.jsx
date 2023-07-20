@@ -11,6 +11,9 @@ import MapComponent from '../components/map/MapComponent';
 const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
+
+  // const [isMarked, setIsMarked] = useState(false);
+
   console.log(location);
   useEffect(() => {
     if (location) {
@@ -23,13 +26,25 @@ const Home = () => {
       <h1>Home</h1>
       <Facilities />
       <StyledMain>
-        <div>
-          <MapComponent />
-        </div>
+        {/* <div style={{
+          display: 'flex'
+        }}>
+          <MapComponent setIsMarked={} />
+          {
+            isMarked ? <디테일 /> : <전체 />
+          }
+          <div>
+
+          </div>
+
+        </div> */}
+        <MapComponent />
       </StyledMain>
     </>
   );
 };
+// 마커에 대한 state
+//
 
 export default Home;
 
