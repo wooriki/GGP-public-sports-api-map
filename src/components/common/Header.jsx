@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import Weather from './Weather';
 import Search from '../Search';
 
-const Header = ({ setFilteredGlobalDataByArea }) => {
+const Header = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
   return (
     <WeatherContainer>
       <Link to="/">
         <ImgTag src={process.env.PUBLIC_URL + 'img/Logo.png'} width="180" alt="로고" />
       </Link>
-      <Search setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} />
+      <Search setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <Weather />
     </WeatherContainer>
   );

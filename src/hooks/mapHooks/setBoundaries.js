@@ -8,7 +8,7 @@ const useSetBoundary = (pins) => {
   let boundaryMix = null;
 
   if (pins.length > 0) {
-    coordsMix = pins.map(({ longitude, latitude }) => new navermaps.LatLng(longitude, latitude));
+    coordsMix = pins.map(({ latitude, longitude }) => new navermaps.LatLng(latitude, longitude));
 
     // When the number of coordinates exceeds 4, create LatLngBounds step by step.
     boundaryMix = new navermaps.LatLngBounds(coordsMix[0], coordsMix[1]);

@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
-
 import useFetchPublicData from '../hooks/useFetchPublicData';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSortedData } from '../redux/modules/publicData';
 import { styled, keyframes } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { calDistance } from '../helper/calDistance';
 import { Paging } from './Paging';
 
-const Facilities = ({ setFacility, filteredGlobalDataByArea }) => {
+const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => {
   const selectedArea = filteredGlobalDataByArea?.selectedArea;
   const selectedSports = filteredGlobalDataByArea?.selectedSports;
 
@@ -23,26 +21,56 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea }) => {
   // 페이지네이션 관련 변수 및 state 선언
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = filteredGlobalDataByArea
-    ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length
-    : publicData?.length || null;
-  const totalPage = filteredGlobalDataByArea
-    ? Math.ceil(
-        publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length /
-          itemsPerPage
-      )
-    : Math.ceil(publicData?.length / itemsPerPage) || null;
+  const totalItems = !globalSearch
+    ? filteredGlobalDataByArea
+      ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length
+      : publicData?.length || []
+    : publicData?.filter(
+        (data) =>
+          (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+          (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+          (data.MINCLASSNM.includes(globalSearch) ||
+            data.SVCNM.includes(globalSearch) ||
+            data.AREANM.includes(globalSearch))
+      ).length || null;
+
+  const totalPage = !globalSearch
+    ? filteredGlobalDataByArea
+      ? Math.ceil(
+          publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length /
+            itemsPerPage
+        )
+      : Math.ceil(publicData?.length / itemsPerPage) || []
+    : Math.ceil(
+        publicData?.filter(
+          (data) =>
+            (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (data.MINCLASSNM.includes(globalSearch) ||
+              data.SVCNM.includes(globalSearch) ||
+              data.AREANM.includes(globalSearch))
+        ).length / itemsPerPage
+      ) || null;
 
   const [sortPublicDataByDis, setSortPublicDataByDis] = useState([]);
 
   useEffect(() => {
     // filteredGlobalDataByArea가 true이면 필터링된 데이터를 사용하고,
     // false이면 전체 데이터를 사용합니다.
-    const filteredData = filteredGlobalDataByArea
-      ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
-      : publicData || [];
+    const filteredData = !globalSearch
+      ? filteredGlobalDataByArea
+        ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
+        : publicData || []
+      : publicData?.filter(
+          (data) =>
+            (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (data.MINCLASSNM.includes(globalSearch) ||
+              data.SVCNM.includes(globalSearch) ||
+              data.AREANM.includes(globalSearch))
+        ) || null;
 
-    // 복사본을 만들어서 정렬합니다.
+    // 거리를 기준으로 데이터 정렬
     const sortPublicDataByDis = [...filteredData].sort((a, b) => {
       const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
       const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
@@ -52,7 +80,7 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea }) => {
     setSortPublicDataByDis(sortPublicDataByDis);
 
     dispatch(setSortedData(sortPublicDataByDis));
-  }, [dispatch, filteredGlobalDataByArea, publicData, selectedArea, selectedSports, location]);
+  }, [dispatch, filteredGlobalDataByArea, publicData, selectedArea, selectedSports, location, globalSearch]);
 
   if (isLoading) return <h3>로딩 중 입니다</h3>;
   if (isError) {
@@ -72,24 +100,27 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea }) => {
   return (
     <>
       <StyledFacilitiesContainer>
-        <h2>Reservation Data</h2>
+        <Title>Reservation Data</Title>
         <StyledItemListBox>
-          <p>총 {totalItems}개</p>
-          <p>
-            현재 페이지 {currentPage}/{totalPage}
-          </p>
-          <ul>
+          <SubTitlte>
+            <p>총 {totalItems}개</p>
+            <p>
+              <br />
+              현재 페이지 {currentPage}/{totalPage}
+            </p>
+          </SubTitlte>
+          <UlTag>
             {sliceData.map((facility) => (
               <StyledItemBox key={facility.SVCID}>
-                <li onClick={() => navDetailPage(facility)}>
-                  <p>
+                <LiTag onClick={() => navDetailPage(facility)}>
+                  <TextTag>
                     <span>{facility.AREANM}</span> <span>{facility.MINCLASSNM}</span>
-                  </p>
-                  <p>{facility.SVCNM}</p>
-                </li>
+                  </TextTag>
+                  <TextTag>{facility.SVCNM}</TextTag>
+                </LiTag>
               </StyledItemBox>
             ))}
-          </ul>
+          </UlTag>
         </StyledItemListBox>
         <Paging currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} />
       </StyledFacilitiesContainer>
@@ -104,27 +135,36 @@ export default Facilities;
 // `;
 const StyledFacilitiesContainer = styled.div`
   width: 25%;
+  height: 1000px;
   margin-left: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   color: white;
   background-color: rgba(41, 41, 41, 0.747);
-  border-radius: 0 20px 20px 0;
-  padding: 20px 40px 30px;
+  border-radius: 0 30px 30px 0;
+  padding: 20px 5px 20px 30px;
 `;
 
-const StyledItemListBox = styled.div``;
+const StyledItemListBox = styled.div`
+  margin: 0 auto;
+`;
+const Title = styled.h2`
+  font-size: 1.2rem;
+  font-weight: bold;
+`;
+const SubTitlte = styled.div`
+  margin: 10px 0;
+`;
 
 const StyledItemBox = styled.div`
-  width: 350px;
-  height: 70px;
-  text-align: center;
+  // width: 90%;
+
   margin: 0 auto;
   margin: 10px 0;
-  padding: 10px;
+  // padding: 4px 10px;
   background-color: grey;
-  color: white;
   border-radius: 10px;
 
   display: flex;
@@ -142,4 +182,39 @@ const growAnimation = keyframes`
     transform: scale(1);
   }
 
+`;
+const UlTag = styled.ul`
+  width: 90%;
+
+  margin: 0 auto;
+  height: 70px;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    animation: ${growAnimation} 0.5s ease-in-out;
+    background-color: rgba(225, 225, 225, 0.45);
+  }
+`;
+const LiTag = styled.li`
+  width: 90%;
+  display: flex;
+  justify-content: center;
+
+  margin: 0 auto;
+  margin-top: 10px;
+  height: 70px;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    animation: ${growAnimation} 0.5s ease-in-out;
+    background-color: rgba(225, 225, 225, 0.45);
+  }
+`;
+const TextTag = styled.p`
+  text-align: center;
+  // height: 20px;
+  // overflow: hidden;
+  // white-space: nowrap;
+  // text-overflow: ellipsis;
+  padding: 0 4px;
 `;

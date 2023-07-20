@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { setLocation } from '../redux/modules/userLocation';
-import Facilities from '../components/Facilities';
-// import Search from '../components/Search';
 import { styled, keyframes } from 'styled-components';
+import Facilities from '../components/Facilities';
 import MapComponent from '../components/map/MapComponent';
-import Detail from './Detail';
+import Detail from '../components/detail/Detail';
 import Header from '../components/common/Header';
 
 const Home = () => {
@@ -16,6 +14,7 @@ const Home = () => {
   const { location, error } = useCurrentLocation();
   const [facility, setFacility] = useState(null);
   const [filteredGlobalDataByArea, setFilteredGlobalDataByArea] = useState(null);
+  const [globalSearch, setGlobalSearch] = useState(null);
 
   useEffect(() => {
     if (location) {
@@ -25,11 +24,11 @@ const Home = () => {
 
   return (
     <>
-      <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} />
+      <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <ContainerWrapper>
         <StyledMain>
-          <TitleTag>Now Loading Map</TitleTag>
           <div>
+            <TitleTag>Now Loading Map</TitleTag>
             <MapComponent />
           </div>
           <TextTag>💥추천 영상</TextTag>
@@ -43,7 +42,11 @@ const Home = () => {
         {facility ? (
           <Detail setFacility={setFacility} facility={facility} />
         ) : (
-          <Facilities filteredGlobalDataByArea={filteredGlobalDataByArea} setFacility={setFacility} />
+          <Facilities
+            filteredGlobalDataByArea={filteredGlobalDataByArea}
+            globalSearch={globalSearch}
+            setFacility={setFacility}
+          />
         )}
       </ContainerWrapper>
     </>
@@ -55,26 +58,20 @@ const Home = () => {
 export default Home;
 
 const ContainerWrapper = styled.div`
-  width: 77%;
+  width: 70%;
   margin: 0 auto;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
-  // background-color: rgba(41, 41, 41, 0.247);
+  background-color: rgba(41, 41, 41, 0.247);
+  border-radius: 30px;
 `;
 const StyledMain = styled.div`
-  // height: 100vh;
-  // display: flex;
-  // justify-content: space-evenly;
-  // align-items: center;
-
   width: 65%;
   color: rgba(236, 236, 236, 0.89);
   background-color: rgba(41, 41, 41, 0.747);
   border-radius: 30px 0 0 30px;
-  padding: 40px 30px;
-  // margin-top: -50px;
 `;
 const TitleTag = styled.h2`
   font-size: 1.5rem;
@@ -89,7 +86,6 @@ const TextTag = styled.h2`
   margin-top: 20px;
 `;
 const UlTag = styled.ul`
-  // display: flex;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 `;

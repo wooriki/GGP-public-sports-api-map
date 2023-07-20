@@ -1,7 +1,6 @@
 import React from 'react';
-import Comments from '../components/comments/Comments';
-import PostData from '../components/postData/PostData';
-import { useLocation } from 'react-router-dom';
+import Comments from '../detail/Comments';
+import PostData from '../detail/PostData';
 import { styled } from 'styled-components';
 
 const Detail = ({ setFacility, facility }) => {
