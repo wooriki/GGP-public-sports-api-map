@@ -1,14 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
-import getCurrentLocationSlice from '../modules/getCurrentLocation';
 import getPublicDataSlice from '../modules/publicData';
-import userLocationReducer from "../modules/userLocation"
+import userLocationReducer from '../modules/userLocation';
+import setBoundarySlice from '../modules/maps/setBoundary';
+import coordsGroupSlice from '../modules/maps/coordsGroup';
 import reviewsReducer from '../modules/reviewSlice';
 
 const store = configureStore({
   reducer: {
-    currentLocation: getCurrentLocationSlice.reducer,
     getPublicData: getPublicDataSlice.reducer,
     location: userLocationReducer,
+    setBoundary: setBoundarySlice.reducer,
+    coordsGroup: coordsGroupSlice.reducer,
     reviews: reviewsReducer
   },
   devTools: process.env.BASE_URL !== 'production' // 개발 환경에서만 Redux DevTools를 활성화

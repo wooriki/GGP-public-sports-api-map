@@ -1,84 +1,95 @@
-import { useQuery, useQueryClient } from 'react-query';
-import { getFacilitiesForPagination } from '../axios/publicDataAPI';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { LastPage } from '@mui/icons-material';
+
+import useFetchPublicData from "../hooks/useFetchPublicData";
+import { useDispatch, useSelector } from 'react-redux';
+import { setSortedData } from "../redux/modules/publicData";
+
+import { calDistance } from "../helper/calDistance";
+import { styled } from "styled-components";
+import { Paging } from "./Paging";
 
 const Facilities = () => {
+  const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
+  const { data: publicData, isLoading, isError } = useFetchPublicData(1, 1000);
 
-  // 페이지네이션 관련 변수 및 state 설정
-  const maxPageItems = 10;
+  // 페이지네이션 관련 변수 및 state 선언
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = publicData?.length;
+  const totalPage = Math.ceil((publicData?.length) / itemsPerPage);
 
-  const queryClient = useQueryClient();
+  // useFetchPublicData훅으로 불러온 api 데이터를 현재 사용자 위치와 가까운 순으로 정렬
+const sortPublicDataByDis = publicData && [...publicData].sort((a, b) => {
+  const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
+  const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
+  return dx - dy;
+});
+
   useEffect(() => {
-    for (let page = currentPage; page <= currentPage + 4; page++) {
-      queryClient.prefetchQuery(['facilities', page], () => getFacilitiesForPagination(maxPageItems, page));
-    }
-  }, [currentPage, maxPageItems, queryClient]);
-
-  const {
-    isLoading,
-    isFetching,
-    data: facilities,
-    isError,
-    error
-  } = useQuery(['facilities', currentPage], () => getFacilitiesForPagination(maxPageItems, currentPage), {
-    refetchOnWindowFocus: false,
-    staleTime: 2000,
-    keepPreviousData: true
-  });
-
-  const onPreviousPageClick = () => {
-    setCurrentPage((prev) => (Math.ceil(prev / 5) - 1) * 5 - 4);
-  };
-
-  const onNextPageClick = () => {
-    setCurrentPage((prev) => Math.ceil(prev / 5) * 5 + 1);
-  };
-
-  const onPageButtonClick = (page) => {
-    setCurrentPage(page);
-  };
+    dispatch(setSortedData(sortPublicDataByDis));
+  }, [dispatch, sortPublicDataByDis]);
 
   if (isLoading) return <h3>로딩 중 입니다</h3>;
-  if (isError)
+  if (isError) {
     return (
       <>
         <p>에러가 발생하였습니다</p>
-        <p>{error.toString()}</p>
+        <p>{publicData.error.toString()}</p>
       </>
     );
+  }
 
-  const pageNumbers = [1, 2, 3, 4, 5].map((page) => page + Math.floor((currentPage - 1) / 5) * 5);
+  // 현재 페이지 위치에 따라 10개씩 보여줄 데이터
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
 
   return (
     <>
-      <div>Reservation Data</div>
-      <p>현재 페이지 {currentPage}</p>
-      <ul>
-        {facilities.map((facility) => (
-          <li key={facility.SVCID}>
-            {facility.AREANM} {facility.SVCNM}
-          </li>
-        ))}
-      </ul>
-      <div className="pages">
-        <button disabled={currentPage <= 5} onClick={onPreviousPageClick}>
-          이전 페이지
-        </button>
-        {pageNumbers.map((page) => (
-          <button key={page} onClick={() => onPageButtonClick(page)}>
-            {page}
-          </button>
-        ))}
-        <button disabled={currentPage <= LastPage} onClick={onNextPageClick}>
-          다음 페이지
-        </button>
-      </div>
+      <StyledFacilitiesContainer>
+      <h2>Reservation Data</h2>
+        <StyledItemListBox>
+          <p>총 {totalItems}개</p>
+          <p>현재 페이지 {currentPage}/{totalPage}</p>
+          <ul>
+            {sliceData.map((facility) => (
+              <StyledItemBox>
+                <li key={facility.SVCID}>
+                  <p><span>{facility.AREANM}</span> <span>{facility.MINCLASSNM}</span></p>                
+                  <p>{facility.SVCNM}</p>
+                </li>
+              </StyledItemBox>
+            ))}
+          </ul>
+        </StyledItemListBox>
+        <Paging currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} />
+      </StyledFacilitiesContainer>
     </>
   );
 };
 
 export default Facilities;
+
+const StyledFacilitiesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+`
+
+const StyledItemListBox = styled.div`
+`
+
+const StyledItemBox = styled.div`
+  width: 350px;
+  height: 70px;
+  margin: 5px;
+  padding: 10px;
+  background-color: grey;
+  color: white;
+  border-radius: 10px;
+  
+  display: flex;
+  align-items: center;
+`;

@@ -8,8 +8,10 @@ const Search = () => {
   // 필터링된 지역 상태관리
   const [filteredDataByArea, setFilteredDataByArea] = useState([]);
 
+
   // 종목 클릭시 selectedSports에 넣기
   const onSportsButtonClickHandler = (e) => {
+
     e.preventDefault();
     setSelectedSports(e.target.value);
   };
