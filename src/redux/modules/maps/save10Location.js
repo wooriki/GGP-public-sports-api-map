@@ -6,7 +6,6 @@ const content = {
   reducers: {
     // 가져온 10개의 데이터에서 id와, 위도, 경도를 추출하여 스토어에 저장
     save10Location: (state, action) => {
-      console.log(action.payload);
       const tempObj = action.payload.map((el) => {
         return {
           id: el.SVCID,

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import useFetchPublicData from '../hooks/useFetchPublicData';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled, keyframes } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { save10Location } from '../redux/modules/maps/save10Location';
 import { calDistance } from '../helper/calDistance';
 
