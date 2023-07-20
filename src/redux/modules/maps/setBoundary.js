@@ -1,18 +1,23 @@
-const { createSlice } = require('@reduxjs/toolkit');
+const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-const initialState = { boundary: null };
+export const __setBoundray = createAsyncThunk('setBoundary', (payload, thunkAPI) => {
+  console.log('payload:', payload);
+  return payload;
+});
 
 const content = {
   name: '여러 좌표를 종합하여 중앙에 잘 보여주기',
-  initialState,
-  reducers: {
-    setBoundary: (state, action) => {
-      return { ...state, boundary: action.payload };
-    }
+  initialState: {
+    boundary: []
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(__setBoundray.fulfilled, (stateOfThisModule, action) => {
+      stateOfThisModule.boundary = action.payload;
+    });
   }
 };
 
 const setBoundarySlice = createSlice(content);
 
 export default setBoundarySlice;
-export const { setBoundary } = setBoundarySlice.actions;

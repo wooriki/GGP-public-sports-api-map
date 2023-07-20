@@ -1,38 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Marker, useNavermaps } from 'react-naver-maps';
-import { useDispatch } from 'react-redux';
-import { setBoundary } from '../../redux/modules/maps/setBoundary';
+import { useSelector } from 'react-redux';
+import useSaveBoundary from '../../hooks/mapHooks/saveBoundary';
 
-// 10개의 좌표(중복 가능)가 주어 졌을 때, 그 좌표들에 핀을 놓고
-//좌표의 중간 지점으로 이동하여 모든 핀이 표시되도록 한다.
-const MarkPins = () => {
-  const dispatch = useDispatch();
+// 특정 좌표가 주어 졌을 때, 그 좌표들에 핀을 놓고,
+// 좌표들이 모두 표시될 수 있는 위치에 맵을 보인다.
+
+const MarkPins = ({ map, boundary }) => {
   const navermaps = useNavermaps();
-  const [coordsGroup, setCoordsGroup] = useState([]);
-  useEffect(() => {
-    // 아래는 가져온 10개의 랜덤 좌표, 실제로는 10개 가져오는 값에서 추출하여 가져올 예정
-    setCoordsGroup([
-      ...coordsGroup,
-      { id: 0, longitude: 37.5201, latitude: 126.9501 },
-      { id: 1, longitude: 37.5667, latitude: 126.9784 },
-      { id: 2, longitude: 37.5567, latitude: 126.9884 },
-      { id: 3, longitude: 37.5467, latitude: 126.9984 },
-      { id: 4, longitude: 37.5367, latitude: 127.0052 },
-      { id: 5, longitude: 37.5267, latitude: 127.0122 },
-      { id: 6, longitude: 37.5301, latitude: 126.9522 },
-      { id: 7, longitude: 37.5401, latitude: 126.9622 },
-      { id: 8, longitude: 37.5451, latitude: 126.9822 },
-      { id: 9, longitude: 37.5401, latitude: 127.0825 }
-    ]);
-  }, []);
+  const fetchedgroup = useSelector((state) => state.coordsGroup.data);
 
+  // useSetBoundary의 인자는 앞으로 가져올 데이터의 좌표들
+  useSaveBoundary(pinsToRequest);
+  //
   useEffect(() => {
-    // coordsGroup 값이 변경되면 액션을 디스패치하여 Redux 스토어에 보낸다.
-    dispatch(setBoundary(coordsGroup));
-  }, [dispatch, coordsGroup]);
+    if (map && boundary) {
+      map.panToBounds(boundary);
+    }
+  }, []);
   return (
     <>
-      {coordsGroup?.map((location) => (
+      {fetchedgroup?.map((location) => (
         <Marker key={location.id} position={new navermaps.LatLng(+location.longitude, +location.latitude)} />
       ))}
     </>
@@ -40,3 +28,13 @@ const MarkPins = () => {
 };
 
 export default MarkPins;
+
+// 위도와 경도를 갖는 데이터로 요청 (+id값도 가져야함)
+const pinsToRequest = [
+  { id: 0, longitude: 37.5601, latitude: 126.9501 },
+  { id: 1, longitude: 37.5667, latitude: 126.9784 },
+  { id: 2, longitude: 37.5567, latitude: 126.9884 },
+  { id: 3, longitude: 37.5667, latitude: 127.1 },
+  { id: 4, longitude: 37.667, latitude: 127.12 },
+  { id: 5, longitude: 37.4, latitude: 127.12 }
+];
