@@ -143,12 +143,12 @@ const Comments = ({ facility }) => {
     setEditedContents('');
   };
 
-  // 로딩 중일 때
+  // 로딩 중일 때!
   if (isLoading) {
     return <h3>Loading...!</h3>;
   }
 
-  // 에러 발생 시
+  // 에러 발생 시!
   if (isError) {
     return <h3>Error...!</h3>;
   }
