@@ -1,78 +1,112 @@
 import { useQuery, useQueryClient } from 'react-query';
-import { getFacilitiesForPagination } from '../axios/publicDataAPI';
+import useFetchPublicData from "../hooks/useFetchPublicData";
+import { getReservations } from "../axios/publicDataAPI";
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { LastPage } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSortedData } from "../redux/modules/publicData";
+import { calDistance } from "../helper/calDistance";
+import { styled } from "styled-components";
 
 const Facilities = () => {
+  const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
-  console.log("store에서 불러온 위치 => ", location);
+  const { data: publicData, isLoading, isError } = useFetchPublicData(1, 1000);
 
-  // 페이지네이션 관련 변수 및 state 설정
-  const maxPageItems = 10;
+  // 페이지네이션 관련 변수 및 state 선언
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = publicData?.length;
+  const totalPage = Math.ceil((publicData?.length) / itemsPerPage);
 
-  const {
-    isLoading,
-    isFetching,
-    data: facilities,
-    isError,
-    error
-  } = useQuery(['facilities', currentPage], () => getFacilitiesForPagination(maxPageItems, currentPage), {
-    refetchOnWindowFocus: false,
-    staleTime: 2000,
-    keepPreviousData: true
+  if (isLoading) return <h3>로딩 중 입니다</h3>;
+  if (isError) {
+    return (
+      <>
+        <p>에러가 발생하였습니다</p>
+        <p>{publicData.error.toString()}</p>
+      </>
+    );
+  }
+
+  // useFetchPublicData훅으로 불러온 api 운동시설 데이터를 현재 사용자 위치와 가까운 순으로 정렬
+  const publicDataSortedByDis = publicData.sort((a, b) => {
+    const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
+    const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
+    return dx - dy;
   });
 
+  // useEffect(() => {
+  //   dispatch(setSortedData(publicDataSortedByDis));
+  // }, [dispatch, publicDataSortedByDis]);
+
+  // 페이지네이션
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const sliceData = publicDataSortedByDis.slice(startIndex, endIndex);
+
+  const pageCount = Math.ceil(publicData.length / itemsPerPage);
+  const pageRange = 5;
+  const startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
+  const endPage = Math.min(pageCount, startPage + pageRange - 1);
+  const visiblePages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+
   const onPreviousPageClick = () => {
-    setCurrentPage((prev) => (Math.ceil(prev / 5) - 1) * 5 - 4);
+    setCurrentPage((prev) => Math.max(prev - pageRange, 1));
   };
 
   const onNextPageClick = () => {
-    setCurrentPage((prev) => Math.ceil(prev / 5) * 5 + 1);
+    setCurrentPage((prev) => Math.min(prev + pageRange, pageCount));
   };
 
   const onPageButtonClick = (page) => {
     setCurrentPage(page);
   };
 
-  if (isLoading) return <h3>로딩 중 입니다</h3>;
-  if (isError)
-    return (
-      <>
-        <p>에러가 발생하였습니다</p>
-        <p>{error.toString()}</p>
-      </>
-    );
-
-  const pageNumbers = [1, 2, 3, 4, 5].map((page) => page + Math.floor((currentPage - 1) / 5) * 5);
-
   return (
     <>
       <div>Reservation Data</div>
-      <p>현재 페이지 {currentPage}</p>
-      <ul>
-        {facilities.map((facility) => (
-          <li key={facility.SVCID}>
-            {facility.AREANM} {facility.SVCNM}
-          </li>
-        ))}
-      </ul>
-      <div className="pages">
-        <button disabled={currentPage <= 5} onClick={onPreviousPageClick}>
+      <div>
+        <p>총 시설 개수 {totalItems}개</p>
+        <p>현재 페이지 {currentPage}/{totalPage}</p>
+        <ul>
+          {sliceData.map((facility) => (
+            <li key={facility.SVCID}>
+              {facility.AREANM} {facility.SVCNM}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <nav>
+        <button
+          disabled={currentPage === 1}
+          onClick={onPreviousPageClick}
+        >
           이전 페이지
         </button>
-        {pageNumbers.map((page) => (
-          <button key={page} onClick={() => onPageButtonClick(page)}>
+        {visiblePages.map((page) => (
+          <StPageButtons
+            key={page}
+            onClick={() => onPageButtonClick(page)}
+            disabled={currentPage === page}
+          >
             {page}
-          </button>
+          </StPageButtons>
         ))}
-        <button disabled={currentPage <= LastPage} onClick={onNextPageClick}>
+        <button
+          disabled={currentPage === pageCount}
+          onClick={onNextPageClick}
+        >
           다음 페이지
         </button>
-      </div>
+      </nav>
     </>
   );
 };
 
 export default Facilities;
+
+const StPageButtons = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
