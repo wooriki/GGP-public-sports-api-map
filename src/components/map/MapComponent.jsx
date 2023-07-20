@@ -20,4 +20,7 @@ const MapComponent = () => {
 
 export default MapComponent;
 
-const StyledDiv = styled.div``;
+const StyledDiv = styled.div`
+  width: 500px;
+  height: 500px;
+`;

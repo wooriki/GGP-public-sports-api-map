@@ -1,10 +1,13 @@
 import React from 'react';
-import { Review } from '../components/review/Review';
+import Comments from '../components/comments/Comments';
+//
 
-export const Detail = () => {
+const Detail = () => {
   return (
     <div>
-      <Review />
+      <Comments />
     </div>
   );
 };
+
+export default Detail;

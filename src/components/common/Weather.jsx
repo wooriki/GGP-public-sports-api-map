@@ -1,11 +1,11 @@
 import React from 'react';
-import { styled } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
 import { useQuery } from 'react-query';
 import { useCurrentLocation } from '../../hooks/useCurrentLocation';
 
 import { getWeatherData } from '../../axios/weatherApi';
 
-export const Weather = () => {
+const Weather = () => {
   const { location, error } = useCurrentLocation();
 
   const dateBuilder = (d) => {
@@ -42,7 +42,6 @@ export const Weather = () => {
     }
   );
 
-
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -53,9 +52,9 @@ export const Weather = () => {
 
   if (isLoading) {
     return (
-      <LoadingBox>
+      <div>
         <Alert>Loading weather data...</Alert>
-      </LoadingBox>
+      </div>
     );
   }
 
@@ -65,70 +64,74 @@ export const Weather = () => {
 
   const { name, weather, main } = weatherData;
   // const currentDate = new Date();
-
   return (
-    <WeatherContainer>
+    <>
       <WeatherWrapper>
         <WeatherInner>
-          <WeatherImg src={`http://openweathermap.org/img/wn/${weather[0].icon}.png`} alt="Weather Icon" />{' '}
+          <WeatherImg src={`http://openweathermap.org/img/wn/${weather[0].icon}.png`} alt="Weather Icon" />
           <span>{`${main.temp}°C`}</span>
           <WeatherDate>{dateBuilder(new Date())}</WeatherDate>
         </WeatherInner>
         <LocationName>{name}</LocationName>
       </WeatherWrapper>
-    </WeatherContainer>
+    </>
   );
 };
-
-const LoadingBox = styled.div`
-  position: relative;
-`;
-
 const Alert = styled.div`
-  position: absolute;
-
-  background-color: rgba(182, 182, 182, 0.25);
-  border-radius: 20px;
-  box-shadow: 10px 10px 10px rgba(70, 70, 70, 0.72);
-
-  top: 40px;
-  right: 30px;
-  width: 344px;
-  height: 90px;
-  margin: 0 auto;
-`;
-
-const WeatherContainer = styled.div`
+  width: 340px;
+  height: 72px;
   display: flex;
-  justify-content: flex-end;
-  padding-right: 50px;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 20px 30px;
+  align-items: center;
+  justify-content: center;
+  color: rgba(225, 225, 225, 0.795);
   border-radius: 20px;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-align: center;
+  background-color: rgba(225, 225, 225, 0.362);
 `;
-
+const growAnimation = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
 const WeatherWrapper = styled.div`
+  height: 72px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(182, 182, 182, 0.25);
+  vertical-align: middle;
+  background-color: rgba(225, 225, 225, 0.362);
   border-radius: 20px;
   box-shadow: 10px 10px 10px rgba(70, 70, 70, 0.72);
+  cursor: pointer;
+  &:hover {
+    animation: ${growAnimation} 0.5s ease-in-out;
+    background-color: rgba(225, 225, 225, 0.45);
+  }
 `;
 const WeatherImg = styled.img`
-  width: 50px;
+  width: 60px;
 `;
 const WeatherInner = styled.div`
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(223, 223, 223, 0.488);
+  background-color: rgba(225, 225, 225, 0.362);
   padding: 0px 20px;
   border-radius: 20px 20px 0 0;
+  margin-top: 6px;
 `;
 const LocationName = styled.div`
-  padding: 10px 0;
+  padding: 2px 0 12px;
   font-weight: 600;
 `;
 const WeatherDate = styled.div`
@@ -139,3 +142,5 @@ const DateBuild = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+export default Weather;
