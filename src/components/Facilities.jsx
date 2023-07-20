@@ -6,17 +6,11 @@ import { LastPage } from '@mui/icons-material';
 
 const Facilities = () => {
   const location = useSelector((state) => state.location);
+  console.log("store에서 불러온 위치 => ", location);
 
   // 페이지네이션 관련 변수 및 state 설정
   const maxPageItems = 10;
   const [currentPage, setCurrentPage] = useState(1);
-
-  const queryClient = useQueryClient();
-  useEffect(() => {
-    for (let page = currentPage; page <= currentPage + 4; page++) {
-      queryClient.prefetchQuery(['facilities', page], () => getFacilitiesForPagination(maxPageItems, page));
-    }
-  }, [currentPage, maxPageItems, queryClient]);
 
   const {
     isLoading,

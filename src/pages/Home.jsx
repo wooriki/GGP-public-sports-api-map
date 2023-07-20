@@ -11,7 +11,6 @@ import MapComponent from '../components/map/MapComponent';
 const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
-  console.log(location);
   useEffect(() => {
     if (location) {
       dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
