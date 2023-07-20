@@ -6,31 +6,53 @@ import { setSortedData } from '../redux/modules/publicData';
 import { styled, keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { calDistance } from '../helper/calDistance';
-
 import { Paging } from './Paging';
 
-const Facilities = () => {
+const Facilities = ({ setFacility, filteredGlobalDataByArea }) => {
+  const selectedArea = filteredGlobalDataByArea?.selectedArea;
+  const selectedSports = filteredGlobalDataByArea?.selectedSports;
+
+  const navDetailPage = (facility) => {
+    setFacility(facility);
+  };
+
   const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
   const { data: publicData, isLoading, isError } = useFetchPublicData();
+
   // 페이지네이션 관련 변수 및 state 선언
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = publicData?.length;
-  const totalPage = Math.ceil(publicData?.length / itemsPerPage);
+  const totalItems = filteredGlobalDataByArea
+    ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length
+    : publicData?.length || null;
+  const totalPage = filteredGlobalDataByArea
+    ? Math.ceil(
+        publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length /
+          itemsPerPage
+      )
+    : Math.ceil(publicData?.length / itemsPerPage) || null;
 
-  // useFetchPublicData훅으로 불러온 api 데이터를 현재 사용자 위치와 가까운 순으로 정렬
-  const sortPublicDataByDis =
-    publicData &&
-    [...publicData].sort((a, b) => {
-      const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
-      const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
-      return dx - dy;
-    });
+  const [sortPublicDataByDis, setSortPublicDataByDis] = useState([]);
 
   useEffect(() => {
+    // filteredGlobalDataByArea가 true이면 필터링된 데이터를 사용하고,
+    // false이면 전체 데이터를 사용합니다.
+    const filteredData = filteredGlobalDataByArea
+      ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
+      : publicData || [];
+
+    // 복사본을 만들어서 정렬합니다.
+    const sortPublicDataByDis = [...filteredData].sort((a, b) => {
+      const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
+      const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
+      return dx - dy; // 거리 값을 비교하여 정렬
+    });
+
+    setSortPublicDataByDis(sortPublicDataByDis);
+
     dispatch(setSortedData(sortPublicDataByDis));
-  }, [dispatch, sortPublicDataByDis]);
+  }, [dispatch, filteredGlobalDataByArea, publicData, selectedArea, selectedSports, location]);
 
   if (isLoading) return <h3>로딩 중 입니다</h3>;
   if (isError) {
@@ -58,8 +80,8 @@ const Facilities = () => {
           </p>
           <ul>
             {sliceData.map((facility) => (
-              <StyledItemBox>
-                <li key={facility.SVCID}>
+              <StyledItemBox key={facility.SVCID}>
+                <li onClick={() => navDetailPage(facility)}>
                   <p>
                     <span>{facility.AREANM}</span> <span>{facility.MINCLASSNM}</span>
                   </p>
@@ -81,10 +103,15 @@ export default Facilities;
 //   border: 1px solid black;
 // `;
 const StyledFacilitiesContainer = styled.div`
+  width: 25%;
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: white;
+  background-color: rgba(41, 41, 41, 0.747);
+  border-radius: 0 20px 20px 0;
+  padding: 20px 40px 30px;
 `;
 
 const StyledItemListBox = styled.div``;
@@ -92,47 +119,18 @@ const StyledItemListBox = styled.div``;
 const StyledItemBox = styled.div`
   width: 350px;
   height: 70px;
-  margin: 5px;
+  text-align: center;
+  margin: 0 auto;
+  margin: 10px 0;
   padding: 10px;
   background-color: grey;
   color: white;
   border-radius: 10px;
 
   display: flex;
-  align-items: center;
-`;
-
-const FacilityTag = styled.div`
-  width: 450px;
-  color: rgba(236, 236, 236, 0.89);
-  background-color: rgba(41, 41, 41, 0.747);
-  border-radius: 0 30px 30px 0;
-  padding-bottom: 10px;
-  margin: 4px;
-`;
-const TitleTag = styled.h2`
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0 0 10px 10px;
-  padding-top: 10px;
-`;
-const NowPage = styled.p`
-  margin: 0 auto;
-  margin-top: 10px;
-  display: flex;
   justify-content: center;
   align-items: center;
-
-  width: 200px;
-  font-weight: 600;
-  border-radius: 30px;
-  // margin: 10px 0;
-  padding: 10px 0px;
-  background-color: rgba(236, 236, 236);
-  color: black;
-  text-align: center;
 `;
-
 const growAnimation = keyframes`
   0% {
     transform: scale(1);
@@ -143,48 +141,5 @@ const growAnimation = keyframes`
   100% {
     transform: scale(1);
   }
-`;
 
-const LiTag = styled.li`
-  width: 80%;
-  border-radius: 10px;
-  margin: 0 auto;
-  margin-top: 10px;
-  padding: 14px 6px;
-  background-color: rgba(123, 123, 123, 0.733);
-  text-align: center;
-  line-height: 1.5;
-  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
-  cursor: pointer;
-  &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(101, 101, 101, 0.933);
-    color: rgba(236, 236, 236);
-    font-weight: 600;
-  }
-`;
-
-const BtnContainer = styled.div`
-  margin: 20px 0 20px;
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-`;
-const Btn = styled.button`
-  width: 20px;
-  padding: 4px;
-  border-radius: 4px;
-  border: none;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  background-color: rgba(101, 101, 101, 0.933);
-  color: white;
-  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
-  cursor: pointer;
-  &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(196, 196, 196, 0.733);
-    color: black;
-  }
 `;

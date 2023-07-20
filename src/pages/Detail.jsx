@@ -4,14 +4,11 @@ import PostData from '../components/postData/PostData';
 import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-const Detail = () => {
-  const location = useLocation();
-  const facility = location.state?.facility || null;
-
+const Detail = ({ setFacility, facility }) => {
   return (
     <PostContainer>
       <PostWrapper>
-        <PostData location={location} facility={facility} />
+        <PostData setFacility={setFacility} facility={facility} />
         <Comments facility={facility} />
       </PostWrapper>
     </PostContainer>
@@ -24,6 +21,12 @@ const PostContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 450px;
+  color: rgba(236, 236, 236, 0.89);
+  background-color: rgba(41, 41, 41, 0.747);
+  border-radius: 0 30px 30px 0;
+  padding-bottom: 10px;
+  margin-left: 4px;
 `;
 
 const PostWrapper = styled.div`

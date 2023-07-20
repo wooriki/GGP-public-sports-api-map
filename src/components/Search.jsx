@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
 
-const Search = () => {
+const Search = ({ setFilteredGlobalDataByArea }) => {
   // 선택된 종목 상태관리
   const [selectedSports, setSelectedSports] = useState('');
   // 필터링된 지역 상태관리
@@ -19,12 +19,12 @@ const Search = () => {
   const onAreaButtonClickHandler = (e) => {
     const selectedArea = e.target.value; //송파구
     const filteredDataByArea = filteredData.filter((item) => item.AREANM === selectedArea);
-
     // 필터링된 데이터를 상태에 저장!!
-
-    setFilteredDataByArea(filteredDataByArea);
+    setFilteredGlobalDataByArea({
+      selectedArea,
+      selectedSports
+    });
   };
-  console.log(filteredDataByArea); // 송파구
 
   // 데이터 가져오기 (선택한 종목값 (selectedSports)넣어서)
   const { data: filteredData, isLoading } = useQuery(['sports', selectedSports], async () => {
@@ -36,16 +36,16 @@ const Search = () => {
     }
     return [];
   });
-  console.log(filteredData);
+  // console.log(filteredData);
 
   // filteredData 배열에 있는 객체들의 AREANM(지역구) 속성을 추출하여 dataArea 배열 생성하기
   const dataArea = filteredData?.map((item) => item.AREANM);
-  console.log(dataArea);
+  // console.log(dataArea);
 
   // 중복된값 제거하고 새로운 배열로 변환하기 -> 해당 종목시설이 있는 지역구만 보여줌
   const filteredDataArea = [...new Set(dataArea)];
 
-  console.log(filteredDataArea);
+  // console.log(filteredDataArea);
 
   if (isLoading) {
     return <div>데이터 가져오는 중</div>;
@@ -72,8 +72,7 @@ const Search = () => {
           <option value="배드민턴장">배드민턴장</option>
           <option value="야구장">야구장</option>
           <option value="족구장">족구장</option>
-          <option value="축구장">축구장</option>
-          <option value="체육관">체육관</option>
+          <option value="축구장">축구장</option>a<option value="체육관">체육관</option>
           <option value="풋살장">풋살장</option>
         </select>
       </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,15 +8,14 @@ import Facilities from '../components/Facilities';
 // import Search from '../components/Search';
 import { styled, keyframes } from 'styled-components';
 import MapComponent from '../components/map/MapComponent';
+import Detail from './Detail';
+import Header from '../components/common/Header';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
-
-
-  // const [isMarked, setIsMarked] = useState(false);
-
-  console.log(location);
+  const [facility, setFacility] = useState(null);
+  const [filteredGlobalDataByArea, setFilteredGlobalDataByArea] = useState(null);
 
   useEffect(() => {
     if (location) {
@@ -26,21 +25,10 @@ const Home = () => {
 
   return (
     <>
+      <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} />
       <ContainerWrapper>
         <StyledMain>
-          {/* <div style={{
-          display: 'flex'
-        }}>
-          <MapComponent setIsMarked={} />
-          {
-            isMarked ? <디테일 /> : <전체 />
-          }
-          <div>
-
-          </div>
-
-        </div> */}
-          <TextTag>Now Loading Map</TextTag>
+          <TitleTag>Now Loading Map</TitleTag>
           <div>
             <MapComponent />
           </div>
@@ -52,7 +40,11 @@ const Home = () => {
             <LiTag>4</LiTag>
           </UlTag>
         </StyledMain>
-        <Facilities />
+        {facility ? (
+          <Detail setFacility={setFacility} facility={facility} />
+        ) : (
+          <Facilities filteredGlobalDataByArea={filteredGlobalDataByArea} setFacility={setFacility} />
+        )}
       </ContainerWrapper>
     </>
   );
@@ -63,11 +55,13 @@ const Home = () => {
 export default Home;
 
 const ContainerWrapper = styled.div`
-  width: 100%;
+  width: 77%;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px 0;
+  // background-color: rgba(41, 41, 41, 0.247);
 `;
 const StyledMain = styled.div`
   // height: 100vh;
@@ -75,18 +69,29 @@ const StyledMain = styled.div`
   // justify-content: space-evenly;
   // align-items: center;
 
+  width: 65%;
   color: rgba(236, 236, 236, 0.89);
   background-color: rgba(41, 41, 41, 0.747);
   border-radius: 30px 0 0 30px;
-  padding: 118px 30px;
+  padding: 40px 30px;
   // margin-top: -50px;
+`;
+const TitleTag = styled.h2`
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  width: 250px;
+  background-color: rgba(77, 77, 77, 0.776);
+  border-radius: 14px 0 0;
 `;
 const TextTag = styled.h2`
   font-size: 1.5rem;
   margin-top: 20px;
 `;
 const UlTag = styled.ul`
-  display: flex;
+  // display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 `;
 const growAnimation = keyframes`
   0% {

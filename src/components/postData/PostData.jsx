@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-const PostData = ({ location, facility }) => {
+const PostData = ({ setFacility, facility }) => {
   const openLink = () => {
     window.open(facility.SVCURL, '');
   };
@@ -38,6 +38,13 @@ const PostData = ({ location, facility }) => {
       </ConDiv>
       <div>
         <button onClick={openLink}>예약하러가기</button>
+        <button
+          onClick={() => {
+            setFacility(null);
+          }}
+        >
+          뒤로가기
+        </button>
       </div>
     </PostBOX>
   );
