@@ -20,7 +20,8 @@ const Search = () => {
     const selectedArea = e.target.value; //송파구
     const filteredDataByArea = filteredData.filter((item) => item.AREANM === selectedArea);
 
-    // 필터링된 데이터를 상태에 저장
+    // 필터링된 데이터를 상태에 저장!!
+
     setFilteredDataByArea(filteredDataByArea);
   };
   console.log(filteredDataByArea); // 송파구
