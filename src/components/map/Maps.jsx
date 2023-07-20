@@ -19,6 +19,11 @@ const Maps = ({ coords }) => {
   // pin이 생성되면서 전체적으로 고르게 보여준다.
   //===================================//
 
+  // onClick!!
+  // const handleMarkerClick = () => {
+  //   setIsMarked(prev => !prev)
+  // }
+
   return (
     <>
       <StyledDiv>

@@ -1,19 +1,22 @@
 {
   "reviews": [
     {
-      "id": "1yxf7RqJk",
-      "writer": "테스트1",
-      "contents": "테스트1"
+      "postId": "S230601164554768313",
+      "writer": "ㅅ",
+      "contents": "테스트1",
+      "id": "wHmKaXl"
     },
     {
-      "id": "9pstyLo7G",
-      "writer": "테스트2",
-      "contents": "테스트23"
+      "postId": "S221207120351783574",
+      "writer": "ㅅ",
+      "contents": "ㅅ",
+      "id": "8LXqSL7"
     },
     {
-      "id": "vcg3JV-kg",
-      "writer": "2",
-      "contents": "2"
+      "postId": "S230330173318102901",
+      "writer": "ㄹㅍㅇ",
+      "contents": "ㅁㄴㅇㄹ",
+      "id": "D3Iet9h"
     }
   ]
 }

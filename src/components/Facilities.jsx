@@ -1,13 +1,24 @@
 import { useQuery, useQueryClient } from 'react-query';
-import useFetchPublicData from "../hooks/useFetchPublicData";
-import { getReservations } from "../axios/publicDataAPI";
+import useFetchPublicData from '../hooks/useFetchPublicData';
+import { getReservations } from '../axios/publicDataAPI';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSortedData } from "../redux/modules/publicData";
-import { calDistance } from "../helper/calDistance";
-import { styled } from "styled-components";
+import { setSortedData } from '../redux/modules/publicData';
+import { calDistance } from '../helper/calDistance';
+import { styled } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Facilities = () => {
+  const navigate = useNavigate();
+
+  const navDetailPage = (facility) => {
+    navigate(`/${facility.SVCID}`, {
+      state: {
+        facility: facility
+      }
+    });
+  };
+
   const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
   const { data: publicData, isLoading, isError } = useFetchPublicData(1, 1000);
@@ -16,7 +27,7 @@ const Facilities = () => {
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const totalItems = publicData?.length;
-  const totalPage = Math.ceil((publicData?.length) / itemsPerPage);
+  const totalPage = Math.ceil(publicData?.length / itemsPerPage);
 
   if (isLoading) return <h3>로딩 중 입니다</h3>;
   if (isError) {
@@ -67,35 +78,27 @@ const Facilities = () => {
       <div>Reservation Data</div>
       <div>
         <p>총 시설 개수 {totalItems}개</p>
-        <p>현재 페이지 {currentPage}/{totalPage}</p>
+        <p>
+          현재 페이지 {currentPage}/{totalPage}
+        </p>
         <ul>
           {sliceData.map((facility) => (
-            <li key={facility.SVCID}>
+            <StLi key={facility.SVCID} onClick={() => navDetailPage(facility)}>
               {facility.AREANM} {facility.SVCNM}
-            </li>
+            </StLi>
           ))}
         </ul>
       </div>
       <nav>
-        <button
-          disabled={currentPage === 1}
-          onClick={onPreviousPageClick}
-        >
+        <button disabled={currentPage === 1} onClick={onPreviousPageClick}>
           이전 페이지
         </button>
         {visiblePages.map((page) => (
-          <StPageButtons
-            key={page}
-            onClick={() => onPageButtonClick(page)}
-            disabled={currentPage === page}
-          >
+          <StPageButtons key={page} onClick={() => onPageButtonClick(page)} disabled={currentPage === page}>
             {page}
           </StPageButtons>
         ))}
-        <button
-          disabled={currentPage === pageCount}
-          onClick={onNextPageClick}
-        >
+        <button disabled={currentPage === pageCount} onClick={onNextPageClick}>
           다음 페이지
         </button>
       </nav>
@@ -104,6 +107,10 @@ const Facilities = () => {
 };
 
 export default Facilities;
+
+const StLi = styled.li`
+  border: 1px solid black;
+`;
 
 const StPageButtons = styled.button`
   border: none;

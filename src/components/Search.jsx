@@ -9,7 +9,7 @@ const Search = () => {
   // 선택된 항목들 상태관리
   const [selectedVal, setSelectedVal] = useState('');
 
-  // 항목 클릭시 selctedVal에 넣기 -> 마지막 값만 넣어줘야함.
+  // 항목 클릭시 selctedVal에 넣기 -> 마지막 값만 넣어줘야함
   const onValueButtonClickHandeler = (e) => {
     e.preventDefault();
     setSelectedVal(e.target.value);

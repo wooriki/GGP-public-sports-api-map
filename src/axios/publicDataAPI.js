@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Facilities from '../components/Facilities';
 
 export const PUBLIC_DATA_BASE_URL = process.env.REACT_APP_PUBLIC_DATA_API_BASE_URL;
 export const PUBLIC_DATA_API_KEY = process.env.REACT_APP_SEOUL_API_KEY;
