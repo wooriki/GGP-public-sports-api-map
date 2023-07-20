@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query';
+import { styled } from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -8,10 +9,8 @@ const Search = () => {
   // 필터링된 지역 상태관리
   const [filteredDataByArea, setFilteredDataByArea] = useState([]);
 
-
   // 종목 클릭시 selectedSports에 넣기
   const onSportsButtonClickHandler = (e) => {
-
     e.preventDefault();
     setSelectedSports(e.target.value);
   };
@@ -21,7 +20,8 @@ const Search = () => {
     const selectedArea = e.target.value; //송파구
     const filteredDataByArea = filteredData.filter((item) => item.AREANM === selectedArea);
 
-    // 필터링된 데이터를 상태에 저장
+    // 필터링된 데이터를 상태에 저장!!
+
     setFilteredDataByArea(filteredDataByArea);
   };
   console.log(filteredDataByArea); // 송파구
@@ -52,7 +52,11 @@ const Search = () => {
   }
 
   return (
-    <div>
+    <SelectTag>
+      {/* {reservations.map((item) => {
+        return <div>{item.AREANM}</div>;
+      })} */}
+
       <form action="">
         <input type="text" />
         <button>검색</button>
@@ -108,8 +112,13 @@ const Search = () => {
           </div>
         ))}
       </div>
-    </div>
+    </SelectTag>
   );
 };
 
 export default Search;
+
+const SelectTag = styled.div`
+  display: flex;
+  color: white;
+`;

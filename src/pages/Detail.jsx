@@ -1,7 +1,6 @@
 import React from 'react';
 import Comments from '../components/comments/Comments';
 import PostData from '../components/postData/PostData';
-import MapComponent from '../components/map/MapComponent';
 import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -11,7 +10,6 @@ const Detail = () => {
 
   return (
     <PostContainer>
-      <MapComponent />
       <PostWrapper>
         <PostData location={location} facility={facility} />
         <Comments facility={facility} />
