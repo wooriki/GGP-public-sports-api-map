@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
-
+import { useState } from 'react';
 import useFetchPublicData from '../hooks/useFetchPublicData';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSortedData } from '../redux/modules/publicData';
 import { styled, keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { save10Location } from '../redux/modules/maps/save10Location';
 import { calDistance } from '../helper/calDistance';
 
 import { Paging } from './Paging';
@@ -28,10 +27,6 @@ const Facilities = () => {
       return dx - dy;
     });
 
-  useEffect(() => {
-    dispatch(setSortedData(sortPublicDataByDis));
-  }, [dispatch, sortPublicDataByDis]);
-
   if (isLoading) return <h3>로딩 중 입니다</h3>;
   if (isError) {
     return (
@@ -47,6 +42,8 @@ const Facilities = () => {
   const endIndex = startIndex + itemsPerPage;
   const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
 
+  dispatch(save10Location(sliceData));
+
   return (
     <>
       <StyledFacilitiesContainer>
@@ -58,8 +55,8 @@ const Facilities = () => {
           </p>
           <ul>
             {sliceData.map((facility) => (
-              <StyledItemBox>
-                <li key={facility.SVCID}>
+              <StyledItemBox key={facility.SVCID}>
+                <li>
                   <p>
                     <span>{facility.AREANM}</span> <span>{facility.MINCLASSNM}</span>
                   </p>
