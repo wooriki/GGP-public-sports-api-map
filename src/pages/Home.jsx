@@ -37,7 +37,7 @@ const Home = () => {
           </div>
 
         </div> */}
-          <TextTag>Now Loading Map</TextTag>
+          {/* <TextTag>Now Loading Map</TextTag> */}
           <div>
             <MapComponent />
           </div>
