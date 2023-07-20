@@ -21,8 +21,7 @@ const Facilities = () => {
 
   const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
-  const { data: publicData, isLoading, isError } = useFetchPublicData(1, 1000);
-
+  const { data: publicData, isLoading, isError } = useFetchPublicData();
   // 페이지네이션 관련 변수 및 state 선언
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);

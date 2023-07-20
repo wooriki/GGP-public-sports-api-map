@@ -16,11 +16,12 @@ const Home = () => {
   // const [isMarked, setIsMarked] = useState(false);
 
   console.log(location);
+
   useEffect(() => {
     if (location) {
       dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
     }
-  }, [location]);
+  }, [dispatch, location]);
 
   return (
     <>
@@ -38,7 +39,7 @@ const Home = () => {
           </div>
 
         </div> */}
-          Now Loading Map
+          <TextTag>Now Loading Map</TextTag>
           <div>
             <MapComponent />
           </div>
@@ -76,7 +77,7 @@ const StyledMain = styled.div`
   color: rgba(236, 236, 236, 0.89);
   background-color: rgba(41, 41, 41, 0.747);
   border-radius: 30px 0 0 30px;
-  padding: 70px 30px;
+  padding: 118px 30px;
   // margin-top: -50px;
 `;
 const TextTag = styled.h2`
