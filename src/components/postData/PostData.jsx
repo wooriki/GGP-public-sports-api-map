@@ -7,6 +7,9 @@ const PostData = ({ location, facility }) => {
     window.open(facility.SVCURL, '');
   };
 
+  if (!facility) {
+    return <div>Loading...</div>;
+  }
   return (
     <PostBOX>
       <div>

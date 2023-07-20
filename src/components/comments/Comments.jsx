@@ -143,6 +143,10 @@ const Comments = ({ facility }) => {
     setEditedContents('');
   };
 
+  if (!facility) {
+    return <div>Facility 정보를 불러오는 중...</div>; // 또는 다른 메시지를 표시할 수 있습니다.
+  }
+
   // 로딩 중일 때!
   if (isLoading) {
     return <h3>Loading...!</h3>;

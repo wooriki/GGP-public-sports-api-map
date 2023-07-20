@@ -13,6 +13,5 @@ const MapComponent = () => {
 export default MapComponent;
 
 const StyledDiv = styled.div`
-  width: 700px;
-  height: 700px;
+  margin: 0 auto;
 `;

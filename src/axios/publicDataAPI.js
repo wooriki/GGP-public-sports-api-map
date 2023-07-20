@@ -12,8 +12,8 @@ const api = axios.create({
 export default api;
 
 // 리액트 쿼리
-export const getData = async (from, to) => {
-  const res = (await api(`/${from}/${to}/`)).data.ListPublicReservationSport.row;
+export const getData = async () => {
+  const res = (await api(`/1/1000/`)).data.ListPublicReservationSport.row;
   return res;
 };
 
