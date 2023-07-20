@@ -6,25 +6,49 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const Search = () => {
-  //선택된 항목들 상태관리
+  // 선택된 항목들 상태관리
   const [selectedVal, setSelectedVal] = useState('');
 
-  //항목 클릭시 selctedVal에 넣기 -> 마지막 값만 넣어줘야함.
+  // 항목 클릭시 selctedVal에 넣기 -> 마지막 값만 넣어줘야함.
   const onValueButtonClickHandeler = (e) => {
     e.preventDefault();
     setSelectedVal(e.target.value);
   };
 
-  // //데이터 가져오기 (selectedVal넣어서)
-  const { data, isLoading } = useQuery(['sports', selectedVal], async () => {
+  // 데이터 가져오기 (선택한 종목값 (selectedVal)넣어서)
+  const { data: filteredData, isLoading } = useQuery(['sports', selectedVal], async () => {
     if (selectedVal !== '') {
       const response = await axios.get(
         `http://openAPI.seoul.go.kr:8088/${process.env.REACT_APP_SEOUL_API_KEY}/json/ListPublicReservationSport/1/1000/${selectedVal}`
       );
-      return response.data;
+      return response.data.ListPublicReservationSport.row;
     }
+    return [];
   });
-  console.log(data);
+  console.log(filteredData);
+
+  // filteredData 배열에 있는 객체들의 AREANM(지역구) 속성을 추출하여 dataArea 배열 생성하기
+  const dataArea = filteredData?.map((item) => item.AREANM);
+  console.log(dataArea);
+
+  // 중복된값 제거하고 새로운 배열로 변환하기 -> 해당 종목시설이 있는 지역구만 보여줌
+  const filteredDataArea = [...new Set(dataArea)];
+
+  console.log(filteredDataArea);
+
+  // const filterdAreas = filteredData.AREANM
+
+  // const filteredDataArea = filteredData?.filter((element, index) => {
+  //   return filteredData.indexOf(element) === index;
+  // });
+
+  // const set = new Set(filteredData); //중복 '구' 없애서
+  // const filteredDataArea = [...set]; // 시설이 있는 구만 보여주기 위해 새로운 배열로 생성
+  // console.log(filteredDataArea);
+
+  if (isLoading) {
+    return <div>데이터 가져오는 중</div>;
+  }
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -48,10 +72,6 @@ const Search = () => {
 
   // const { data: reservations, isLoading } = useQuery(['reservations'], getReservations);
   // console.log(reservations);
-
-  if (isLoading) {
-    return <div>데이터 가져오는 중</div>;
-  }
 
   // let rows = reservations['ListPublicReservationSport']['row'];
   // rows.forEach((a) => {
@@ -85,9 +105,16 @@ const Search = () => {
         <button id="submit">Get Selected Values</button>
       </div>
       <br />
+      {/* 게시물영역 */}
       <div>
-        <button>구 이름</button>
+        <h3>{selectedVal}찾기</h3>
       </div>
+
+      {filteredDataArea.map((item) => (
+        <div key={item}>
+          <button>{item}</button>
+        </div>
+      ))}
     </div>
   );
 };
