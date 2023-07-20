@@ -70,7 +70,7 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
               data.AREANM.includes(globalSearch))
         ) || null;
 
-    // 거리를 기준으로 데이터 정렬
+    // 거리를 기준으로 데이터 정렬!
     const sortPublicDataByDis = [...filteredData].sort((a, b) => {
       const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
       const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
