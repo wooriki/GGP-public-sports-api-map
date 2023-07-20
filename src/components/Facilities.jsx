@@ -7,6 +7,7 @@ import { setSortedData } from '../redux/modules/publicData';
 import { calDistance } from '../helper/calDistance';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { save10Location } from '../redux/modules/maps/save10Location';
 
 const Facilities = () => {
   const navigate = useNavigate();
@@ -72,7 +73,11 @@ const Facilities = () => {
   const onPageButtonClick = (page) => {
     setCurrentPage(page);
   };
-
+  // ================================
+  // 수정자: 김환훈
+  // sliceData를 스토어에 저장하는 로직
+  dispatch(save10Location(sliceData));
+  // ================================
   return (
     <>
       <div>Reservation Data</div>

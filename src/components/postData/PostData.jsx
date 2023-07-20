@@ -18,19 +18,19 @@ const PostData = ({ location, facility }) => {
         <div>{facility.MINCLASSNM}</div>
       </ConDiv>
       <ConDiv>
-        <di>{facility.PLACENM}</di>&nbsp;&nbsp;
+        <div>{facility.PLACENM}</div>&nbsp;&nbsp;
         <div>{facility.AREANM}</div>
       </ConDiv>
       <ConDiv>
-        <di>{facility.SVCOPNBGNDT}</di>&nbsp;&nbsp;
+        <div>{facility.SVCOPNBGNDT}</div>&nbsp;&nbsp;
         <div>{facility.SVCOPNENDDT}</div>
       </ConDiv>
       <ConDiv>
-        <di>{facility.RCPTBGNDT}</di>&nbsp;&nbsp;
+        <div>{facility.RCPTBGNDT}</div>&nbsp;&nbsp;
         <div>{facility.RCPTENDDT}</div>
       </ConDiv>
       <ConDiv>
-        <di>{facility.SVCSTATNM}</di>&nbsp;&nbsp;
+        <div>{facility.SVCSTATNM}</div>&nbsp;&nbsp;
         <div>{facility.PAYATNM}</div>
       </ConDiv>
       <div>
