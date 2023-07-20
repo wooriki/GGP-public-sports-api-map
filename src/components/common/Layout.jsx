@@ -41,7 +41,7 @@ const GlobalStyles = createGlobalStyle`
 const Layout = () => {
   return (
     <>
-      <GlobalStyles />
+      {/* <GlobalStyles /> */}
       <Header />
       <Outlet />
       <Footer />
