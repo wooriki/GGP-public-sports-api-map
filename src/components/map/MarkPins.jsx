@@ -19,7 +19,6 @@ const MarkPins = ({ map, boundary }) => {
       if (map.getZoom() > 16) {
         map.setZoom(14, true);
       }
-      console.log('zoom level:', map.getZoom());
     }
   }, [map, boundary]);
   return (
