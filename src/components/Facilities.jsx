@@ -5,11 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSortedData } from '../redux/modules/publicData';
 import { calDistance } from '../helper/calDistance';
 import { Paging } from './Paging';
+import { save10Location } from '../redux/modules/maps/save10Location';
 
 const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => {
+  // 선택된 지역과 스포츠 종목 변수 설정
   const selectedArea = filteredGlobalDataByArea?.selectedArea;
   const selectedSports = filteredGlobalDataByArea?.selectedSports;
 
+  const [sliceData, setSliceData] = useState([]);
+  // 상세 페이지로 이동하는 함수
   const navDetailPage = (facility) => {
     setFacility(facility);
   };
@@ -18,59 +22,29 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
   const location = useSelector((state) => state.location);
   const { data: publicData, isLoading, isError } = useFetchPublicData();
 
-  // 페이지네이션 관련 변수 및 state 선언
-  const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = !globalSearch
+  // 검색 및 필터된 데이터 설정
+  const filteredData = !globalSearch
     ? filteredGlobalDataByArea
-      ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length
-      : publicData?.length || []
+      ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
+      : publicData || []
     : publicData?.filter(
         (data) =>
-          (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
-          (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+          (!selectedArea || data.AREANM === selectedArea) &&
+          (!selectedSports || data.MINCLASSNM === selectedSports) &&
           (data.MINCLASSNM.includes(globalSearch) ||
             data.SVCNM.includes(globalSearch) ||
             data.AREANM.includes(globalSearch))
-      ).length || null;
-
-  const totalPage = !globalSearch
-    ? filteredGlobalDataByArea
-      ? Math.ceil(
-          publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length /
-            itemsPerPage
-        )
-      : Math.ceil(publicData?.length / itemsPerPage) || []
-    : Math.ceil(
-        publicData?.filter(
-          (data) =>
-            (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
-            (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
-            (data.MINCLASSNM.includes(globalSearch) ||
-              data.SVCNM.includes(globalSearch) ||
-              data.AREANM.includes(globalSearch))
-        ).length / itemsPerPage
       ) || null;
 
+  // 페이지네이션 관련 변수 및 state 선언
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = filteredData?.length || null;
+  const totalPage = Math.ceil((filteredData?.length || publicData?.length || 0) / itemsPerPage) || null;
   const [sortPublicDataByDis, setSortPublicDataByDis] = useState([]);
 
+  // 거리 기준으로 데이터 정렬하는 부분
   useEffect(() => {
-    // filteredGlobalDataByArea가 true이면 필터링된 데이터를 사용하고,
-    // false이면 전체 데이터를 사용합니다.
-    const filteredData = !globalSearch
-      ? filteredGlobalDataByArea
-        ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
-        : publicData || []
-      : publicData?.filter(
-          (data) =>
-            (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
-            (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
-            (data.MINCLASSNM.includes(globalSearch) ||
-              data.SVCNM.includes(globalSearch) ||
-              data.AREANM.includes(globalSearch))
-        ) || null;
-
-    // 거리를 기준으로 데이터 정렬!!
     const sortPublicDataByDis = [...filteredData].sort((a, b) => {
       const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
       const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
@@ -79,23 +53,32 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
 
     setSortPublicDataByDis(sortPublicDataByDis);
 
-    dispatch(setSortedData(sortPublicDataByDis));
-  }, [dispatch, filteredGlobalDataByArea, publicData, selectedArea, selectedSports, location, globalSearch]);
+    // 현재 페이지에 따라 보여줄 데이터 조각 설정
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
 
+    // 필터된 데이터들을 스토어에 저장
+    dispatch(save10Location(sliceData));
+
+    dispatch(setSortedData(sortPublicDataByDis));
+
+    // Update the sliceData state
+    setSliceData(sliceData);
+  }, [dispatch, currentPage, itemsPerPage, filteredData, location, globalSearch]);
+
+  // 로딩 중이면 로딩 메시지 출력
   if (isLoading) return <h3>로딩 중 입니다</h3>;
+
+  // 에러가 발생하면 에러 메시지 출력
   if (isError) {
     return (
       <>
         <p>에러가 발생하였습니다</p>
-        <p>{publicData.error.toString()}</p>
+        <p>{publicData?.error.toString()}</p>
       </>
     );
   }
-
-  // 현재 페이지 위치에 따라 10개씩 보여줄 데이터
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
 
   return (
     <>

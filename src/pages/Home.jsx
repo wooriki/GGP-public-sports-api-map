@@ -29,7 +29,7 @@ const Home = () => {
       <ContainerWrapper>
         <StyledMain>
           <div>
-            <TitleTag>Now Loading Map</TitleTag>
+            {/* <TitleTag>Now Loading Map</TitleTag> */}
             <MapComponent />
           </div>
           <OptionalTag>
@@ -73,7 +73,7 @@ const ContainerWrapper = styled.div`
   padding: 0 0 0 30px;
   border-radius: 30px;
 `;
-const StyledMain = styled.div`
+const StyledMain = styled.main`
   width: 65%;
   color: rgba(236, 236, 236, 0.89);
   border-radius: 30px 0 0 30px;
