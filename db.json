@@ -2,33 +2,10 @@
   "comments": [
     {
       "postId": "S230601164554768313",
-      "writer": "1",
-      "contents": "1",
+      "writer": "ww",
+      "contents": "w",
+      "password": "1111",
       "id": 1
-    },
-    {
-      "postId": "S230601164554768313",
-      "writer": "2",
-      "contents": "2",
-      "id": 2
-    },
-    {
-      "postId": "S230602073015862047",
-      "writer": "ㄴ",
-      "contents": "ㄴ",
-      "id": 3
-    },
-    {
-      "postId": "S230602073015862047",
-      "writer": "ㄴ",
-      "contents": "ㄴ",
-      "id": 4
-    },
-    {
-      "postId": "S230602073015862047",
-      "writer": "ㄷㄷe",
-      "contents": "ㄷ",
-      "id": 5
     }
   ],
   "profile": {
