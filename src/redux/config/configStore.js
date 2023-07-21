@@ -3,7 +3,7 @@ import getPublicDataSlice from '../modules/publicData';
 import userLocationReducer from '../modules/userLocation';
 import setBoundarySlice from '../modules/maps/setBoundary';
 import coordsGroupSlice from '../modules/maps/coordsGroup';
-import reviewsReducer from '../modules/reviewSlice';
+import commentsSlice from '../modules/commentsSlice';
 import save10LocationSlice from '../modules/maps/save10Location';
 import shoulbMapReloadSlice from '../modules/maps/reloadMap';
 
@@ -13,7 +13,7 @@ const store = configureStore({
     location: userLocationReducer,
     setBoundary: setBoundarySlice.reducer,
     coordsGroup: coordsGroupSlice.reducer,
-    reviews: reviewsReducer,
+    comments: commentsSlice,
     '10 Location': save10LocationSlice.reducer,
     reloadMap: shoulbMapReloadSlice.reducer
   },

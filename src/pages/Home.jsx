@@ -28,7 +28,6 @@ const Home = () => {
       <ContainerWrapper>
         <StyledMain>
           <div>
-            {/* <TitleTag>Now Loading Map</TitleTag> */}
             <MapComponent />
           </div>
           <TextTag>💥추천 영상</TextTag>

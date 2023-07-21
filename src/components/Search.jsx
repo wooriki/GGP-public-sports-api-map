@@ -2,10 +2,6 @@ import { useQuery } from 'react-query';
 import { styled } from 'styled-components';
 import { useRef, useState } from 'react';
 import axios from 'axios';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLocation } from '../redux/modules/userLocation';
-import { reloadMap } from '../redux/modules/maps/reloadMap';
 
 const Search = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
   const searchIconRef = useRef();
@@ -83,59 +79,37 @@ const Search = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
 
   return (
     <SelectTag>
-      <StyledSearch>
-        <div id="search-left-div">
-          <img ref={searchIconRef} src="https://i.ibb.co/ZNzFRNv/icons8-search-50.png" alt="search icon" />
-          <input
-            ref={searchInputRef}
-            type="text"
-            value={search}
-            onChange={onSearchClickHandler}
-            onKeyDown={(e) => (e.key === 'Enter' ? onSearchFormHandler() : undefined)}
-            placeholder="검색하기"
-            onFocus={() => {
-              searchIconRef.current.style.opacity = 0;
-              searchInputRef.current.style.transform = 'translate(-30px)';
-            }}
-            onBlur={() => {
-              searchIconRef.current.style.opacity = 1;
-              searchInputRef.current.style.transform = 'translate(0px)';
-            }}
-          />
-          <RestartAltIcon id="search-reset-icon" onClick={() => searchResetClickHandler()} />
-        </div>
-        <div id="search-divider"></div>
-        <div id="search-right-div">
-          <select ref={searchOptionRef} name="sportsFacility" id="sportsFacility" onChange={onSportsButtonClickHandler}>
-            <option value="전체" disabled selected={true}>
-              전체
-            </option>
-            <option value="골프장">골프장</option>
-            <option value="농구장">농구장</option>
-            <option value="다목적경기장">다목적경기장</option>
-            <option value="테니스장">테니스장</option>
-            <option value="배구장">배구장</option>
-            <option value="배드민턴장">배드민턴장</option>
-            <option value="야구장">야구장</option>
-            <option value="족구장">족구장</option>
-            <option value="축구장">축구장</option>
-            <option value="체육관">체육관</option>
-            <option value="풋살장">풋살장</option>
-          </select>
-        </div>
-      </StyledSearch>
-      {isOptionSelected ? (
-        <StyledSearchResult>
-          <h2>{selectedSports}</h2>
-          <div id="search-result-list-container">
-            {filteredDataArea.map((item) => (
-              <div className="search-result-list" key={item} value={item} onClick={onAreaButtonClickHandler}>
-                <p>{item}</p>
-              </div>
-            ))}
-          </div>
-        </StyledSearchResult>
-      ) : undefined}
+      <form onSubmit={onSearchFormHandler}>
+        <input type="text" value={search} onChange={onSearchClickHandler} />
+        <button>검색</button>
+      </form>
+      <div>
+        <select name="sportsFacility" id="sportsFacility" onChange={onSportsButtonClickHandler}>
+          <option value="">전체</option>
+          <option value="골프장">골프장</option>
+          <option value="농구장">농구장</option>
+          <option value="다목적경기장">다목적경기장</option>
+          <option value="테니스장">테니스장</option>
+          <option value="배구장">배구장</option>
+          <option value="배드민턴장">배드민턴장</option>
+          <option value="야구장">야구장</option>
+          <option value="족구장">족구장</option>
+          <option value="축구장">축구장</option>a<option value="체육관">체육관</option>
+          <option value="풋살장">풋살장</option>
+        </select>
+      </div>
+      <br />
+      {/* 게시물영역 */}
+      <div>
+        <h3>{selectedSports}</h3>
+        {filteredDataArea.map((item) => (
+          <span key={item}>
+            <button value={item} onClick={onAreaButtonClickHandler}>
+              {item}
+            </button>
+          </span>
+        ))}
+      </div>
     </SelectTag>
   );
 };
