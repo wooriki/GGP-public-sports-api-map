@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { styled, keyframes } from 'styled-components';
 import useFetchPublicData from '../hooks/useFetchPublicData';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +11,7 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
   // 선택된 지역과 스포츠 종목 변수 설정
   const selectedArea = filteredGlobalDataByArea?.selectedArea;
   const selectedSports = filteredGlobalDataByArea?.selectedSports;
-
+  const [filteredData, setFilteredData] = useState([]);
   const [sliceData, setSliceData] = useState([]);
   // 상세 페이지로 이동하는 함수
   const navDetailPage = (facility) => {
@@ -23,18 +23,22 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
   const { data: publicData, isLoading, isError } = useFetchPublicData();
 
   // 검색 및 필터된 데이터 설정
-  const filteredData = !globalSearch
-    ? filteredGlobalDataByArea
-      ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
-      : publicData || []
-    : publicData?.filter(
-        (data) =>
-          (!selectedArea || data.AREANM === selectedArea) &&
-          (!selectedSports || data.MINCLASSNM === selectedSports) &&
-          (data.MINCLASSNM.includes(globalSearch) ||
-            data.SVCNM.includes(globalSearch) ||
-            data.AREANM.includes(globalSearch))
-      ) || null;
+  useMemo(() => {
+    setFilteredData((prev) => {
+      return !globalSearch
+        ? filteredGlobalDataByArea
+          ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
+          : publicData || []
+        : publicData?.filter(
+            (data) =>
+              (!selectedArea || data.AREANM === selectedArea) &&
+              (!selectedSports || data.MINCLASSNM === selectedSports) &&
+              (data.MINCLASSNM.includes(globalSearch) ||
+                data.SVCNM.includes(globalSearch) ||
+                data.AREANM.includes(globalSearch))
+          ) || null;
+    });
+  }, [filteredGlobalDataByArea, globalSearch, publicData, selectedArea, selectedSports]);
 
   // 페이지네이션 관련 변수 및 state 선언
   const itemsPerPage = 10;
@@ -81,129 +85,137 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
   }
 
   return (
-    <>
-      <StyledFacilitiesContainer>
-        <Title>Reservation Data</Title>
-        <StyledItemListBox>
-          <SubTitlte>
-            <p>총 {totalItems}개</p>
-            <p>
-              &nbsp;&nbsp; 현재 페이지 {currentPage}/{totalPage}
-            </p>
-          </SubTitlte>
-          <UlTag>
-            {sliceData.map((facility) => (
-              <StyledItemBox key={facility.SVCID}>
-                <LiTag onClick={() => navDetailPage(facility)}>
-                  <TextTag>
-                    <span>{facility.AREANM}</span>&nbsp;&nbsp;
-                    <span>{facility.MINCLASSNM}</span>
-                  </TextTag>
-                  <TextTag>{facility.SVCNM}</TextTag>
-                </LiTag>
-              </StyledItemBox>
-            ))}
-          </UlTag>
-        </StyledItemListBox>
-        <PagingTag>
-          <Paging currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} />
-        </PagingTag>
-      </StyledFacilitiesContainer>
-    </>
+    <StyledFacilitiesContainer>
+      <Title>공공 체육 시설 예약 정보</Title>
+      <SubTitlte>
+        <p>총 {totalItems}개</p>
+        <p>
+          &nbsp;&nbsp; 현재 페이지 {currentPage}/{totalPage}
+        </p>
+      </SubTitlte>
+      <StyledItemListBox>
+        {sliceData.map((facility) => {
+          const backgroundColor =
+            facility.SVCSTATNM === '접수중'
+              ? { backgroundColor: '#223060' }
+              : facility.SVCSTATNM === '안내중'
+              ? { backgroundColor: '#22562d' }
+              : facility.SVCSTATNM === '예약마감'
+              ? { backgroundColor: '#ae010f' }
+              : facility.SVCSTATNM === '예약일시중지'
+              ? { backgroundColor: '#111' }
+              : facility.SVCSTATNM === '접수종료'
+              ? { backgroundColor: '#111' }
+              : null;
+          return (
+            <div className="facility-list" key={facility.SVCID} onClick={() => navDetailPage(facility)}>
+              <span style={backgroundColor}>{facility.SVCSTATNM}</span>
+              <img src={facility.IMGURL} alt="public health facility img" />
+              <div className="facility-list-info">
+                <h3>
+                  {facility.AREANM} {facility.MINCLASSNM}
+                </h3>
+                <p>{facility.SVCNM}</p>
+              </div>
+            </div>
+          );
+        })}
+      </StyledItemListBox>
+      <div>
+        <Paging currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} />
+      </div>
+    </StyledFacilitiesContainer>
   );
 };
 
 export default Facilities;
 
-// const StLi = styled.li`
-//   border: 1px solid black;
-// `;
 const StyledFacilitiesContainer = styled.div`
-  width: 35%;
-  height: 1000px;
-  margin-left: 10px;
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
-  color: white;
-  background-color: rgba(41, 41, 41, 0.747);
-  border-radius: 0 30px 30px 0;
-  padding: 20px 10px 20px 15px;
-
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #eee;
+  background-color: #232529;
+  padding: 1rem;
+  height: 100%;
+`;
+const Title = styled.h2`
+  padding-top: 1.3rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+`;
+const SubTitlte = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 1rem;
 `;
 
 const StyledItemListBox = styled.div`
-  margin: 0 auto;
-`;
-const Title = styled.h2`
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-top: 20px;
-`;
-const SubTitlte = styled.div`
-  margin: 10px 0;
   display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-  padding: 0 10px;
-`;
-
-const StyledItemBox = styled.div`
-  // width: 90%;
-
-  margin: 0 auto;
-  margin: 10px 0;
-  background-color: grey;
-  border-radius: 10px;
-
-  display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-`;
-const growAnimation = keyframes`
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.025);
-  }
-  100% {
-    transform: scale(1);
+  gap: 0.5rem;
+  overflow: auto;
+  height: 100%;
+  padding: 1rem 0;
+
+  .facility-list {
+    position: relative;
+    width: 90%;
+    display: flex;
+    background-color: #303236;
+    align-items: center;
+    gap: 4px;
+    border: 1px #404246 solid;
+    border-radius: 5px;
+    padding: 5px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: cubic-bezier(0, 0, 0.2, 1) 0.3s;
+    &:hover {
+      transform: scale(1.02);
+      background-color: #3b3d43;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+    span {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      background-color: #ddd;
+      color: #eee;
+      padding: 3px 5px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      transform: translate(-8px, -8px);
+    }
   }
 
-`;
-const UlTag = styled.ul`
-  width: 90%;
-  margin: 0 auto;
-  height: 70px;
-  color: white;
-`;
-
-const LiTag = styled.li`
-  width: 100%;
-  margin: 0 auto;
-  color: white;
-  cursor: pointer;
-  border-radius: 10px;
-  cursor: pointer;
-  &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(138, 138, 138, 0.788);
+  img {
+    width: 20%;
+    border-radius: 4px;
   }
-`;
-const TextTag = styled.p`
-  text-align: center;
-  // height: 20px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin: 2px 0 8px;
 
-  margin-top: 10px;
-  padding: 0 4px 4px;
-`;
-const PagingTag = styled.div`
-  margin: 0 auto;
+  .facility-list-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0 8px;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #dadada;
+      text-align: left;
+    }
+    p {
+      font-size: 0.85rem;
+      color: #b9bbc0;
+      text-align: left;
+      line-height: 1.2;
+    }
+  }
 `;

@@ -27,21 +27,19 @@ const growAnimation = keyframes`
     transform: scale(1);
   }
 `;
-const WeatherContainer = styled.div`
-  width: 70%;
-  margin: 0 auto;
-  margin-top: 60px;
+const WeatherContainer = styled.header`
+  width: 85%;
+  margin-top: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(39, 39, 39, 0.8);
-  // background-color: rgba(0, 0, 0, 0.2);
+  background-color: #232529;
   padding: 16px 30px;
-  border-radius: 34px;
-  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
+  border-radius: 30px;
 `;
 const ImgTag = styled.img`
   cursor: pointer;
+  width: 150px;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
   }

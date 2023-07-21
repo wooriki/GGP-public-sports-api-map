@@ -178,19 +178,8 @@ const Comments = ({ facility }) => {
   return (
     <CommentContainer>
       <CommentWrapper>
-        <p>댓글을 작성해 주세요</p>
-        <FormTag onSubmit={commentCreateHandler}>
-          <InputTagF type="text" name="writer" value={writer} onChange={writerChangeHandler} placeholder="작성자" />
-          <InputTag type="text" name="contents" value={contents} onChange={contentsChangeHanlder} placeholder="내용" />
-          <InputTag
-            type="password"
-            name="password"
-            value={password}
-            onChange={passwordChangeHandler}
-            placeholder="비밀번호"
-          />
-          <Btn>작성</Btn>
-        </FormTag>
+        <p>이용후기</p>
+        <div id="detail-divider-2"></div>
         <div>
           {comments
             .filter((comment) => comment.postId == facility.SVCID)
@@ -226,6 +215,29 @@ const Comments = ({ facility }) => {
               );
             })}
         </div>
+        <Line></Line>
+        <FormTag onSubmit={commentCreateHandler}>
+          <InputMother>
+            <InputWriter type="text" name="writer" value={writer} onChange={writerChangeHandler} placeholder="작성자" />
+            <InputPW
+              type="password"
+              name="password"
+              value={password}
+              onChange={passwordChangeHandler}
+              placeholder="비밀번호"
+            />
+          </InputMother>
+          <InputCotent
+            type="text"
+            name="contents"
+            value={contents}
+            onChange={contentsChangeHanlder}
+            placeholder="내용"
+          />
+          <BtnContainer>
+            <Btn>작성</Btn>
+          </BtnContainer>
+        </FormTag>
       </CommentWrapper>
     </CommentContainer>
   );
@@ -236,21 +248,48 @@ export default Comments;
 const CommentContainer = styled.div`
   padding: 10px;
   margin: 10px;
-  width: 500px;
+  width: 100%;
 `;
-const FormTag = styled.form`
+
+const CommentWrapper = styled.div`
   display: flex;
+  flex-direction: column;
+
+  align-items: center;
   justify-content: center;
+`;
+
+const Line = styled.div`
+  border-bottom: 20px dashed red;
+  z-index: 9999;
+`;
+
+const FormTag = styled.form`
+  // display: flex;
+  // justify-content: center;
   margin-top: 10px;
 `;
-const InputTagF = styled.input`
-  width: 20%;
+const InputMother = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
+const InputWriter = styled.input`
+  width: 50%;
   height: 40px;
   padding-left: 10px;
-  border-radius: 8px 0 0 8px;
+  margin-right: 5px;
+  // border-radius: 8px 0 0 8px;
 `;
-const InputTag = styled.input`
-  width: 20%;
+const InputPW = styled.input`
+  width: 50%;
+  height: 40px;
+  padding-left: 10px;
+  margin-left: 5px;
+  // border-radius: 8px;
+`;
+const InputCotent = styled.input`
+  width: 100%;
   height: 40px;
   padding-left: 10px;
 `;
@@ -267,9 +306,12 @@ const growAnimation = keyframes`
   }
 
 `;
+const BtnContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 const Btn = styled.button`
   padding: 10px;
-  border-radius: 0 8px 8px 0;
   background-color: rgba(68, 68, 68, 0.671);
   border: none;
   color: rgba(212, 212, 212, 0.771);
@@ -278,13 +320,6 @@ const Btn = styled.button`
     animation: ${growAnimation} 0.5s ease-in-out;
     background-color: rgba(138, 138, 138, 0.788);
   }
-`;
-const CommentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
 `;
 
 const CommentBox = styled.div`
@@ -301,7 +336,6 @@ const Writer = styled.p`
 const Btns = styled.button`
   float: right;
   display: flex;
-  background-color: rgba(255, 255, 255, 0);
   border: none;
 `;
 

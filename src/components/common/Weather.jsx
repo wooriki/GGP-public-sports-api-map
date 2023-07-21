@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, keyframes } from 'styled-components';
 import { useQuery } from 'react-query';
 import { getWeatherData } from '../../axios/weatherApi';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Weather = () => {
   const location = useSelector((state) => state.location);
+  const [koreanAddress, setKoreanAddress] = useState('서울특별시');
+  useEffect(() => {
+    const fetchKoreanCityName = async () => {
+      const coords = `${location.longitude},${location.latitude}`;
+      const res = (
+        await axios('http://localhost:3001', {
+          params: {
+            coords
+          }
+        })
+      ).data.results;
+      setKoreanAddress(res[0].region.area3.name);
+    };
+    fetchKoreanCityName();
+  }, [location]);
 
   const dateBuilder = (d) => {
     let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -19,8 +35,8 @@ const Weather = () => {
     let minutes = d.getMinutes().toString().padStart(2, '0');
     return (
       <DateBuild>
-        <Timmer>{`${hours}:${minutes}`}&nbsp;&nbsp;&nbsp;</Timmer>
-        {`${day} ${date} ${month} ${year}`}
+        <h3>{`${day} ${date} ${month} ${year}`}</h3>
+        <Timmer>{`${hours}:${minutes}`}</Timmer>
       </DateBuild>
     );
   };
@@ -63,11 +79,15 @@ const Weather = () => {
     <>
       <WeatherWrapper>
         <WeatherInner>
-          <WeatherImg src={`http://openweathermap.org/img/wn/${weather[0].icon}.png`} alt="Weather Icon" />
-          <span>{`${main.temp}°C`}</span>
           <WeatherDate>{dateBuilder(new Date())}</WeatherDate>
         </WeatherInner>
-        <LocationName>{name}</LocationName>
+        <LocationName>
+          <div id="header-weather-icon-container">
+            <img src={`http://openweathermap.org/img/wn/${weather[0].icon}.png`} alt="Weather Icon" />
+            <span>{`${main.temp.toFixed(1)}°C`}</span>
+          </div>
+          <h3>{koreanAddress}</h3>
+        </LocationName>
       </WeatherWrapper>
     </>
   );
@@ -97,50 +117,77 @@ const growAnimation = keyframes`
   }
 `;
 const WeatherWrapper = styled.div`
-  height: 72px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  background-color: rgba(225, 225, 225, 0.362);
   border-radius: 20px;
-  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
+  box-shadow: 1px 1px 5px 1px rgba(39, 39, 39, 0.6);
+  overflow: hidden;
+
   cursor: pointer;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(225, 225, 225, 0.45);
+    background-color: rgba(225, 225, 225, 0.5);
   }
 `;
-const WeatherImg = styled.img`
-  width: 60px;
-`;
+
 const WeatherInner = styled.div`
-  height: 40px;
   display: flex;
+  width: 100%;
+  gap: 0.4rem;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   background-color: rgba(225, 225, 225, 0.362);
-  padding: 0px 20px 0 6px;
-  border-radius: 20px 20px 0 0;
-  // margin-top: 2px;
 `;
 const LocationName = styled.div`
-  padding: 6px 0 12px;
+  color: #eee;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 0 8px;
   font-weight: 600;
+  gap: 0.4rem;
+  background-color: #77777799;
+  h3 {
+    margin-bottom: 1px;
+    color: #eee;
+  }
+
+  #header-weather-icon-container {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 32px;
+    }
+    span {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+  }
 `;
 const WeatherDate = styled.div`
-  margin: 0 0 0 10px;
+  padding: 2px 15px;
+  font-size: 0.9rem;
+  color: #ddd;
+  p {
+    font-size: 1.2rem;
+    color: #eee;
+  }
 `;
 const DateBuild = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: -1px;
+  gap: 0.75rem;
+  padding: 3px;
 `;
 const Timmer = styled.p`
-  font-weight: bold;
-  font-size: 1.2rem;
+  font-weight: 600;
+  font-size: 1.15rem;
 `;
 
 export default Weather;
