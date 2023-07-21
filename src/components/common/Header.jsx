@@ -34,9 +34,11 @@ const WeatherContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(39, 39, 39, 0.8);
+  // background-color: rgba(0, 0, 0, 0.2);
   padding: 16px 30px;
   border-radius: 34px;
+  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
 `;
 const ImgTag = styled.img`
   cursor: pointer;

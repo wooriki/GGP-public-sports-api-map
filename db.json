@@ -2,13 +2,73 @@
   "comments": [
     {
       "postId": "S230601164554768313",
-      "writer": "ww",
-      "contents": "w",
+      "writer": "ㅅ",
+      "contents": "테스트1",
+      "id": "wHmKaXl"
+    },
+    {
+      "postId": "S221207120351783574",
+      "writer": "ㅅ",
+      "contents": "ㅅ",
+      "id": "8LXqSL7"
+    },
+    {
+      "postId": "S230330173318102901",
+      "writer": "ㄹㅍㅇ",
+      "contents": "ㅁㄴㅇㄹ",
+      "id": "D3Iet9h"
+    },
+    {
+      "postId": "S210401100008601453",
+      "writer": "1",
+      "contents": "12",
+      "id": "Cb8aY4D"
+    },
+    {
+      "postId": "S230710160923857891",
+      "writer": "3",
+      "contents": "33",
+      "id": "Tmc82mC"
+    },
+    {
+      "postId": "S230710160923857891",
+      "writer": "333333",
+      "contents": "3333333333",
+      "id": "HTh4h2Y"
+    },
+    {
+      "postId": "S230710160923857891",
+      "writer": "22222",
+      "contents": "222222222222222222222222222222",
+      "id": "6lAonsF"
+    },
+    {
+      "postId": "S230710160429269864",
+      "writer": "2",
+      "contents": "3",
       "password": "1111",
-      "id": 1
+      "id": "E7785gW"
+    },
+    {
+      "postId": "S221208170412245514",
+      "writer": "22",
+      "contents": "22",
+      "password": "222",
+      "id": "ra1s0OC"
+    },
+    {
+      "postId": "S221208170412245514",
+      "writer": "222",
+      "contents": "22222",
+      "password": "2222222",
+      "id": "3YVRTyK"
+    },
+    {
+      "postId": "S221208170412245514",
+      "writer": "22222",
+      "contents": "222222222222",
+      "password": "222222222",
+      "id": "OSC24zJ"
     }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }

@@ -41,10 +41,6 @@ const Weather = () => {
     }
   );
 
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
-
   if (!location) {
     return <Alert>Loading...</Alert>;
   }

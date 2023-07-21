@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { getComments, createComment, removeComment, updateComment } from '../../axios/comment';
 import { setComments } from '../../redux/modules/commentsSlice';
-import { styled } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
 
 const Comments = ({ facility }) => {
   const dispatch = useDispatch();
@@ -178,19 +178,19 @@ const Comments = ({ facility }) => {
   return (
     <CommentContainer>
       <CommentWrapper>
-        <p>댓글</p>
-        <form onSubmit={commentCreateHandler}>
-          <input type="text" name="writer" value={writer} onChange={writerChangeHandler} placeholder="작성자" />
-          <input type="text" name="contents" value={contents} onChange={contentsChangeHanlder} placeholder="내용" />
-          <input
+        <p>댓글을 작성해 주세요</p>
+        <FormTag onSubmit={commentCreateHandler}>
+          <InputTagF type="text" name="writer" value={writer} onChange={writerChangeHandler} placeholder="작성자" />
+          <InputTag type="text" name="contents" value={contents} onChange={contentsChangeHanlder} placeholder="내용" />
+          <InputTag
             type="password"
             name="password"
             value={password}
             onChange={passwordChangeHandler}
             placeholder="비밀번호"
           />
-          <button>작성</button>
-        </form>
+          <Btn>작성</Btn>
+        </FormTag>
         <div>
           {comments
             .filter((comment) => comment.postId == facility.SVCID)
@@ -198,29 +198,29 @@ const Comments = ({ facility }) => {
               const isEditMode = editedCommentId === comment.id;
               return (
                 <CommentBox key={comment.id}>
-                  <div>writer : {comment.writer}</div>
+                  <Writer>작성자 : {comment.writer}</Writer>
                   <div>
                     {isEditMode ? (
                       <>
                         <textarea value={editedContents} onChange={editContentsChangeHanlder} />
                       </>
                     ) : (
-                      <>contents : {comment.contents}</>
+                      <>댓글 : {comment.contents}</>
                     )}
-                  </div>
-
-                  <div>
-                    {isEditMode ? (
-                      <>
-                        <button onClick={() => updateCommentHandler(comment)}>저장</button>
-                        <button onClick={offEditMode}>취소</button>
-                      </>
-                    ) : (
-                      <>
-                        <button onClick={() => onEditMode(comment)}>수정</button>
-                        <button onClick={() => removeCommentHandler(comment)}>삭제</button>
-                      </>
-                    )}
+                    {/* 수정 삭제버튼 */}
+                    <Btns>
+                      {isEditMode ? (
+                        <>
+                          <BtnToggle onClick={() => updateCommentHandler(comment)}>저장</BtnToggle>
+                          <BtnToggle onClick={offEditMode}>취소</BtnToggle>
+                        </>
+                      ) : (
+                        <>
+                          <BtnToggle onClick={() => onEditMode(comment)}>수정</BtnToggle>
+                          <BtnToggle onClick={() => removeCommentHandler(comment)}>삭제</BtnToggle>
+                        </>
+                      )}
+                    </Btns>
                   </div>
                 </CommentBox>
               );
@@ -238,7 +238,47 @@ const CommentContainer = styled.div`
   margin: 10px;
   width: 500px;
 `;
+const FormTag = styled.form`
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+`;
+const InputTagF = styled.input`
+  width: 20%;
+  height: 40px;
+  padding-left: 10px;
+  border-radius: 8px 0 0 8px;
+`;
+const InputTag = styled.input`
+  width: 20%;
+  height: 40px;
+  padding-left: 10px;
+`;
 
+const growAnimation = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+  100% {
+    transform: scale(1);
+  }
+
+`;
+const Btn = styled.button`
+  padding: 10px;
+  border-radius: 0 8px 8px 0;
+  background-color: rgba(68, 68, 68, 0.671);
+  border: none;
+  color: rgba(212, 212, 212, 0.771);
+  cursor: pointer;
+  &:hover {
+    animation: ${growAnimation} 0.5s ease-in-out;
+    background-color: rgba(138, 138, 138, 0.788);
+  }
+`;
 const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -249,7 +289,27 @@ const CommentWrapper = styled.div`
 
 const CommentBox = styled.div`
   border: 1px solid black;
-  padding: 10px;
+  width: 100%;
+  padding: 20px;
   margin: 10px;
   width: 300px;
+`;
+const Writer = styled.p`
+  margin-bottom: 10px;
+`;
+
+const Btns = styled.button`
+  float: right;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+`;
+
+const BtnToggle = styled.button`
+  padding: 4px;
+  border-radius: 6px;
+  background-color: rgba(131, 131, 131, 0.671);
+  border: none;
+  color: rgba(212, 212, 212, 0.771);
+  cursor: pointer;
 `;

@@ -17,20 +17,21 @@ const Detail = ({ setFacility, facility }) => {
 export default Detail;
 
 const PostContainer = styled.div`
+  width: 33%;
+  height: 1000px;
+
+  margin-left: 28px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 450px;
   color: rgba(236, 236, 236, 0.89);
   background-color: rgba(41, 41, 41, 0.747);
   border-radius: 0 30px 30px 0;
   padding-bottom: 10px;
-  margin-left: 4px;
 `;
 
 const PostWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  margin-top: 60px;
   align-items: center;
 `;
