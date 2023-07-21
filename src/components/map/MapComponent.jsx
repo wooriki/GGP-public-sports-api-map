@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import Maps from './Maps';
-import useGetCoords from '../../hooks/mapHooks/useGetCoords';
 
 const MapComponent = () => {
-  const fetchedCoords = useGetCoords(1, 20);
-  const [coords, setCoords] = useState([]);
-
-  useEffect(() => {
-    setCoords(fetchedCoords);
-  }, [fetchedCoords]);
-
   return (
     <StyledDiv>
-      <Maps coords={coords} />
+      <Maps />
     </StyledDiv>
   );
 };
@@ -21,6 +13,9 @@ const MapComponent = () => {
 export default MapComponent;
 
 const StyledDiv = styled.div`
-  width: 500px;
-  height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 70%;
 `;

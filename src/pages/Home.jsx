@@ -1,44 +1,111 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { setLocation } from '../redux/modules/userLocation';
+import { styled, keyframes } from 'styled-components';
 import Facilities from '../components/Facilities';
-import Search from '../components/Search';
-import { styled } from 'styled-components';
 import MapComponent from '../components/map/MapComponent';
+import Detail from '../components/detail/Detail';
+import Header from '../components/common/Header';
+
+import axios from 'axios';
+import YouTubeApi from '../components/common/YouTubeApi';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
-  console.log(location);
+  const [facility, setFacility] = useState(null);
+  const [filteredGlobalDataByArea, setFilteredGlobalDataByArea] = useState(null);
+  const [globalSearch, setGlobalSearch] = useState(null);
+
+  const [isMounted, setIsMounted] = useState(false); // 마운트 여부 상태
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+
   useEffect(() => {
     if (location) {
       dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
     }
-  }, [location]);
+  }, [dispatch, location]);
 
   return (
-    <>
-      <h1>Home</h1>
-      <Facilities />
-      <StyledMain>
-        <div>
+    <Mother>
+      <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
+      <ContainerWrapper>
+        <StyledDivForLeft>
           <MapComponent />
-        </div>
-      </StyledMain>
-    </>
+          <StyledRecommendation>
+            <div id="recommendation-title">
+              <h2>💥GoGo PlayList</h2>
+            </div>
+            <YouTubeApi />
+          </StyledRecommendation>
+        </StyledDivForLeft>
+        <StyledDivForRight>
+          {facility ? (
+            <Detail setFacility={setFacility} facility={facility} />
+          ) : (
+            <Facilities
+              filteredGlobalDataByArea={filteredGlobalDataByArea}
+              globalSearch={globalSearch}
+              setFacility={setFacility}
+            />
+          )}
+        </StyledDivForRight>
+      </ContainerWrapper>
+    </Mother>
   );
 };
+// 마커에 대한 state
+//
 
 export default Home;
 
-const StyledMain = styled.main`
-  height: 100vh;
+const Mother = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
+  gap: 0.75rem;
   align-items: center;
-  border: 1px black solid;
 `;
 
-// 에러나면 Home에서 export const Home 아니면 export default Home으로 바꾸기
+const ContainerWrapper = styled.main`
+  width: 85%;
+  height: 80vh;
+  overflow: hidden;
+  display: flex;
+  border-radius: 20px;
+  gap: 0.75rem;
+`;
+
+const StyledDivForLeft = styled.div`
+  height: 100%;
+  width: 60%;
+  color: rgba(236, 236, 236, 0.89);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+const StyledRecommendation = styled.div`
+  background-color: rgba(25, 25, 25, 0.95);
+  border-radius: 20px;
+  height: 30%;
+
+  #recommendation-title {
+    height: 20%;
+    min-height: 50px;
+    display: flex;
+    // flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+`;
+
+const StyledDivForRight = styled.div`
+  width: 40%;
+  border-radius: 20px;
+  overflow: auto;
+`;
