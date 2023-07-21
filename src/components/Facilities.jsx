@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import { styled, keyframes } from 'styled-components';
 import useFetchPublicData from '../hooks/useFetchPublicData';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSortedData } from '../redux/modules/publicData';
-import { styled, keyframes } from 'styled-components';
 import { calDistance } from '../helper/calDistance';
 import { Paging } from './Paging';
 import { save10Location } from '../redux/modules/maps/save10Location';
@@ -88,8 +88,7 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
           <SubTitlte>
             <p>총 {totalItems}개</p>
             <p>
-              <br />
-              현재 페이지 {currentPage}/{totalPage}
+              &nbsp;&nbsp; 현재 페이지 {currentPage}/{totalPage}
             </p>
           </SubTitlte>
           <UlTag>
@@ -97,7 +96,8 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
               <StyledItemBox key={facility.SVCID}>
                 <LiTag onClick={() => navDetailPage(facility)}>
                   <TextTag>
-                    <span>{facility.AREANM}</span> <span>{facility.MINCLASSNM}</span>
+                    <span>{facility.AREANM}</span>&nbsp;&nbsp;
+                    <span>{facility.MINCLASSNM}</span>
                   </TextTag>
                   <TextTag>{facility.SVCNM}</TextTag>
                 </LiTag>
@@ -105,7 +105,9 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
             ))}
           </UlTag>
         </StyledItemListBox>
-        <Paging currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} />
+        <PagingTag>
+          <Paging currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} />
+        </PagingTag>
       </StyledFacilitiesContainer>
     </>
   );
@@ -117,17 +119,19 @@ export default Facilities;
 //   border: 1px solid black;
 // `;
 const StyledFacilitiesContainer = styled.div`
-  width: 25%;
+  width: 35%;
   height: 1000px;
   margin-left: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
   color: white;
   background-color: rgba(41, 41, 41, 0.747);
   border-radius: 0 30px 30px 0;
-  padding: 20px 5px 20px 30px;
+  padding: 20px 10px 20px 15px;
+
+  position: relative;
 `;
 
 const StyledItemListBox = styled.div`
@@ -136,9 +140,14 @@ const StyledItemListBox = styled.div`
 const Title = styled.h2`
   font-size: 1.2rem;
   font-weight: bold;
+  margin-top: 20px;
 `;
 const SubTitlte = styled.div`
   margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  padding: 0 10px;
 `;
 
 const StyledItemBox = styled.div`
@@ -146,7 +155,6 @@ const StyledItemBox = styled.div`
 
   margin: 0 auto;
   margin: 10px 0;
-  // padding: 4px 10px;
   background-color: grey;
   border-radius: 10px;
 
@@ -168,36 +176,34 @@ const growAnimation = keyframes`
 `;
 const UlTag = styled.ul`
   width: 90%;
-
   margin: 0 auto;
   height: 70px;
   color: white;
-  cursor: pointer;
-  &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(225, 225, 225, 0.45);
-  }
 `;
-const LiTag = styled.li`
-  width: 90%;
-  display: flex;
-  justify-content: center;
 
+const LiTag = styled.li`
+  width: 100%;
   margin: 0 auto;
-  margin-top: 10px;
-  height: 70px;
   color: white;
+  cursor: pointer;
+  border-radius: 10px;
   cursor: pointer;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(225, 225, 225, 0.45);
+    background-color: rgba(138, 138, 138, 0.788);
   }
 `;
 const TextTag = styled.p`
   text-align: center;
   // height: 20px;
-  // overflow: hidden;
-  // white-space: nowrap;
-  // text-overflow: ellipsis;
-  padding: 0 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 2px 0 8px;
+
+  margin-top: 10px;
+  padding: 0 4px 4px;
+`;
+const PagingTag = styled.div`
+  margin: 0 auto;
 `;

@@ -9,8 +9,8 @@ export const Paging = ({ currentPage, totalItems, setCurrentPage }) => {
         itemsCountPerPage={10}
         totalItemsCount={totalItems}
         pageRangeDisplayed={5}
-        prevPageText={`<`}
-        nextPageText={`>`}
+        prevPageText={`◀`}
+        nextPageText={`▶`}
         onChange={setCurrentPage}
       />
     </StyledPageContainer>
@@ -19,8 +19,10 @@ export const Paging = ({ currentPage, totalItems, setCurrentPage }) => {
 
 const StyledPageContainer = styled.div`
   .pagination {
+    margin: 0 auto;
     display: flex;
-    margin-top: 15px;
+    justify-content: center;
+    margin-top: 750px;
   }
 
   ul {
