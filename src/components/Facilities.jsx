@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { styled, keyframes } from 'styled-components';
 import useFetchPublicData from '../hooks/useFetchPublicData';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,30 +11,34 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
   // 선택된 지역과 스포츠 종목 변수 설정
   const selectedArea = filteredGlobalDataByArea?.selectedArea;
   const selectedSports = filteredGlobalDataByArea?.selectedSports;
-
+  const [filteredData, setFilteredData] = useState([]);
   const [sliceData, setSliceData] = useState([]);
   // 상세 페이지로 이동하는 함수
   const navDetailPage = (facility) => {
     setFacility(facility);
   };
-
+  console.log('filteredData', filteredData);
   const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
   const { data: publicData, isLoading, isError } = useFetchPublicData();
 
   // 검색 및 필터된 데이터 설정
-  const filteredData = !globalSearch
-    ? filteredGlobalDataByArea
-      ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
-      : publicData || []
-    : publicData?.filter(
-        (data) =>
-          (!selectedArea || data.AREANM === selectedArea) &&
-          (!selectedSports || data.MINCLASSNM === selectedSports) &&
-          (data.MINCLASSNM.includes(globalSearch) ||
-            data.SVCNM.includes(globalSearch) ||
-            data.AREANM.includes(globalSearch))
-      ) || null;
+  useMemo(() => {
+    setFilteredData((prev) => {
+      return !globalSearch
+        ? filteredGlobalDataByArea
+          ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
+          : publicData || []
+        : publicData?.filter(
+            (data) =>
+              (!selectedArea || data.AREANM === selectedArea) &&
+              (!selectedSports || data.MINCLASSNM === selectedSports) &&
+              (data.MINCLASSNM.includes(globalSearch) ||
+                data.SVCNM.includes(globalSearch) ||
+                data.AREANM.includes(globalSearch))
+          ) || null;
+    });
+  }, [filteredGlobalDataByArea, globalSearch, publicData, selectedArea, selectedSports]);
 
   // 페이지네이션 관련 변수 및 state 선언
   const itemsPerPage = 10;
