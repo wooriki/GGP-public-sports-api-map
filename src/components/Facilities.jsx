@@ -12,6 +12,7 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
   const selectedArea = filteredGlobalDataByArea?.selectedArea;
   const selectedSports = filteredGlobalDataByArea?.selectedSports;
 
+  const [sliceData, setSliceData] = useState([]);
   // 상세 페이지로 이동하는 함수
   const navDetailPage = (facility) => {
     setFacility(facility);
@@ -52,8 +53,19 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
 
     setSortPublicDataByDis(sortPublicDataByDis);
 
+    // 현재 페이지에 따라 보여줄 데이터 조각 설정
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
+
+    // 필터된 데이터들을 스토어에 저장
+    dispatch(save10Location(sliceData));
+
     dispatch(setSortedData(sortPublicDataByDis));
-  }, [dispatch, filteredGlobalDataByArea, publicData, selectedArea, selectedSports, location, globalSearch]);
+
+    // Update the sliceData state
+    setSliceData(sliceData);
+  }, [dispatch, currentPage, itemsPerPage, filteredData, location, globalSearch]);
 
   // 로딩 중이면 로딩 메시지 출력
   if (isLoading) return <h3>로딩 중 입니다</h3>;
@@ -67,14 +79,6 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
       </>
     );
   }
-
-  // 현재 페이지에 따라 보여줄 데이터 조각 설정
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
-
-  // 필터된 데이터들을 스토어에 저장
-  dispatch(save10Location(sliceData));
 
   return (
     <>

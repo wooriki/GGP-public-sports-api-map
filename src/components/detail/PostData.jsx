@@ -35,6 +35,7 @@ const PostData = ({ setFacility, facility }) => {
       <ConDiv>
         <div>{facility.SVCSTATNM}</div>&nbsp;&nbsp;
         <div>{facility.PAYATNM}</div>
+        <div>{facility.TELNO ? `연락처: ${facility.TELNO}` : `연락처: "없음"`}</div>
       </ConDiv>
       <div>
         <button onClick={openLink}>예약하러가기</button>
