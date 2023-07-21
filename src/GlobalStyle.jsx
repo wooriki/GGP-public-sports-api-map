@@ -6,9 +6,12 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Nanum Gothic', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #bbb;
     background-image: url('/img/backGroundImg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-blend-mode: multiply;
+
     animation: slideShow 40s infinite;
   }
 

@@ -12,4 +12,10 @@ const MapComponent = () => {
 
 export default MapComponent;
 
-const StyledDiv = styled.div``;
+const StyledDiv = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 70%;
+`;

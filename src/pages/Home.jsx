@@ -26,18 +26,40 @@ const Home = () => {
     <Mother>
       <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <ContainerWrapper>
-        <StyledMain>
-          <div>
-            <MapComponent />
-          </div>
-          <TextTag>💥추천 영상</TextTag>
-          <UlTag>
-            <LiTag>1</LiTag>
-            <LiTag>2</LiTag>
-            <LiTag>3</LiTag>
-            <LiTag>4</LiTag>
-          </UlTag>
-        </StyledMain>
+        <StyledDivForLeft>
+          <MapComponent />
+          <StyledRecommendation>
+            <div id="recommendation-title">
+              <h2>💥 추천 영상</h2>
+            </div>
+            <StyledVideoContainer>
+              <StyledVideo onClick={() => window.open('https://youtu.be/Bbw_KiiBuU4', '_blank')}>
+                <img src="https://i.ibb.co/4Z3hRBv/1-Small.jpg" alt="video thumbnail" />
+                <p>공공체육시설은 동호회 차지?…술판 벌이기도 (2020.11.17/뉴스데스크/MBC)</p>
+              </StyledVideo>
+              <StyledVideo onClick={() => window.open('https://youtu.be/fVXPa7lOVo8', '_blank')}>
+                <img src="https://i.ibb.co/zZ8VTrB/2-Small.jpg" alt="video thumbnail" />
+                <p>생활체육 재도약의 조건…체육시설과 스포츠클럽 확대 [9시 뉴스] / KBS 2023.04.26.</p>
+              </StyledVideo>
+              <StyledVideo onClick={() => window.open('https://youtu.be/lRX2_JBGvgU', '_blank')}>
+                <img src="https://i.ibb.co/NW7yJ1R/3-Small.jpg" alt="video thumbnail" />
+                <p>갈 곳 없는 노인 스포츠, 유럽형 스포츠클럽 도입이 해법 / KBS뉴스(News)</p>
+              </StyledVideo>
+              <StyledVideo onClick={() => window.open('https://youtu.be/7iHnAGukoUk', '_blank')}>
+                <img src="https://i.ibb.co/Zd0Dr07/4-Small.jpg" alt="video thumbnail" />
+                <p>2025년까지 공공체육시설 11곳 확충</p>
+              </StyledVideo>
+              <StyledVideo onClick={() => window.open('https://youtu.be/GhVxqe1QhYk', '_blank')}>
+                <img src="https://i.ibb.co/P4dS7Dp/5-Small.jpg" alt="video thumbnail" />
+                <p>2025년까지 공공체육시설 11곳 확충</p>
+              </StyledVideo>
+              <StyledVideo onClick={() => window.open('https://youtu.be/kSLN7-ATYuo', '_blank')}>
+                <img src="https://i.ibb.co/dgdYJJ8/6-Small.jpg" alt="video thumbnail" />
+                <p>2025년까지 공공체육시설 11곳 확충</p>
+              </StyledVideo>
+            </StyledVideoContainer>
+          </StyledRecommendation>
+        </StyledDivForLeft>
         <StyledDivForRight>
           {facility ? (
             <Detail setFacility={setFacility} facility={facility} />
@@ -61,42 +83,50 @@ export default Home;
 const Mother = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   align-items: center;
 `;
 
 const ContainerWrapper = styled.main`
+  width: 85%;
+  height: 80vh;
   overflow: hidden;
-  width: 70%;
-  margin: 0 auto;
-  margin-top: 20px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(41, 41, 41, 0.247);
-  border-radius: 30px;
+  border-radius: 20px;
+  gap: 0.75rem;
 `;
-const StyledMain = styled.div`
-  width: 65%;
+const StyledDivForLeft = styled.div`
+  height: 100%;
+  width: 60%;
   color: rgba(236, 236, 236, 0.89);
-  background-color: rgba(41, 41, 41, 0.747);
-  border-radius: 30px 0 0 30px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 `;
-const TitleTag = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  width: 250px;
-  background-color: rgba(77, 77, 77, 0.776);
-  border-radius: 14px 0 0;
+const StyledRecommendation = styled.div`
+  background-color: rgba(25, 25, 25, 0.95);
+  border-radius: 20px;
+  height: 30%;
+
+  #recommendation-title {
+    height: 20%;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
 `;
-const TextTag = styled.h2`
-  font-size: 1.5rem;
-  margin-top: 20px;
-`;
-const UlTag = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+const StyledVideoContainer = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  height: 80%;
+  overflow: auto;
+  padding: 1rem 0.75rem;
 `;
 const growAnimation = keyframes`
   0% {
@@ -110,20 +140,32 @@ const growAnimation = keyframes`
   }
 `;
 
-const LiTag = styled.li`
-  border: 1px black solid;
-  margin: 40px 10px 20px;
-  padding: 40px 60px;
+const StyledVideo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 150px;
+  height: 50%;
+  min-height: 90px;
   border-radius: 10px;
-  border: none;
-  background-color: rgba(179, 179, 179, 0.476);
   cursor: pointer;
   &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(225, 225, 225, 0.45);
+    animation: ${growAnimation} 0.3s ease-in-out;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+  }
+  p {
+    font-size: 0.9rem;
+    color: #eee;
+    line-height: 1.1;
   }
 `;
 
 const StyledDivForRight = styled.div`
-  /* width: 500px; */
+  width: 40%;
+  border-radius: 20px;
+  overflow: auto;
 `;
