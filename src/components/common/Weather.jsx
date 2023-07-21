@@ -1,8 +1,6 @@
 import React from 'react';
 import { styled, keyframes } from 'styled-components';
 import { useQuery } from 'react-query';
-import { useCurrentLocation } from '../../hooks/useCurrentLocation';
-
 import { getWeatherData } from '../../axios/weatherApi';
 import { useSelector } from 'react-redux';
 

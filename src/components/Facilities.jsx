@@ -88,7 +88,7 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
     return (
       <>
         <p>에러가 발생하였습니다</p>
-        <p>{publicData.error.toString()}</p>
+        <p>{publicData?.error.toString()}</p>
       </>
     );
   }
