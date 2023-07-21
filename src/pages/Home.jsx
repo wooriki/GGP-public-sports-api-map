@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { setLocation } from '../redux/modules/userLocation';
-import Facilities from '../components/Facilities';
-// import Search from '../components/Search';
 import { styled, keyframes } from 'styled-components';
+import Facilities from '../components/Facilities';
 import MapComponent from '../components/map/MapComponent';
+import Detail from '../components/detail/Detail';
+import Header from '../components/common/Header';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
-
-  // const [isMarked, setIsMarked] = useState(false);
+  const [facility, setFacility] = useState(null);
+  const [filteredGlobalDataByArea, setFilteredGlobalDataByArea] = useState(null);
+  const [globalSearch, setGlobalSearch] = useState(null);
 
   useEffect(() => {
     if (location) {
@@ -22,22 +24,11 @@ const Home = () => {
 
   return (
     <>
+      <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <ContainerWrapper>
         <StyledMain>
-          {/* <div style={{
-          display: 'flex'
-        }}>
-          <MapComponent setIsMarked={} />
-          {
-            isMarked ? <디테일 /> : <전체 />
-          }
           <div>
-
-          </div>
-
-        </div> */}
-          {/* <TextTag>Now Loading Map</TextTag> */}
-          <div>
+            {/* <TitleTag>Now Loading Map</TitleTag> */}
             <MapComponent />
           </div>
           <TextTag>💥추천 영상</TextTag>
@@ -48,7 +39,15 @@ const Home = () => {
             <LiTag>4</LiTag>
           </UlTag>
         </StyledMain>
-        <Facilities />
+        {facility ? (
+          <Detail setFacility={setFacility} facility={facility} />
+        ) : (
+          <Facilities
+            filteredGlobalDataByArea={filteredGlobalDataByArea}
+            globalSearch={globalSearch}
+            setFacility={setFacility}
+          />
+        )}
       </ContainerWrapper>
     </>
   );
@@ -59,24 +58,36 @@ const Home = () => {
 export default Home;
 
 const ContainerWrapper = styled.div`
-  width: 100%;
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
+  background-color: rgba(41, 41, 41, 0.247);
+  border-radius: 30px;
 `;
-const StyledMain = styled.div`
+const StyledMain = styled.main`
+  width: 65%;
   color: rgba(236, 236, 236, 0.89);
   background-color: rgba(41, 41, 41, 0.747);
   border-radius: 30px 0 0 30px;
-  padding: 118px 30px;
+`;
+const TitleTag = styled.h2`
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  width: 250px;
+  background-color: rgba(77, 77, 77, 0.776);
+  border-radius: 14px 0 0;
 `;
 const TextTag = styled.h2`
   font-size: 1.5rem;
   margin-top: 20px;
 `;
 const UlTag = styled.ul`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 `;
 const growAnimation = keyframes`
   0% {

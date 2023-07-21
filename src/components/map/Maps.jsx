@@ -15,6 +15,10 @@ const Maps = () => {
   useEffect(() => {
     if (latitude === 37.551086 && longitude === 126.988033) {
       setIsItLoading(true);
+      // 임시 방편 => 사용자가 위치 공유를 하지 않았을 때 어떤걸로 로딩을 감지할지 알아내야함.
+      setTimeout(() => {
+        setIsItLoading(false);
+      }, 5000);
     } else {
       setIsItLoading(false);
     }
@@ -76,8 +80,8 @@ export default Maps;
 
 const StyledDiv = styled.div`
   overflow: hidden;
-  width: 750px;
-  height: 500px;
+  width: 100%;
+  height: 700px;
   border-radius: 15px;
   box-shadow: 1px 1px 10px 0 rgba(39, 39, 39, 0.6);
   #test,
