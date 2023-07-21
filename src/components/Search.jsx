@@ -107,7 +107,7 @@ const Search = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
         <div id="search-divider"></div>
         <div id="search-right-div">
           <select ref={searchOptionRef} name="sportsFacility" id="sportsFacility" onChange={onSportsButtonClickHandler}>
-            <option value="전체" disabled>
+            <option value="전체" disabled selected={true}>
               전체
             </option>
             <option value="골프장">골프장</option>

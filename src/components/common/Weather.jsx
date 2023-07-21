@@ -126,10 +126,10 @@ const WeatherWrapper = styled.div`
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  background-color: rgba(225, 225, 225, 0.7);
   border-radius: 20px;
   box-shadow: 1px 1px 5px 1px rgba(39, 39, 39, 0.6);
   overflow: hidden;
+
   cursor: pointer;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
@@ -146,22 +146,24 @@ const WeatherInner = styled.div`
   background-color: rgba(225, 225, 225, 0.362);
 `;
 const LocationName = styled.div`
+  color: #eee;
   width: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  padding: 2px 8px;
+  padding: 0 8px;
   font-weight: 600;
   gap: 0.4rem;
-  background-color: #bbb;
-  opacity: 0.7;
+  background-color: #77777799;
   h3 {
     margin-bottom: 1px;
+    color: #eee;
   }
 
   #header-weather-icon-container {
     display: flex;
     align-items: center;
+
     img {
       width: 32px;
     }
@@ -174,10 +176,10 @@ const LocationName = styled.div`
 const WeatherDate = styled.div`
   padding: 2px 15px;
   font-size: 0.9rem;
-  color: #333;
+  color: #ddd;
   p {
     font-size: 1.2rem;
-    color: #333;
+    color: #eee;
   }
 `;
 const DateBuild = styled.div`
@@ -190,7 +192,6 @@ const DateBuild = styled.div`
 const Timmer = styled.p`
   font-weight: 600;
   font-size: 1.15rem;
-  color: #333;
 `;
 
 export default Weather;

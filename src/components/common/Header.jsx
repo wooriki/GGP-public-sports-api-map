@@ -33,7 +33,7 @@ const WeatherContainer = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #393836;
+  background-color: rgba(51, 51, 51, 0.85);
   padding: 16px 30px;
   border-radius: 30px;
 `;
