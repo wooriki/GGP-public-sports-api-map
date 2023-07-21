@@ -28,12 +28,12 @@ const growAnimation = keyframes`
   }
 `;
 const WeatherContainer = styled.header`
-  width: 70%;
+  width: 85%;
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(51, 51, 51, 0.85);
+  background-color: #232529;
   padding: 16px 30px;
   border-radius: 30px;
 `;

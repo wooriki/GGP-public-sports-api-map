@@ -35,8 +35,8 @@ const Weather = () => {
     let minutes = d.getMinutes().toString().padStart(2, '0');
     return (
       <DateBuild>
-        <Timmer>{`${hours}:${minutes}`}&nbsp;&nbsp;&nbsp;</Timmer>
-        {`${day} ${date} ${month} ${year}`}
+        <h3>{`${day} ${date} ${month} ${year}`}</h3>
+        <Timmer>{`${hours}:${minutes}`}</Timmer>
       </DateBuild>
     );
   };

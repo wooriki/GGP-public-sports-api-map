@@ -22,7 +22,6 @@ const StyledPageContainer = styled.div`
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    margin-top: 750px;
   }
 
   ul {

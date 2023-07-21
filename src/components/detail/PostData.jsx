@@ -12,102 +12,129 @@ const PostData = ({ setFacility, facility }) => {
   }
   return (
     <PostBOX>
-      <div>
-        <Img src={facility.IMGURL} />
-        <ContentHover>{facility.DTLCONT}</ContentHover>
+      <button
+        id="detail-go-back"
+        onClick={() => {
+          setFacility(null);
+        }}
+      >
+        뒤로가기
+      </button>
+      <div id="detail-image-container">
+        <img src={facility.IMGURL} alt="facility img" />
+        <div id="facility-title">{facility.MAXCLASSNM}</div>
       </div>
-      <ConDiv>
-        <div>{facility.MAXCLASSNM}</div>&nbsp;&nbsp;
-        <div>{facility.MINCLASSNM}</div>
-      </ConDiv>
-      <ConDiv>
-        <div>{facility.PLACENM}</div>&nbsp;&nbsp;
-        <div>{facility.AREANM}</div>
-      </ConDiv>
-      <ConDiv>
-        <div>{facility.SVCOPNBGNDT}</div>&nbsp;&nbsp;
-        <div>{facility.SVCOPNENDDT}</div>
-      </ConDiv>
-      <ConDiv>
-        <div>{facility.RCPTBGNDT}</div>&nbsp;&nbsp;
-        <div>{facility.RCPTENDDT}</div>
-      </ConDiv>
-      <ConDiv>
-        <div>{facility.SVCSTATNM}</div>&nbsp;&nbsp;
-        <div>{facility.PAYATNM}</div>
+      <div id="detail-title-container">
+        <h1>{facility.MINCLASSNM}</h1>
+        <div id="detail-status-info">
+          <p>{facility.PAYATNM}</p>
+          <p>{facility.SVCSTATNM}</p>
+        </div>
+      </div>
+      <div id="detail-divider"></div>
+      <div id="detail-title">
+        <div>장소명: {facility.PLACENM}</div>
+        <div>소재구: {facility.AREANM}</div>
+        <button id="detail-book" onClick={openLink}>
+          예약하기
+        </button>
+      </div>
+      <div id="detail-divider-2"></div>
+      <div>
         <div>{facility.TELNO ? `연락처: ${facility.TELNO}` : `연락처: "없음"`}</div>
-      </ConDiv>
-      <div>
-        <Btn onClick={openLink}>예약하러가기</Btn>
-        <Btn
-          onClick={() => {
-            setFacility(null);
-          }}
-        >
-          뒤로가기
-        </Btn>
       </div>
+      <h5>상세설명:</h5>
+      <p id="detail-detail">{facility.DTLCONT}</p>
     </PostBOX>
   );
 };
 
 export default PostData;
 
-const Img = styled.img`
-  width: 400px;
-  height: 250px;
-  border-radius: 14px;
-`;
-const ContentHover = styled.div`
-  padding: 12px 10px;
-  background-color: rgba(138, 138, 138, 0.788);
-  border-radius: 10px;
-  margin: 10px;
-
-  width: 400px;
-  height: 80px;
-  overflow: hidden;
-  line-height: 20px;
-
-  overflow: hidden;
-`;
-
 const PostBOX = styled.div`
   display: flex;
   flex-direction: column;
-  text-align: center;
-  color: white;
-`;
+  gap: 1rem;
+  position: relative;
+  overflow: auto;
+  #detail-divider {
+    width: 30%;
+    height: 2px;
+    border: 2px white solid;
+  }
+  #detail-divider-2 {
+    width: 100%;
+    height: 1px;
+    border: 0.5px white solid;
+  }
+  img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  #facility-title {
+    position: absolute;
+    padding: 5px 10px;
+    background-color: #eee;
+    border-radius: 10px;
+    color: #333;
+    font-weight: 700;
+    top: 0;
+    left: 0;
+  }
+  #detail-title-container {
+    display: flex;
+    justify-content: space-between;
+    h1 {
+      font-size: 1.5rem;
+      color: #eee;
+      font-weight: 600;
+    }
+    p {
+      padding: 3px 6px;
+      background-color: #fafafa;
+      color: #333;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-top: 2px;
+    }
+  }
+  #detail-status-info {
+    display: flex;
+    gap: 5px;
+  }
 
-const ConDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 12px;
-  background-color: rgba(138, 138, 138, 0.788);
-  border-radius: 10px;
-  margin: 10px;
-`;
-const growAnimation = keyframes`
-  0% {
-    transform: scale(1);
+  #detail-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
-  50% {
-    transform: scale(1.025);
-  }
-  100% {
-    transform: scale(1);
+  #detail-detail {
+    margin: 0 auto;
+    line-height: 1.3;
+    width: 90%;
+    color: #ddd;
+    font-size: 0.9rem;
+    text-align: justify;
   }
 
-`;
-const Btn = styled.button`
-  padding: 10px;
-  border-radius: 8px;
-  background-color: rgba(68, 68, 68, 0.671);
-  border: none;
-  color: rgba(212, 212, 212, 0.771);
-  cursor: pointer;
-  &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(138, 138, 138, 0.788);
+  #detail-book {
+    padding: 7px 20px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #233c50;
+    color: white;
+    cursor: pointer;
+    &:hover {
+      background-color: #2b4a63;
+    }
+  }
+  #detail-go-back {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 `;

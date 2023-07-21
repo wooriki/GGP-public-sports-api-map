@@ -3,6 +3,9 @@ import { styled } from 'styled-components';
 import { useRef, useState } from 'react';
 import axios from 'axios';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLocation } from '../redux/modules/userLocation';
+import { reloadMap } from '../redux/modules/maps/reloadMap';
 
 const Search = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
   const searchIconRef = useRef();
@@ -169,6 +172,7 @@ const StyledSearch = styled.div`
     padding: 0 10px;
     display: flex;
     align-items: center;
+
     img {
       width: 24px;
       transition: cubic-bezier(0, 0, 0.2, 1) 0.3s;
