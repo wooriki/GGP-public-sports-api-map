@@ -22,7 +22,6 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
   const location = useSelector((state) => state.location);
   const { data: publicData, isLoading, isError } = useFetchPublicData();
 
-  // 검색 및 필터된 데이터 설정
   const filteredData = !globalSearch
     ? filteredGlobalDataByArea
       ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
@@ -45,6 +44,8 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
 
   // 거리 기준으로 데이터 정렬하는 부분
   useEffect(() => {
+    // 검색 및 필터된 데이터 설정
+
     const sortPublicDataByDis = [...filteredData].sort((a, b) => {
       const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
       const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
