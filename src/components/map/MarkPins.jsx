@@ -64,6 +64,8 @@ const MarkPins = ({ map, boundary }) => {
         ? { backgroundColor: '#d70011', color: '#fff' }
         : locationDetail.reservStatus === '예약일시중지'
         ? { backgroundColor: '#111', color: '#fff' }
+        : locationDetail.reservStatus === '접수종료'
+        ? { backgroundColor: '#111', color: '#fff' }
         : null;
 
     return (
@@ -98,6 +100,8 @@ const MarkPins = ({ map, boundary }) => {
             : locationDetail.reservStatus === '예약마감'
             ? '예약마감'
             : locationDetail.reservStatus === '예약일시중지'
+            ? '예약 불가'
+            : locationDetail.reservStatus === '접수종료'
             ? '예약 불가'
             : null}
         </button>

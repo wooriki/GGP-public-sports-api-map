@@ -10,11 +10,9 @@ import { save10Location } from '../redux/modules/maps/save10Location';
 const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => {
   const selectedArea = filteredGlobalDataByArea?.selectedArea;
   const selectedSports = filteredGlobalDataByArea?.selectedSports;
-
   const navDetailPage = (facility) => {
     setFacility(facility);
   };
-
   const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
   const { data: publicData, isLoading, isError } = useFetchPublicData();
@@ -134,9 +132,6 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
 
 export default Facilities;
 
-// const StLi = styled.li`
-//   border: 1px solid black;
-// `;
 const StyledFacilitiesContainer = styled.div`
   width: 25%;
   height: 1000px;

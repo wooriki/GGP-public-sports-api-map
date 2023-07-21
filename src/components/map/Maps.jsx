@@ -97,7 +97,7 @@ const StyledDiv = styled.div`
     position: absolute;
     top: 10px;
     right: 10px;
-    z-index: 100;
+    z-index: 1;
     color: #555;
     background-color: #fff;
     padding: 5px;

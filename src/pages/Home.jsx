@@ -23,7 +23,7 @@ const Home = () => {
   }, [dispatch, location]);
 
   return (
-    <>
+    <Mother>
       <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <ContainerWrapper>
         <StyledMain>
@@ -39,17 +39,19 @@ const Home = () => {
             <LiTag>4</LiTag>
           </UlTag>
         </StyledMain>
-        {facility ? (
-          <Detail setFacility={setFacility} facility={facility} />
-        ) : (
-          <Facilities
-            filteredGlobalDataByArea={filteredGlobalDataByArea}
-            globalSearch={globalSearch}
-            setFacility={setFacility}
-          />
-        )}
+        <StyledDivForRight>
+          {facility ? (
+            <Detail setFacility={setFacility} facility={facility} />
+          ) : (
+            <Facilities
+              filteredGlobalDataByArea={filteredGlobalDataByArea}
+              globalSearch={globalSearch}
+              setFacility={setFacility}
+            />
+          )}
+        </StyledDivForRight>
       </ContainerWrapper>
-    </>
+    </Mother>
   );
 };
 // 마커에 대한 state
@@ -57,7 +59,15 @@ const Home = () => {
 
 export default Home;
 
-const ContainerWrapper = styled.div`
+const Mother = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+`;
+
+const ContainerWrapper = styled.main`
+  overflow: hidden;
   width: 70%;
   margin: 0 auto;
   margin-top: 20px;
@@ -67,7 +77,7 @@ const ContainerWrapper = styled.div`
   background-color: rgba(41, 41, 41, 0.247);
   border-radius: 30px;
 `;
-const StyledMain = styled.main`
+const StyledMain = styled.div`
   width: 65%;
   color: rgba(236, 236, 236, 0.89);
   background-color: rgba(41, 41, 41, 0.747);
@@ -115,4 +125,6 @@ const LiTag = styled.li`
   }
 `;
 
-// 에러나면 Home에서 export const Home 아니면 export default Home으로 바꾸기
+const StyledDivForRight = styled.div`
+  /* width: 500px; */
+`;
