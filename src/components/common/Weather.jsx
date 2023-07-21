@@ -1,12 +1,12 @@
 import React from 'react';
 import { styled, keyframes } from 'styled-components';
 import { useQuery } from 'react-query';
-import { useCurrentLocation } from '../../hooks/useCurrentLocation';
 
 import { getWeatherData } from '../../axios/weatherApi';
+import { useSelector } from 'react-redux';
 
 const Weather = () => {
-  const { location, error } = useCurrentLocation();
+  const location = useSelector((state) => state.location);
 
   const dateBuilder = (d) => {
     let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -42,10 +42,6 @@ const Weather = () => {
     }
   );
 
-  if (error) {
-    return <Alert>Error: {error}</Alert>;
-  }
-
   if (!location) {
     return <Alert>Loading...</Alert>;
   }
@@ -56,6 +52,10 @@ const Weather = () => {
 
   if (isError) {
     return <Alert>Error occurred while fetching weather data</Alert>;
+  }
+
+  if (!weatherData) {
+    return <Alert>No weather data available</Alert>;
   }
 
   const { name, weather, main } = weatherData;

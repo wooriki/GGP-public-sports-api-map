@@ -1,122 +1,184 @@
-import { useQuery, useQueryClient } from 'react-query';
-import { getFacilitiesForPagination } from '../axios/publicDataAPI';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { LastPage } from '@mui/icons-material';
 import { styled, keyframes } from 'styled-components';
+import useFetchPublicData from '../hooks/useFetchPublicData';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSortedData } from '../redux/modules/publicData';
+import { calDistance } from '../helper/calDistance';
+import { Paging } from './Paging';
 
-const Facilities = () => {
+const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => {
+  const selectedArea = filteredGlobalDataByArea?.selectedArea;
+  const selectedSports = filteredGlobalDataByArea?.selectedSports;
+
+  const navDetailPage = (facility) => {
+    setFacility(facility);
+  };
+
+  const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
+  const { data: publicData, isLoading, isError } = useFetchPublicData();
 
-  // 페이지네이션 관련 변수 및 state 설정
-  const maxPageItems = 10;
+  // 페이지네이션 관련 변수 및 state 선언
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = !globalSearch
+    ? filteredGlobalDataByArea
+      ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length
+      : publicData?.length || []
+    : publicData?.filter(
+        (data) =>
+          (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+          (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+          (data.MINCLASSNM.includes(globalSearch) ||
+            data.SVCNM.includes(globalSearch) ||
+            data.AREANM.includes(globalSearch))
+      ).length || null;
 
-  const queryClient = useQueryClient();
+  const totalPage = !globalSearch
+    ? filteredGlobalDataByArea
+      ? Math.ceil(
+          publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports).length /
+            itemsPerPage
+        )
+      : Math.ceil(publicData?.length / itemsPerPage) || []
+    : Math.ceil(
+        publicData?.filter(
+          (data) =>
+            (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (data.MINCLASSNM.includes(globalSearch) ||
+              data.SVCNM.includes(globalSearch) ||
+              data.AREANM.includes(globalSearch))
+        ).length / itemsPerPage
+      ) || null;
+
+  const [sortPublicDataByDis, setSortPublicDataByDis] = useState([]);
+
   useEffect(() => {
-    for (let page = currentPage; page <= currentPage + 4; page++) {
-      queryClient.prefetchQuery(['facilities', page], () => getFacilitiesForPagination(maxPageItems, page));
-    }
-  }, [currentPage, maxPageItems, queryClient]);
+    // filteredGlobalDataByArea가 true이면 필터링된 데이터를 사용하고,
+    // false이면 전체 데이터를 사용합니다.
+    const filteredData = !globalSearch
+      ? filteredGlobalDataByArea
+        ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
+        : publicData || []
+      : publicData?.filter(
+          (data) =>
+            (!selectedArea || data.AREANM === selectedArea) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (!selectedSports || data.MINCLASSNM === selectedSports) && // 카테고리가 '전체'인 경우 검색어로 필터링하도록 변경
+            (data.MINCLASSNM.includes(globalSearch) ||
+              data.SVCNM.includes(globalSearch) ||
+              data.AREANM.includes(globalSearch))
+        ) || null;
 
-  const {
-    isLoading,
-    isFetching,
-    data: facilities,
-    isError,
-    error
-  } = useQuery(['facilities', currentPage], () => getFacilitiesForPagination(maxPageItems, currentPage), {
-    refetchOnWindowFocus: false,
-    staleTime: 2000,
-    keepPreviousData: true
-  });
+    // 거리를 기준으로 데이터 정렬!!
+    const sortPublicDataByDis = [...filteredData].sort((a, b) => {
+      const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
+      const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
+      return dx - dy; // 거리 값을 비교하여 정렬
+    });
 
-  const onPreviousPageClick = () => {
-    setCurrentPage((prev) => (Math.ceil(prev / 5) - 1) * 5 - 4);
-  };
+    setSortPublicDataByDis(sortPublicDataByDis);
 
-  const onNextPageClick = () => {
-    setCurrentPage((prev) => Math.ceil(prev / 5) * 5 + 1);
-  };
-
-  const onPageButtonClick = (page) => {
-    setCurrentPage(page);
-  };
+    dispatch(setSortedData(sortPublicDataByDis));
+  }, [dispatch, filteredGlobalDataByArea, publicData, selectedArea, selectedSports, location, globalSearch]);
 
   if (isLoading) return <h3>로딩 중 입니다</h3>;
-  if (isError)
+  if (isError) {
     return (
       <>
         <p>에러가 발생하였습니다</p>
-        <p>{error.toString()}</p>
+        <p>{publicData.error.toString()}</p>
       </>
     );
+  }
 
-  const pageNumbers = [1, 2, 3, 4, 5].map((page) => page + Math.floor((currentPage - 1) / 5) * 5);
+  // 현재 페이지 위치에 따라 10개씩 보여줄 데이터
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
 
   return (
     <>
-      <FacilityTag>
-        <TitleTag>Reservation Data</TitleTag>
-        <NowPage>현재 페이지 {currentPage}</NowPage>
-        <ul>
-          {facilities.map((facility) => (
-            <LiTag key={facility.SVCID}>
-              {facility.AREANM} {facility.SVCNM}
-            </LiTag>
-          ))}
-        </ul>
-        <BtnContainer>
-          <Btn disabled={currentPage <= 5} onClick={onPreviousPageClick}>
-            ◀
-          </Btn>
-          {pageNumbers.map((page) => (
-            <Btn key={page} onClick={() => onPageButtonClick(page)}>
-              {page}
-            </Btn>
-          ))}
-          <Btn disabled={currentPage <= LastPage} onClick={onNextPageClick}>
-            ▶
-          </Btn>
-        </BtnContainer>
-      </FacilityTag>
+      <StyledFacilitiesContainer>
+        <Title>Reservation Data</Title>
+        <StyledItemListBox>
+          <SubTitlte>
+            <p>총 {totalItems}개</p>
+            <p>
+              &nbsp;&nbsp; 현재 페이지 {currentPage}/{totalPage}
+            </p>
+          </SubTitlte>
+          <UlTag>
+            {sliceData.map((facility) => (
+              <StyledItemBox key={facility.SVCID}>
+                <LiTag onClick={() => navDetailPage(facility)}>
+                  <TextTag>
+                    <span>{facility.AREANM}</span>&nbsp;&nbsp;
+                    <span>{facility.MINCLASSNM}</span>
+                  </TextTag>
+                  <TextTag>{facility.SVCNM}</TextTag>
+                </LiTag>
+              </StyledItemBox>
+            ))}
+          </UlTag>
+        </StyledItemListBox>
+        <PagingTag>
+          <Paging currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} />
+        </PagingTag>
+      </StyledFacilitiesContainer>
     </>
   );
 };
 
 export default Facilities;
 
-const FacilityTag = styled.div`
-  width: 450px;
-  color: rgba(236, 236, 236, 0.89);
+// const StLi = styled.li`
+//   border: 1px solid black;
+// `;
+const StyledFacilitiesContainer = styled.div`
+  width: 35%;
+  height: 1000px;
+  margin-left: 10px;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  color: white;
   background-color: rgba(41, 41, 41, 0.747);
   border-radius: 0 30px 30px 0;
-  padding-bottom: 10px;
-  margin-left: 4px;
+  padding: 20px 10px 20px 15px;
+
+  position: relative;
 `;
-const TitleTag = styled.h2`
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0 0 10px 10px;
-  padding-top: 10px;
-`;
-const NowPage = styled.p`
+
+const StyledItemListBox = styled.div`
   margin: 0 auto;
-  margin-top: 10px;
+`;
+const Title = styled.h2`
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 20px;
+`;
+const SubTitlte = styled.div`
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  padding: 0 10px;
+`;
+
+const StyledItemBox = styled.div`
+  // width: 90%;
+
+  margin: 0 auto;
+  margin: 10px 0;
+  background-color: grey;
+  border-radius: 10px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-
-  width: 200px;
-  font-weight: 600;
-  border-radius: 30px;
-  // margin: 10px 0;
-  padding: 10px 0px;
-  background-color: rgba(236, 236, 236);
-  color: black;
-  text-align: center;
 `;
-
 const growAnimation = keyframes`
   0% {
     transform: scale(1);
@@ -127,48 +189,38 @@ const growAnimation = keyframes`
   100% {
     transform: scale(1);
   }
+
+`;
+const UlTag = styled.ul`
+  width: 90%;
+  margin: 0 auto;
+  height: 70px;
+  color: white;
 `;
 
 const LiTag = styled.li`
-  width: 80%;
-  border-radius: 10px;
+  width: 100%;
   margin: 0 auto;
-  margin-top: 10px;
-  padding: 14px 6px;
-  background-color: rgba(123, 123, 123, 0.733);
-  text-align: center;
-  line-height: 1.5;
-  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
-  cursor: pointer;
-  &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(101, 101, 101, 0.933);
-    color: rgba(236, 236, 236);
-    font-weight: 600;
-  }
-`;
-
-const BtnContainer = styled.div`
-  margin: 20px 0 20px;
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-`;
-const Btn = styled.button`
-  width: 20px;
-  padding: 4px;
-  border-radius: 4px;
-  border: none;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  background-color: rgba(101, 101, 101, 0.933);
   color: white;
-  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
+  cursor: pointer;
+  border-radius: 10px;
   cursor: pointer;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(196, 196, 196, 0.733);
-    color: black;
+    background-color: rgba(138, 138, 138, 0.788);
   }
+`;
+const TextTag = styled.p`
+  text-align: center;
+  // height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 2px 0 8px;
+
+  margin-top: 10px;
+  padding: 0 4px 4px;
+`;
+const PagingTag = styled.div`
+  margin: 0 auto;
 `;

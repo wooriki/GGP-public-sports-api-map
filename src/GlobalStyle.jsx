@@ -1,8 +1,6 @@
-import Footer from './Footer';
-import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyles = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
   @import url('path/to/font/font.ttf');
   body {
     font-family: 'Nanum Gothic', sans-serif;
@@ -36,13 +34,4 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const Layout = () => {
-  return (
-    <>
-      <Outlet />
-      <Footer />
-    </>
-  );
-};
-
-export default Layout;
+export default GlobalStyle;

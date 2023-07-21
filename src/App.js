@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { NavermapsProvider } from 'react-naver-maps';
 import { styled } from 'styled-components';
+import GlobalStyle from './GlobalStyle';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,6 +18,7 @@ const queryClient = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      <GlobalStyle />
       {/* // 네이버 지도 API 사용을 위해 NavermapsProvider로 감싸줍니다. */}
       <NavermapsProvider ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID}>
         <StyledDiv>

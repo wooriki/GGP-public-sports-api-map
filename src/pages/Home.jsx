@@ -1,41 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { setLocation } from '../redux/modules/userLocation';
+import { styled, keyframes } from 'styled-components';
 import Facilities from '../components/Facilities';
 import Search from '../components/Search';
-import { styled, keyframes } from 'styled-components';
 import MapComponent from '../components/map/MapComponent';
+import Detail from '../components/detail/Detail';
+import Header from '../components/common/Header';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { location, error } = useCurrentLocation();
-  console.log(location);
+  const [facility, setFacility] = useState(null);
+  const [filteredGlobalDataByArea, setFilteredGlobalDataByArea] = useState(null);
+  const [globalSearch, setGlobalSearch] = useState(null);
+
   useEffect(() => {
     if (location) {
       dispatch(setLocation({ latitude: location.latitude, longitude: location.longitude }));
     }
-  }, [location]);
+  }, [dispatch, location]);
 
   return (
     <>
+      <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <ContainerWrapper>
         <StyledMain>
-          <MapComponent />
-          <TextTag>💥추천 영상</TextTag>
-          <UlTag>
-            <LiTag>1</LiTag>
-            <LiTag>2</LiTag>
-            <LiTag>3</LiTag>
-            <LiTag>4</LiTag>
-          </UlTag>
+          <div>
+            <TitleTag>Now Loading Map</TitleTag>
+            <MapComponent />
+          </div>
+          <OptionalTag>
+            <TextTag>💥추천 영상</TextTag>
+            <UlTag>
+              <LiTag>1</LiTag>
+              <LiTag>2</LiTag>
+              <LiTag>3</LiTag>
+              <LiTag>4</LiTag>
+              <LiTag>5</LiTag>
+            </UlTag>
+          </OptionalTag>
         </StyledMain>
-        <Facilities />
+        {facility ? (
+          <Detail setFacility={setFacility} facility={facility} />
+        ) : (
+          <Facilities
+            filteredGlobalDataByArea={filteredGlobalDataByArea}
+            globalSearch={globalSearch}
+            setFacility={setFacility}
+          />
+        )}
       </ContainerWrapper>
     </>
   );
 };
+// 마커에 대한 state
+//
 
 export default Home;
 
@@ -46,20 +68,26 @@ const ContainerWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 30px;
+
   background-color: rgba(41, 41, 41, 0.747);
+  padding: 0 0 0 30px;
+  border-radius: 30px;
 `;
 const StyledMain = styled.div`
-  // height: 100vh;
-  // display: flex;
-  // justify-content: space-evenly;
-  // align-items: center;
-  width: 70%;
+  width: 65%;
   color: rgba(236, 236, 236, 0.89);
-  background-color: rgba(41, 41, 41, 0.747);
   border-radius: 30px 0 0 30px;
-  padding: 60px 30px;
-  // margin-top: -50px;
+`;
+const TitleTag = styled.h2`
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  width: 250px;
+  // background-color: rgba(77, 77, 77, 0.776);
+  border-radius: 14px 0 0;
+`;
+const OptionalTag = styled.div`
+  margin-top: 40px;
 `;
 const TextTag = styled.h2`
   font-size: 1.5rem;
@@ -67,6 +95,7 @@ const TextTag = styled.h2`
 `;
 const UlTag = styled.ul`
   // display: flex;
+
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 `;
@@ -83,6 +112,7 @@ const growAnimation = keyframes`
 `;
 
 const LiTag = styled.li`
+  height: 140px;
   border: 1px black solid;
   margin: 40px 10px 20px;
   padding: 40px 60px;
