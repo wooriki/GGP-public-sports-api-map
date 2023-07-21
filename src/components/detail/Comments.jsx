@@ -18,6 +18,7 @@ const Comments = ({ facility }) => {
   });
   const [writer, setWriter] = useState();
   const [contents, setContents] = useState();
+  const [password, setPassword] = useState();
 
   const queryClient = useQueryClient();
 
@@ -58,7 +59,8 @@ const Comments = ({ facility }) => {
     const newComment = {
       postId: facility.SVCID,
       writer,
-      contents
+      contents,
+      password
     };
 
     const confirmCreate = window.confirm('작성하시겠습니까?');
@@ -77,6 +79,7 @@ const Comments = ({ facility }) => {
     // 입력 필드 초기화
     setWriter('');
     setContents('');
+    setPassword('');
   };
 
   const writerChangeHandler = (e) => {
@@ -87,8 +90,18 @@ const Comments = ({ facility }) => {
     setContents(e.target.value);
   };
 
+  const passwordChangeHandler = (e) => {
+    setPassword(e.target.value);
+  };
+
   // 댓글 삭제 핸들러
   const removeCommentHandler = (comment) => {
+    const userEnteredPassword = window.prompt('비밀번호를 입력하세요.'); // 사용자로부터 비밀번호 입력 받기
+    if (userEnteredPassword !== comment.password) {
+      alert('비밀번호가 일치하지 않습니다.'); // 비밀번호 불일치 시 알림
+      return;
+    }
+
     const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
     if (confirmDelete) {
       try {
@@ -107,6 +120,12 @@ const Comments = ({ facility }) => {
 
   // 댓글 수정 핸들러
   const updateCommentHandler = (comment) => {
+    // const userEnteredPassword = window.prompt('비밀번호를 입력하세요.'); // 사용자로부터 비밀번호 입력 받기
+    // if (userEnteredPassword !== comment.password) {
+    //   alert('비밀번호가 일치하지 않습니다.'); // 비밀번호 불일치 시 알림
+    //   return;
+    // }
+
     try {
       const editedComment = {
         ...comment,
@@ -129,6 +148,12 @@ const Comments = ({ facility }) => {
   };
   // 수정 모드 on
   const onEditMode = (comment) => {
+    const userEnteredPassword = window.prompt('비밀번호를 입력하세요.'); // 사용자로부터 비밀번호 입력 받기
+    if (userEnteredPassword !== comment.password) {
+      alert('비밀번호가 일치하지 않습니다.'); // 비밀번호 불일치 시 알림
+      return;
+    }
+
     setEditedCommentId(comment.id);
     setEditedWriter(comment.writer);
     setEditedContents(comment.contents);
@@ -162,6 +187,13 @@ const Comments = ({ facility }) => {
         <form onSubmit={commentCreateHandler}>
           <input type="text" name="writer" value={writer} onChange={writerChangeHandler} placeholder="작성자" />
           <input type="text" name="contents" value={contents} onChange={contentsChangeHanlder} placeholder="내용" />
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={passwordChangeHandler}
+            placeholder="비밀번호"
+          />
           <button>작성</button>
         </form>
         <div>
