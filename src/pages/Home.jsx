@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
@@ -67,16 +66,10 @@ const ContainerWrapper = styled.div`
   padding: 20px 0;
 `;
 const StyledMain = styled.div`
-  // height: 100vh;
-  // display: flex;
-  // justify-content: space-evenly;
-  // align-items: center;
-
   color: rgba(236, 236, 236, 0.89);
   background-color: rgba(41, 41, 41, 0.747);
   border-radius: 30px 0 0 30px;
   padding: 118px 30px;
-  // margin-top: -50px;
 `;
 const TextTag = styled.h2`
   font-size: 1.5rem;
