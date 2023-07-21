@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { setLocation } from '../redux/modules/userLocation';
 import { styled, keyframes } from 'styled-components';
 import Facilities from '../components/Facilities';
-import Search from '../components/Search';
 import MapComponent from '../components/map/MapComponent';
 import Detail from '../components/detail/Detail';
 import Header from '../components/common/Header';
+import axios from 'axios';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -16,6 +15,8 @@ const Home = () => {
   const [facility, setFacility] = useState(null);
   const [filteredGlobalDataByArea, setFilteredGlobalDataByArea] = useState(null);
   const [globalSearch, setGlobalSearch] = useState(null);
+  const [isMounted, setIsMounted] = useState(false); // 마운트 여부 상태
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
 
   useEffect(() => {
     if (location) {
@@ -23,24 +24,78 @@ const Home = () => {
     }
   }, [dispatch, location]);
 
+  /////////////////// woori
+
+  // 플레이리스트를 클릭했을 때 처리하는 함수
+  const handlePlaylistClick = (playlistId) => {
+    setSelectedPlaylistId(playlistId);
+  };
+
+  // 플레이리스트 ID에 따른 유튜브 링크 생성 함수
+  const getPlaylistLink = (playlistId) => {
+    return `https://www.youtube.com/playlist?list=${playlistId}`;
+  };
+
+  const [playlist, setPlaylist] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(
+        'https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=UCSGC87iX0QhnIfUOI_B_Rdg&maxResults=50&key=AIzaSyDG0fmpzvRTNpr4Aaj8DP_6ecKlnbbk4cg'
+      )
+      .then((res) => {
+        console.log(res);
+        setPlaylist(res.data.items);
+        setIsMounted(true); // 데이터를 받아온 후에 마운트된 것으로 설정
+      })
+      .catch(() => {});
+  }, []);
+  useEffect(() => {
+    console.log(playlist);
+  }, [playlist]);
+
+  // 랜덤으로 list 셔플
+  function shuffleArray(array) {
+    const shuffledArray = array.slice(); // 원본 배열을 변경하지 않고 복사
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+  }
+
+  const shuffledPlaylist = shuffleArray(playlist);
+
   return (
     <>
       <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <ContainerWrapper>
         <StyledMain>
           <div>
-            {/* <TitleTag>Now Loading Map</TitleTag> */}
+            <TitleTag>실시간 현황</TitleTag>
             <MapComponent />
           </div>
           <OptionalTag>
-            <TextTag>💥추천 영상</TextTag>
-            <UlTag>
-              <LiTag>1</LiTag>
+            <TextTag>💥추천 음악</TextTag>
+            {isMounted && ( // 마운트된 후에만 랜덤하게 렌더링
+              <UlTag>
+                {/* <LiTag>
+                <img src={i.snippet.thumbnails.high['url']} alt="" />
+              </LiTag>
               <LiTag>2</LiTag>
               <LiTag>3</LiTag>
               <LiTag>4</LiTag>
-              <LiTag>5</LiTag>
-            </UlTag>
+              <LiTag>5</LiTag> */}
+                {shuffledPlaylist.slice(0, 5).map((item) => (
+                  <LiTag key={item.id} onClick={() => handlePlaylistClick(item.id)}>
+                    <a href={getPlaylistLink(item.id)} target="_blank" rel="noopener noreferrer">
+                      <ImgTag src={item.snippet.thumbnails.medium.url} alt={item.snippet.title} />
+                      <SubTitle>{item.snippet.title}</SubTitle>
+                    </a>
+                  </LiTag>
+                ))}
+              </UlTag>
+            )}
           </OptionalTag>
         </StyledMain>
         {facility ? (
@@ -112,18 +167,34 @@ const growAnimation = keyframes`
 `;
 
 const LiTag = styled.li`
-  height: 140px;
+  width: 200px;
+  height: 150px;
+  cursor: pointer;
+`;
+const ImgTag = styled.img`
+  width: 100%;
+  // height: 140px;
   border: 1px black solid;
-  margin: 40px 10px 20px;
-  padding: 40px 60px;
+  margin: 40px 10px 8px;
+  // padding: 40px 60px;
   border-radius: 10px;
   border: none;
-  background-color: rgba(179, 179, 179, 0.476);
-  cursor: pointer;
+  box-shadow: 10px 10px 20px rgba(39, 39, 39, 0.6);
+
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
     background-color: rgba(225, 225, 225, 0.45);
   }
+`;
+
+const SubTitle = styled.h4`
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 20px;
+  width: 250px;
+  // background-color: rgba(77, 77, 77, 0.776);
+  border-radius: 14px 0 0;
 `;
 
 // 에러나면 Home에서 export const Home 아니면 export default Home으로 바꾸기
