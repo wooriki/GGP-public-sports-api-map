@@ -1,22 +1,37 @@
 {
-  "reviews": [
+  "comments": [
     {
       "postId": "S230601164554768313",
-      "writer": "ㅅ",
-      "contents": "테스트1",
-      "id": "wHmKaXl"
+      "writer": "1",
+      "contents": "1",
+      "id": 1
     },
     {
-      "postId": "S221207120351783574",
-      "writer": "ㅅ",
-      "contents": "ㅅ",
-      "id": "8LXqSL7"
+      "postId": "S230601164554768313",
+      "writer": "2",
+      "contents": "2",
+      "id": 2
     },
     {
-      "postId": "S230330173318102901",
-      "writer": "ㄹㅍㅇ",
-      "contents": "ㅁㄴㅇㄹ",
-      "id": "D3Iet9h"
+      "postId": "S230602073015862047",
+      "writer": "ㄴ",
+      "contents": "ㄴ",
+      "id": 3
+    },
+    {
+      "postId": "S230602073015862047",
+      "writer": "ㄴ",
+      "contents": "ㄴ",
+      "id": 4
+    },
+    {
+      "postId": "S230602073015862047",
+      "writer": "ㄷㄷe",
+      "contents": "ㄷ",
+      "id": 5
     }
-  ]
+  ],
+  "profile": {
+    "name": "typicode"
+  }
 }

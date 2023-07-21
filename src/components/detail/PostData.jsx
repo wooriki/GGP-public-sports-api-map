@@ -2,11 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-const PostData = ({ location, facility }) => {
+const PostData = ({ setFacility, facility }) => {
   const openLink = () => {
     window.open(facility.SVCURL, '');
   };
 
+  if (!facility) {
+    return <div>Loading...</div>;
+  }
   return (
     <PostBOX>
       <div>
@@ -18,23 +21,30 @@ const PostData = ({ location, facility }) => {
         <div>{facility.MINCLASSNM}</div>
       </ConDiv>
       <ConDiv>
-        <di>{facility.PLACENM}</di>&nbsp;&nbsp;
+        <div>{facility.PLACENM}</div>&nbsp;&nbsp;
         <div>{facility.AREANM}</div>
       </ConDiv>
       <ConDiv>
-        <di>{facility.SVCOPNBGNDT}</di>&nbsp;&nbsp;
+        <div>{facility.SVCOPNBGNDT}</div>&nbsp;&nbsp;
         <div>{facility.SVCOPNENDDT}</div>
       </ConDiv>
       <ConDiv>
-        <di>{facility.RCPTBGNDT}</di>&nbsp;&nbsp;
+        <div>{facility.RCPTBGNDT}</div>&nbsp;&nbsp;
         <div>{facility.RCPTENDDT}</div>
       </ConDiv>
       <ConDiv>
-        <di>{facility.SVCSTATNM}</di>&nbsp;&nbsp;
+        <div>{facility.SVCSTATNM}</div>&nbsp;&nbsp;
         <div>{facility.PAYATNM}</div>
       </ConDiv>
       <div>
         <button onClick={openLink}>예약하러가기</button>
+        <button
+          onClick={() => {
+            setFacility(null);
+          }}
+        >
+          뒤로가기
+        </button>
       </div>
     </PostBOX>
   );

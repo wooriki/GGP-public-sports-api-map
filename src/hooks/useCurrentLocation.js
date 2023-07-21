@@ -13,7 +13,7 @@ export const useCurrentLocation = () => {
 
   const getLocation = async () => {
     return new Promise((resolve, reject) => {
-      // getCurrentPosition : 브라우저의 Geolocation API의 메소드!!
+      // getCurrentPosition : 브라우저의 Geolocation API의 메소드
       navigator.geolocation.getCurrentPosition(resolve, reject, options);
     })
       .then((position) => {

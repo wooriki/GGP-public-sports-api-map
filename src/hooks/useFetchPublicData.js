@@ -1,8 +1,8 @@
 import { getData } from '../axios/publicDataAPI';
 import { useQuery } from 'react-query';
 
-const useFetchPublicData = (from, to) => {
-  const { data, isLoading, isError, error, isFetching } = useQuery(['publicData'], () => getData(from, to));
+const useFetchPublicData = () => {
+  const { data, isLoading, isError, error, isFetching } = useQuery(['publicData'], () => getData());
 
   return { data, isLoading, isError, error, isFetching };
 };

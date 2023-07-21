@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import shortid from 'shortid';
-import { getReviews, createReview, removeReview, updateReview } from '../../axios/review';
-import { setReviews } from '../../redux/modules/reviewSlice';
+import { getComments, createComment, removeComment, updateComment } from '../../axios/comment';
+import { setComments } from '../../redux/modules/commentsSlice';
 import { styled } from 'styled-components';
 
 const Comments = ({ facility }) => {
   const dispatch = useDispatch();
-  const reviews = useSelector((state) => state.reviews);
+  const comments = useSelector((state) => state.comments);
 
   // 댓글 목록 조회하는 쿼리
-  const { isLoading, isError } = useQuery('reviews', getReviews, {
+  const { isLoading, isError } = useQuery('comments', getComments, {
     // 성공적으로 데이터를 가져왔을 때 Redux 상태 업데이트!
     onSuccess: (data) => {
-      dispatch(setReviews(data));
+      dispatch(setComments(data));
     }
   });
   const [writer, setWriter] = useState();
@@ -23,40 +22,40 @@ const Comments = ({ facility }) => {
   const queryClient = useQueryClient();
 
   // 댓글 추가
-  const createReviewMutation = useMutation((newReview) => createReview(newReview), {
+  const createCommentMutation = useMutation(createComment, {
     onSuccess: (data) => {
       // 서버에서 생성된 댓글과 ID를 리덕스 스토어에 저장
-      dispatch({ type: 'reviews/createReview', payload: data });
+      dispatch({ type: 'comments/createComment', payload: data });
       // 새로운 댓글을 리액트 쿼리 캐시에 추가
-      queryClient.setQueryData('reviews', (prev) => [...prev, data]);
+      queryClient.setQueryData('comments', (prev) => [...prev, data]);
     }
   });
 
   // 댓글 삭제
-  const removeReviewMutation = useMutation(removeReview, {
+  const removeCommentMutation = useMutation(removeComment, {
     onSuccess: () => {
       // 댓글 목록 캐시 무효화
-      queryClient.invalidateQueries('reviews');
+      queryClient.invalidateQueries('comments');
     }
   });
 
   // 댓글 수정
-  const updateReviewMutation = useMutation(updateReview, {
+  const updateCommentMutation = useMutation(updateComment, {
     onSuccess: () => {
       // 댓글 목록 캐시 무효화
-      queryClient.invalidateQueries('reviews');
+      queryClient.invalidateQueries('comments');
     }
   });
-
+  // comment
   // 댓글 추가 핸들러
-  const reviewCreateHandler = async (e) => {
+  const commentCreateHandler = (e) => {
     e.preventDefault();
     if (!writer || !contents) {
       alert('필수 값이 누락되었습니다. 확인해주세요!');
       return false;
     }
 
-    const newReview = {
+    const newComment = {
       postId: facility.SVCID,
       writer,
       contents
@@ -68,9 +67,9 @@ const Comments = ({ facility }) => {
     }
 
     try {
-      await createReviewMutation.mutate(newReview);
+      createCommentMutation.mutate(newComment);
       // 댓글 추가 액션 디스패치
-      dispatch({ type: 'reviews/createReview', payload: newReview });
+      dispatch({ type: 'comments/createComment', payload: newComment });
     } catch (error) {
       console.error(error);
     }
@@ -89,37 +88,36 @@ const Comments = ({ facility }) => {
   };
 
   // 댓글 삭제 핸들러
-  const removeReviewHandler = async (review) => {
+  const removeCommentHandler = (comment) => {
     const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
     if (confirmDelete) {
       try {
-        await removeReviewMutation.mutate(review);
+        removeCommentMutation.mutate(comment);
         // 댓글 삭제 액션 디스패치
-        dispatch({ type: 'reviews/removeReview', payload: review });
-        offEditMode();
+        dispatch({ type: 'comments/removeComment', payload: comment });
       } catch (error) {
         console.error(error);
       }
     }
   };
 
-  const [editedReviewId, setEditedReviewId] = useState(null);
+  const [editedCommentId, setEditedCommentId] = useState(null);
   const [editedWriter, setEditedWriter] = useState('');
   const [editedContents, setEditedContents] = useState('');
 
   // 댓글 수정 핸들러
-  const updateReviewHandler = async (review) => {
+  const updateCommentHandler = (comment) => {
     try {
-      const editedReview = {
-        ...review,
+      const editedComment = {
+        ...comment,
         writer: editedWriter,
         contents: editedContents
       };
       const confirmSave = window.confirm('저장하시겠습니까?');
       if (confirmSave) {
-        await updateReviewMutation.mutate(editedReview);
+        updateCommentMutation.mutate(editedComment);
         // 댓글 수정 액션 디스패치
-        dispatch({ type: 'reviews/updateReview', payload: editedReview });
+        dispatch({ type: 'comments/updateComment', payload: editedComment });
       }
       offEditMode();
     } catch (error) {
@@ -130,18 +128,22 @@ const Comments = ({ facility }) => {
     setEditedContents(e.target.value);
   };
   // 수정 모드 on
-  const onEditMode = (review) => {
-    setEditedReviewId(review.id);
-    setEditedWriter(review.writer);
-    setEditedContents(review.contents);
+  const onEditMode = (comment) => {
+    setEditedCommentId(comment.id);
+    setEditedWriter(comment.writer);
+    setEditedContents(comment.contents);
   };
 
   // 수정 모드 off
   const offEditMode = () => {
-    setEditedReviewId(null);
+    setEditedCommentId(null);
     setEditedWriter('');
     setEditedContents('');
   };
+
+  if (!facility) {
+    return <div>Facility 정보를 불러오는 중...</div>; // 또는 다른 메시지를 표시할 수 있습니다.
+  }
 
   // 로딩 중일 때!
   if (isLoading) {
@@ -154,63 +156,63 @@ const Comments = ({ facility }) => {
   }
 
   return (
-    <ReviewContainer>
-      <ReviewWrapper>
+    <CommentContainer>
+      <CommentWrapper>
         <p>댓글</p>
-        <form onSubmit={reviewCreateHandler}>
+        <form onSubmit={commentCreateHandler}>
           <input type="text" name="writer" value={writer} onChange={writerChangeHandler} placeholder="작성자" />
           <input type="text" name="contents" value={contents} onChange={contentsChangeHanlder} placeholder="내용" />
           <button>작성</button>
         </form>
         <div>
-          {reviews
-            .filter((review) => review.postId == facility.SVCID)
-            .map((review) => {
-              const isEditMode = editedReviewId === review.id;
+          {comments
+            .filter((comment) => comment.postId == facility.SVCID)
+            .map((comment) => {
+              const isEditMode = editedCommentId === comment.id;
               return (
-                <ReviewBox key={review.id}>
-                  <div>writer : {review.writer}</div>
+                <CommentBox key={comment.id}>
+                  <div>writer : {comment.writer}</div>
                   <div>
                     {isEditMode ? (
                       <>
                         <textarea value={editedContents} onChange={editContentsChangeHanlder} />
                       </>
                     ) : (
-                      <>contents : {review.contents}</>
+                      <>contents : {comment.contents}</>
                     )}
                   </div>
 
                   <div>
                     {isEditMode ? (
                       <>
-                        <button onClick={() => updateReviewHandler(review)}>저장</button>
+                        <button onClick={() => updateCommentHandler(comment)}>저장</button>
                         <button onClick={offEditMode}>취소</button>
                       </>
                     ) : (
                       <>
-                        <button onClick={() => onEditMode(review)}>수정</button>
-                        <button onClick={() => removeReviewHandler(review)}>삭제</button>
+                        <button onClick={() => onEditMode(comment)}>수정</button>
+                        <button onClick={() => removeCommentHandler(comment)}>삭제</button>
                       </>
                     )}
                   </div>
-                </ReviewBox>
+                </CommentBox>
               );
             })}
         </div>
-      </ReviewWrapper>
-    </ReviewContainer>
+      </CommentWrapper>
+    </CommentContainer>
   );
 };
 
 export default Comments;
 
-const ReviewContainer = styled.div`
+const CommentContainer = styled.div`
   padding: 10px;
   margin: 10px;
   width: 500px;
 `;
 
-const ReviewWrapper = styled.div`
+const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -218,7 +220,7 @@ const ReviewWrapper = styled.div`
   justify-content: center;
 `;
 
-const ReviewBox = styled.div`
+const CommentBox = styled.div`
   border: 1px solid black;
   padding: 10px;
   margin: 10px;
