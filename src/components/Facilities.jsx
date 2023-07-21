@@ -5,6 +5,7 @@ import { setSortedData } from '../redux/modules/publicData';
 import { styled, keyframes } from 'styled-components';
 import { calDistance } from '../helper/calDistance';
 import { Paging } from './Paging';
+import { save10Location } from '../redux/modules/maps/save10Location';
 
 const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => {
   const selectedArea = filteredGlobalDataByArea?.selectedArea;
@@ -96,6 +97,9 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
+
+  // 필터된 데이터들을 스토어에 저장
+  dispatch(save10Location(sliceData));
 
   return (
     <>

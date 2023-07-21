@@ -12,6 +12,4 @@ const MapComponent = () => {
 
 export default MapComponent;
 
-const StyledDiv = styled.div`
-  margin: 0 auto;
-`;
+const StyledDiv = styled.div``;

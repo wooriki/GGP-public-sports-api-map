@@ -28,7 +28,7 @@ const Home = () => {
       <ContainerWrapper>
         <StyledMain>
           <div>
-            <TitleTag>Now Loading Map</TitleTag>
+            {/* <TitleTag>Now Loading Map</TitleTag> */}
             <MapComponent />
           </div>
           <TextTag>💥추천 영상</TextTag>
@@ -67,7 +67,7 @@ const ContainerWrapper = styled.div`
   background-color: rgba(41, 41, 41, 0.247);
   border-radius: 30px;
 `;
-const StyledMain = styled.div`
+const StyledMain = styled.main`
   width: 65%;
   color: rgba(236, 236, 236, 0.89);
   background-color: rgba(41, 41, 41, 0.747);

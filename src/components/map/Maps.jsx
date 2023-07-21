@@ -15,6 +15,10 @@ const Maps = () => {
   useEffect(() => {
     if (latitude === 37.551086 && longitude === 126.988033) {
       setIsItLoading(true);
+      // 임시 방편 => 사용자가 위치 공유를 하지 않았을 때 어떤걸로 로딩을 감지할지 알아내야함.
+      setTimeout(() => {
+        setIsItLoading(false);
+      }, 5000);
     } else {
       setIsItLoading(false);
     }
