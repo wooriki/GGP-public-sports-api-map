@@ -1,19 +1,172 @@
 {
-  "reviews": [
+  "comments": [
     {
-      "id": "1yxf7RqJk",
-      "writer": "테스트1",
-      "contents": "테스트1"
+      "postId": "S230601164554768313",
+      "writer": "ㅅ",
+      "contents": "테스트1",
+      "id": "wHmKaXl"
     },
     {
-      "id": "9pstyLo7G",
-      "writer": "테스트2",
-      "contents": "테스트23"
+      "postId": "S221207120351783574",
+      "writer": "ㅅ",
+      "contents": "ㅅ",
+      "id": "8LXqSL7"
     },
     {
-      "id": "vcg3JV-kg",
+      "postId": "S230330173318102901",
+      "writer": "ㄹㅍㅇ",
+      "contents": "ㅁㄴㅇㄹ",
+      "id": "D3Iet9h"
+    },
+    {
+      "postId": "S210401100008601453",
+      "writer": "1",
+      "contents": "12",
+      "id": "Cb8aY4D"
+    },
+    {
+      "postId": "S230710160923857891",
+      "writer": "3",
+      "contents": "33",
+      "id": "Tmc82mC"
+    },
+    {
+      "postId": "S230710160923857891",
+      "writer": "333333",
+      "contents": "3333333333",
+      "id": "HTh4h2Y"
+    },
+    {
+      "postId": "S230710160923857891",
+      "writer": "22222",
+      "contents": "222222222222222222222222222222",
+      "id": "6lAonsF"
+    },
+    {
+      "postId": "S230710160429269864",
       "writer": "2",
-      "contents": "2"
+      "contents": "3",
+      "password": "1111",
+      "id": "E7785gW"
+    },
+    {
+      "postId": "S221208170412245514",
+      "writer": "22",
+      "contents": "22",
+      "password": "222",
+      "id": "ra1s0OC"
+    },
+    {
+      "postId": "S221208170412245514",
+      "writer": "222",
+      "contents": "22222",
+      "password": "2222222",
+      "id": "3YVRTyK"
+    },
+    {
+      "postId": "S221208170412245514",
+      "writer": "22222",
+      "contents": "222222222222",
+      "password": "222222222",
+      "id": "OSC24zJ"
+    },
+    {
+      "postId": "S230614095918495271",
+      "writer": "김환훈",
+      "contents": "1",
+      "password": "123",
+      "id": "kuOo2F4"
+    },
+    {
+      "postId": "S230614114611942781",
+      "writer": "gg",
+      "contents": "1",
+      "password": "1234",
+      "id": "yVUADVQ"
+    },
+    {
+      "postId": "S230614100814373562",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "id": "op3Y7qa"
+    },
+    {
+      "postId": "S230614100814373562",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "id": "4ZBjEKh"
+    },
+    {
+      "postId": "S230605170631127486",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "id": "cF6rc87"
+    },
+    {
+      "postId": "S230605170631127486",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "id": "3cr_r1y"
+    },
+    {
+      "postId": "S230605170631127486",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "id": "nDWH67o"
+    },
+    {
+      "postId": "S230605170631127486",
+      "writer": "2",
+      "contents": "2",
+      "password": "2",
+      "id": "iZGppMw"
+    },
+    {
+      "postId": "S230706191718337717",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "id": "y4eqJZQ"
+    },
+    {
+      "postId": "S230706191718337717",
+      "writer": "1",
+      "contents": "11",
+      "password": "11",
+      "id": "rWmmL-R"
+    },
+    {
+      "postId": "S230327132329195896",
+      "writer": "1",
+      "contents": "2",
+      "password": "3",
+      "id": "iXO6yBM"
+    },
+    {
+      "postId": "S230605165813502433",
+      "writer": "1",
+      "contents": "1",
+      "password": "11",
+      "id": "Xyfnpmz"
+    },
+    {
+      "postId": "S230706193257580360",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "id": "1aYYKUU"
+    },
+    {
+      "postId": "S230606090950317015",
+      "writer": "1",
+      "contents": "3",
+      "password": "2",
+      "id": "USO6HQJ"
     }
   ]
 }

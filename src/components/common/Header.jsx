@@ -2,19 +2,20 @@ import React from 'react';
 import { styled, keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import Weather from './Weather';
-import { InputSearch } from '../InputSearch';
+import Search from '../Search';
 
-const Header = () => {
+const Header = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
   return (
     <WeatherContainer>
       <Link to="/">
-        <ImgTag src={process.env.PUBLIC_URL + 'img/Logo.png'} width="180" alt="로고" />
+        <ImgTag src={process.env.PUBLIC_URL + 'img/Logo.png'} alt="로고" />
       </Link>
-      <InputSearch />
+      <Search setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <Weather />
     </WeatherContainer>
   );
 };
+
 const growAnimation = keyframes`
   0% {
     transform: scale(1);
@@ -26,19 +27,19 @@ const growAnimation = keyframes`
     transform: scale(1);
   }
 `;
-const WeatherContainer = styled.div`
-  width: 70%;
-  margin: 0 auto;
-  margin-top: 60px;
+const WeatherContainer = styled.header`
+  width: 85%;
+  margin-top: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: #18191bdc;
   padding: 16px 30px;
-  border-radius: 34px;
+  border-radius: 30px;
 `;
 const ImgTag = styled.img`
   cursor: pointer;
+  width: 180px;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
   }

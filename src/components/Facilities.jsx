@@ -1,84 +1,221 @@
-import { useQuery, useQueryClient } from 'react-query';
-import { getFacilitiesForPagination } from '../axios/publicDataAPI';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { LastPage } from '@mui/icons-material';
+import { useEffect, useMemo, useState } from 'react';
+import { styled } from 'styled-components';
+import useFetchPublicData from '../hooks/useFetchPublicData';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSortedData } from '../redux/modules/publicData';
+import { calDistance } from '../helper/calDistance';
+import { Paging } from './Paging';
+import { save10Location } from '../redux/modules/maps/save10Location';
 
-const Facilities = () => {
+const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => {
+  // 선택된 지역과 스포츠 종목 변수 설정
+  const selectedArea = filteredGlobalDataByArea?.selectedArea;
+  const selectedSports = filteredGlobalDataByArea?.selectedSports;
+  const [filteredData, setFilteredData] = useState([]);
+  const [sliceData, setSliceData] = useState([]);
+  // 상세 페이지로 이동하는 함수
+  const navDetailPage = (facility) => {
+    setFacility(facility);
+  };
+
+  const dispatch = useDispatch();
   const location = useSelector((state) => state.location);
+  const { data: publicData, isLoading, isError } = useFetchPublicData();
 
-  // 페이지네이션 관련 변수 및 state 설정
-  const maxPageItems = 10;
+  // 검색 및 필터된 데이터 설정
+  useMemo(() => {
+    setFilteredData((prev) => {
+      return !globalSearch
+        ? filteredGlobalDataByArea
+          ? publicData?.filter((data) => data.AREANM === selectedArea && data.MINCLASSNM === selectedSports)
+          : publicData || []
+        : publicData?.filter(
+            (data) =>
+              (!selectedArea || data.AREANM === selectedArea) &&
+              (!selectedSports || data.MINCLASSNM === selectedSports) &&
+              (data.MINCLASSNM.includes(globalSearch) ||
+                data.SVCNM.includes(globalSearch) ||
+                data.AREANM.includes(globalSearch))
+          ) || null;
+    });
+  }, [filteredGlobalDataByArea, globalSearch, publicData, selectedArea, selectedSports]);
+
+  // 페이지네이션 관련 변수 및 state 선언
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = filteredData?.length || null;
+  const totalPage = Math.ceil((filteredData?.length || publicData?.length || 0) / itemsPerPage) || null;
+  const [sortPublicDataByDis, setSortPublicDataByDis] = useState([]);
 
-  const queryClient = useQueryClient();
+  // 거리 기준으로 데이터 정렬하는 부분
   useEffect(() => {
-    for (let page = currentPage; page <= currentPage + 4; page++) {
-      queryClient.prefetchQuery(['facilities', page], () => getFacilitiesForPagination(maxPageItems, page));
-    }
-  }, [currentPage, maxPageItems, queryClient]);
+    const sortPublicDataByDis = [...filteredData].sort((a, b) => {
+      const dx = calDistance(location.longitude, location.latitude, a.X, a.Y);
+      const dy = calDistance(location.longitude, location.latitude, b.X, b.Y);
+      return dx - dy; // 거리 값을 비교하여 정렬
+    });
 
-  const {
-    isLoading,
-    isFetching,
-    data: facilities,
-    isError,
-    error
-  } = useQuery(['facilities', currentPage], () => getFacilitiesForPagination(maxPageItems, currentPage), {
-    refetchOnWindowFocus: false,
-    staleTime: 2000,
-    keepPreviousData: true
-  });
+    setSortPublicDataByDis(sortPublicDataByDis);
 
-  const onPreviousPageClick = () => {
-    setCurrentPage((prev) => (Math.ceil(prev / 5) - 1) * 5 - 4);
-  };
+    // 현재 페이지에 따라 보여줄 데이터 조각 설정
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const sliceData = sortPublicDataByDis.slice(startIndex, endIndex);
 
-  const onNextPageClick = () => {
-    setCurrentPage((prev) => Math.ceil(prev / 5) * 5 + 1);
-  };
+    // 필터된 데이터들을 스토어에 저장
+    dispatch(save10Location(sliceData));
 
-  const onPageButtonClick = (page) => {
-    setCurrentPage(page);
-  };
+    dispatch(setSortedData(sortPublicDataByDis));
 
+    // Update the sliceData state
+    setSliceData(sliceData);
+  }, [dispatch, currentPage, itemsPerPage, filteredData, location, globalSearch]);
+
+  // 로딩 중이면 로딩 메시지 출력
   if (isLoading) return <h3>로딩 중 입니다</h3>;
-  if (isError)
+
+  // 에러가 발생하면 에러 메시지 출력
+  if (isError) {
     return (
       <>
         <p>에러가 발생하였습니다</p>
-        <p>{error.toString()}</p>
+        <p>{publicData?.error.toString()}</p>
       </>
     );
-
-  const pageNumbers = [1, 2, 3, 4, 5].map((page) => page + Math.floor((currentPage - 1) / 5) * 5);
+  }
 
   return (
-    <>
-      <div>Reservation Data</div>
-      <p>현재 페이지 {currentPage}</p>
-      <ul>
-        {facilities.map((facility) => (
-          <li key={facility.SVCID}>
-            {facility.AREANM} {facility.SVCNM}
-          </li>
-        ))}
-      </ul>
-      <div className="pages">
-        <button disabled={currentPage <= 5} onClick={onPreviousPageClick}>
-          이전 페이지
-        </button>
-        {pageNumbers.map((page) => (
-          <button key={page} onClick={() => onPageButtonClick(page)}>
-            {page}
-          </button>
-        ))}
-        <button disabled={currentPage <= LastPage} onClick={onNextPageClick}>
-          다음 페이지
-        </button>
+    <StyledFacilitiesContainer>
+      <Title>공공 체육 시설 예약 정보</Title>
+      <SubTitlte>
+        <p>총 {totalItems}개</p>
+        <p>
+          &nbsp;&nbsp; 현재 페이지 {currentPage}/{totalPage}
+        </p>
+      </SubTitlte>
+      <StyledItemListBox>
+        {sliceData.map((facility) => {
+          const backgroundColor =
+            facility.SVCSTATNM === '접수중'
+              ? { backgroundColor: '#223060' }
+              : facility.SVCSTATNM === '안내중'
+              ? { backgroundColor: '#22562d' }
+              : facility.SVCSTATNM === '예약마감'
+              ? { backgroundColor: '#ae010f' }
+              : facility.SVCSTATNM === '예약일시중지'
+              ? { backgroundColor: '#111' }
+              : facility.SVCSTATNM === '접수종료'
+              ? { backgroundColor: '#111' }
+              : null;
+          return (
+            <div className="facility-list" key={facility.SVCID} onClick={() => navDetailPage(facility)}>
+              <span style={backgroundColor}>{facility.SVCSTATNM}</span>
+              <img src={facility.IMGURL} alt="public health facility img" />
+              <div className="facility-list-info">
+                <h3>
+                  {facility.AREANM} {facility.MINCLASSNM}
+                </h3>
+                <p>{facility.SVCNM}</p>
+              </div>
+            </div>
+          );
+        })}
+      </StyledItemListBox>
+      <div>
+        <Paging currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} />
       </div>
-    </>
+    </StyledFacilitiesContainer>
   );
 };
 
 export default Facilities;
+
+const StyledFacilitiesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #eee;
+  background-color: #18191bdc;
+  padding: 1rem;
+  height: 100%;
+`;
+const Title = styled.h2`
+  padding-top: 1.3rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+`;
+const SubTitlte = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 1rem;
+`;
+
+const StyledItemListBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: auto;
+  height: 100%;
+  padding: 1rem 0;
+
+  .facility-list {
+    position: relative;
+    width: 90%;
+    display: flex;
+    background-color: #2e2e30;
+    align-items: center;
+    gap: 4px;
+    border: 1px #404246 solid;
+    border-radius: 5px;
+    padding: 5px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: cubic-bezier(0, 0, 0.2, 1) 0.3s;
+    &:hover {
+      transform: scale(1.02);
+      background-color: #3b3d43;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+    span {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      background-color: #ddd;
+      color: #eee;
+      padding: 3px 5px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      transform: translate(-8px, -8px);
+    }
+  }
+
+  img {
+    width: 20%;
+    border-radius: 4px;
+  }
+
+  .facility-list-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0 8px;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #dadada;
+      text-align: left;
+    }
+    p {
+      font-size: 0.85rem;
+      color: #b9bbc0;
+      text-align: left;
+      line-height: 1.2;
+    }
+  }
+`;
