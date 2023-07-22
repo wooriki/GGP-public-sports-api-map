@@ -80,7 +80,8 @@ const UlTag = styled.div`
   gap: 8px;
   overflow-x: hidden; /* 가로 방향 스크롤을 감춥니다. */
   overflow-y: auto; /* 세로 스크롤을 허용합니다. */
-  height: 190px;
+  // height: 190px;
+  min-height: 200px;
   max-height: calc(
     185vh - 2170px
   ); /* 최대 높이를 뷰포트 높이 - 200px로 설정하여 유동적으로 스크롤이 생기도록 합니다. */
@@ -143,6 +144,7 @@ const SubTitle = styled.h4`
   margin: 10px 0 20px;
   width: 250px;
   border-radius: 14px 0 0;
+  text-transform: uppercase;
 `;
 
 export default YouTubeApi;

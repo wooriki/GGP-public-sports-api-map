@@ -135,7 +135,7 @@ const StyledFacilitiesContainer = styled.div`
   flex-direction: column;
   align-items: center;
   color: #eee;
-  background-color: #232529;
+  background-color: #18191bdc;
   padding: 1rem;
   height: 100%;
 `;
@@ -164,7 +164,7 @@ const StyledItemListBox = styled.div`
     position: relative;
     width: 90%;
     display: flex;
-    background-color: #303236;
+    background-color: #2e2e30;
     align-items: center;
     gap: 4px;
     border: 1px #404246 solid;

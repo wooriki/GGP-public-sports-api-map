@@ -18,6 +18,8 @@ export const Paging = ({ currentPage, totalItems, setCurrentPage }) => {
 };
 
 const StyledPageContainer = styled.div`
+  height: 40px;
+  margin-top: 20px;
   .pagination {
     margin: 0 auto;
     display: flex;
@@ -49,7 +51,7 @@ const StyledPageContainer = styled.div`
   }
 
   ul.pagination li.active a {
-    color: rgba(63, 63, 63, 0.885);
+    color: white;
   }
 
   ul.pagination li.active {
@@ -58,7 +60,7 @@ const StyledPageContainer = styled.div`
 
   ul.pagination li a:hover,
   ul.pagination li a.active {
-    color: blue;
+    color: white;
   }
 
   .page-selection {

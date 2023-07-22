@@ -82,7 +82,7 @@ const StyledDivForLeft = styled.div`
 `;
 
 const StyledRecommendation = styled.div`
-  background-color: rgba(25, 25, 25, 0.95);
+  background-color: #18191bdc;
   border-radius: 20px;
   height: 30%;
 
