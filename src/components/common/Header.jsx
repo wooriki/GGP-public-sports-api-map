@@ -8,7 +8,7 @@ const Header = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
   return (
     <WeatherContainer>
       <Link to="/">
-        <ImgTag src={process.env.PUBLIC_URL + 'img/Logo.png'} width="180" alt="로고" />
+        <ImgTag src={process.env.PUBLIC_URL + 'img/Logo.png'} alt="로고" />
       </Link>
       <Search setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
       <Weather />
@@ -39,7 +39,7 @@ const WeatherContainer = styled.header`
 `;
 const ImgTag = styled.img`
   cursor: pointer;
-  width: 150px;
+  width: 180px;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
   }

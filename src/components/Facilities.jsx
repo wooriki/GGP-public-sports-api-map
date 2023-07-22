@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { styled, keyframes } from 'styled-components';
+import { styled } from 'styled-components';
 import useFetchPublicData from '../hooks/useFetchPublicData';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSortedData } from '../redux/modules/publicData';

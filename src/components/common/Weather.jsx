@@ -73,7 +73,7 @@ const Weather = () => {
     return <Alert>No weather data available</Alert>;
   }
 
-  const { name, weather, main } = weatherData;
+  const { weather, main } = weatherData;
   // const currentDate = new Date();
   return (
     <>
