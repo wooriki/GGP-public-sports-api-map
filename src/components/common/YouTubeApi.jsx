@@ -5,6 +5,9 @@ import axios from 'axios';
 const YouTubeApi = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+  const [playlist, setPlaylist] = useState([]);
+  const [shuffledPlaylist, setShuffledPlaylist] = useState([]);
+
   const ulRef = useRef(null);
 
   const handlePlaylistClick = (playlistId) => {
@@ -15,28 +18,30 @@ const YouTubeApi = () => {
     return `https://www.youtube.com/playlist?list=${playlistId}`;
   };
 
-  const [playlist, setPlaylist] = useState([]);
-
-  const shuffledPlaylist = shuffleArray(playlist);
-
   useEffect(() => {
     axios
       .get(
         `https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=UCSGC87iX0QhnIfUOI_B_Rdg&maxResults=50&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`
       )
       .then((res) => {
-        setPlaylist(res.data.items);
+        const playlist = res.data.items;
+        const shuffledArray = shuffleArray(playlist);
+        setShuffledPlaylist(shuffledArray);
         setIsMounted(true);
       })
       .catch(() => {});
   }, []);
 
   useEffect(() => {
-    const ulHeight = ulRef.current ? ulRef.current.scrollHeight : 0;
-    if (ulHeight > 0) {
-      ulRef.current.style.height = `${ulHeight}px`;
-    }
-  }, [shuffledPlaylist]); // shuffledPlaylist을 의존성 배열에 추가
+    // 배열을 섞습니다.
+    const shuffledArray = shuffleArray(playlist);
+
+    // 랜덤으로 섞은 배열의 처음 5개를 선택합니다.
+    const slicedArray = shuffledArray.slice(0, 5);
+
+    // 선택된 배열을 state에 저장합니다.
+    setShuffledPlaylist(slicedArray);
+  }, [playlist]);
 
   function shuffleArray(array) {
     const shuffledArray = array.slice();
