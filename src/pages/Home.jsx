@@ -88,6 +88,7 @@ const StyledRecommendation = styled.div`
 
   #recommendation-title {
     height: 20%;
+    margin-top: 10px;
     min-height: 50px;
     display: flex;
     // flex-direction: column;

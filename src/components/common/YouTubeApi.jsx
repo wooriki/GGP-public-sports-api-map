@@ -75,18 +75,15 @@ const YouTubeApi = () => {
 const UlMother = styled.div``;
 
 const UlTag = styled.div`
-  //   display: grid;
-  //   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  //   grid-gap: 8px;
-  //   overflow: auto; /* 스크롤을 허용합니다. */
-  //   max-height: calc(100vh - 200px); /* 최대 높이를 뷰포트 높이 - 200px로 설정하여 유동적으로 스크롤이 생기도록 합니다. */
-  //
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   overflow-x: hidden; /* 가로 방향 스크롤을 감춥니다. */
   overflow-y: auto; /* 세로 스크롤을 허용합니다. */
-  max-height: calc(100vh - 980px); /* 최대 높이를 뷰포트 높이 - 200px로 설정하여 유동적으로 스크롤이 생기도록 합니다. */
+  height: 190px;
+  max-height: calc(
+    185vh - 2170px
+  ); /* 최대 높이를 뷰포트 높이 - 200px로 설정하여 유동적으로 스크롤이 생기도록 합니다. */
 
   /* 스크롤 바 스타일 */
   -webkit-scrollbar {
