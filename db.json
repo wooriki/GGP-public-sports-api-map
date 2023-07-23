@@ -171,7 +171,7 @@
     {
       "postId": "S230614093622522189",
       "writer": "김환훈",
-      "contents": "13123123123",
+      "contents": "13123123123sadf",
       "password": "123",
       "id": "GIujAtu"
     },
@@ -181,6 +181,43 @@
       "contents": "123",
       "password": "123",
       "id": "mbzcZuf"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "1",
+      "contents": "23",
+      "password": "2",
+      "id": "nrwhhYq"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "2",
+      "contents": "2",
+      "password": "22312",
+      "id": "Ra39zMj"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "김환훈",
+      "contents": "hi hi hi ",
+      "password": "123",
+      "id": "DwyrH-f"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "test",
+      "contents": "autocomplete 속성은 HTML의 input 요소에 사용되는 속성으로, 웹 브라우저가 자동완성(Autofill) 기능을 제공할 때 사용자가 입력한 내용을 기억하고 이후에 해당 input 요소를 자동으로 완성하는데 사용됩니다. 이를 통해 사용자는 이전에 입력한 정보를 다시 입력하지 않아도 되므로 편의성이 증가하고 사용자 경험이 개선됩니다.",
+      "password": "test",
+      "id": "KWlHjgg"
     }
-  ]
+  ],
+  "profile-photo": {
+    "profile1": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+    "profile2": "https://i.ibb.co/WvwjM8w/avatar-2.jpg",
+    "profile3": "https://i.ibb.co/3cxpjfM/avatar-3.jpg",
+    "profile4": "https://i.ibb.co/94bXRDF/avatar-4.jpg",
+    "profile5": "https://i.ibb.co/3p4rvbR/avatar-5.jpg",
+    "profile6": "https://i.ibb.co/xXMxW3P/avatar-6.jpg",
+    "profile7": "https://i.ibb.co/9TSLzHg/avatar-7.jpg"
+  }
 }

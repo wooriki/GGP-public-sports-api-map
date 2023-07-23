@@ -45,22 +45,20 @@ const PostData = ({ setFacility, facility }) => {
   }
   return (
     <PostBOX>
-      <div id="detail-go-back-container">
-        <ArrowBackIosNewIcon
-          id="detail-go-back"
-          onClick={() => {
-            setFacility(null);
-          }}
-          onMouseEnter={(e) => handleMouseEnter(e)}
-          onMouseLeave={(e) => handleMouseLeave(e)}
-          onMouseMove={handleMouseMove}
-        />
-        {showMessage && (
-          <div style={tooltipStyled}>
-            <p>뒤로가기</p>
-          </div>
-        )}
-      </div>
+      <ArrowBackIosNewIcon
+        id="detail-go-back"
+        onClick={() => {
+          setFacility(null);
+        }}
+        onMouseEnter={(e) => handleMouseEnter(e)}
+        onMouseLeave={(e) => handleMouseLeave(e)}
+        onMouseMove={handleMouseMove}
+      />
+      {showMessage && (
+        <div style={tooltipStyled}>
+          <p>뒤로가기</p>
+        </div>
+      )}
 
       <div id="detail-image-container">
         <img src={facility.IMGURL} alt="facility img" />
@@ -104,18 +102,18 @@ const PostBOX = styled.div`
   position: relative;
   overflow: auto;
 
-  #detail-go-back-container {
+  #detail-go-back {
     position: sticky;
     top: 5px;
     left: 5px;
     background-color: #18191bdc;
-    width: 24px;
     border-radius: 5px;
-    z-index: 20;
-  }
-  #detail-go-back {
     cursor: pointer;
     z-index: 100;
+    transform: cubic-bezier(0, 0, 0.2, 1) 0.3s;
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
   #detail-image-container {
