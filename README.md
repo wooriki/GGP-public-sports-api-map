@@ -11,8 +11,8 @@
 
 ## 🖥️ 프로젝트 개요
 
-- React.js로 빌드한 서울시 공공서비스 체육시설 조회 및 예약안내 사이트입니다.
-- naver map api, 서울시 공공 체육시설 api, open weather map api, youtube data api를 활용하여 다채로운 페이지 구성을 하였습니다.
+- React.js로 빌드한 서울시 공공서비스 체육시설 조회 및 예약안내 사이트입니다
+- naver map api, 서울시 공공 체육시설 api, open weather map api, youtube data api를 활용하여 다채로운 페이지 구성을 하였습니다
 
 <br />
 
@@ -131,8 +131,8 @@
 
 ### 지도API <a href="https://www.ncloud.com/product/applicationService/maps">네이버 지도</a>
 
-- 공공데이터API에서 불러온 데이터에서 위도와 경도를 활용하여 네이버 맵에 핀을 찍는다.
-- reverse geocoding api를 통해 위도와 경도를 통해서 도로명주소로 변환한다.
+- 공공데이터API에서 불러온 데이터에서 위도와 경도를 활용하여 네이버 맵에 핀을 찍는다
+- reverse geocoding api를 통해 위도와 경도를 통해서 도로명주소로 변환한다
 
 ### 공공데이터API <a href="http://data.seoul.go.kr/dataList/OA-2266/S/1/datasetView.do">서울시 체육시설 공공서비스 예약</a>
 
