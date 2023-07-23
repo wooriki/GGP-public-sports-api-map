@@ -251,7 +251,7 @@
 - Slack
 - Figma
 <div align=“center”>
- <img src="https://img.shields.io/badge/visualstudio-d96fb41?style=for-the-badge&logo=visualstudio&logoColor=white">
+ <img src="https://img.shields.io/badge/visualstudio-cf72ae?style=for-the-badge&logo=visualstudio&logoColor=white">
  <img src="https://img.shields.io/badge/slack-ad498a?style=for-the-badge&logo=slack&logoColor=white">
  <img src="https://img.shields.io/badge/figma-822f65?style=for-the-badge&logo=slack&logoColor=white">
 </div>
