@@ -12,6 +12,7 @@
 ## 🖥️ 프로젝트 개요
 
 - React.js로 빌드한 서울시 공공서비스 체육시설 조회 및 예약안내 사이트입니다.
+- naver map api, 서울시 공공 체육시설 api, open weather map api, youtube data api를 활용하여 다채로운 페이지 구성을 하였습니다.
 
 <br />
 
