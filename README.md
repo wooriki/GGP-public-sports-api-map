@@ -201,7 +201,9 @@
 
 #### 6. 반응형 구현
 
-![06 responsive](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/20fa80f5-4d62-49df-8353-47a6aa018f69)
+![small](https://github.com/kimhwanhoon/20230724_team_project/assets/109304556/d6907671-c743-49dd-8bca-b504238a363f)
+
+
 
 <br />
 
