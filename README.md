@@ -122,7 +122,7 @@
 | 팀장 | 김환훈 | 지도 API                         | <a href="https://github.com/kimhwanhoon">https://github.com/kimhwanhoon</a> |
 | 팀원 | 김우리 | 날씨API, 유튜브 API              | <a href="https://github.com/wooriki">https://github.com/wooriki</a>         |
 | 팀원 | 박지원 | 공공API 데이터 페이지네이션      | <a href="https://github.com/xoxojw">https://github.com/xoxojw</a>           |
-| 팀원 | 조성록 | 날씨API, 상세 페이지, 댓글 기능, 검색 기능  | <a href="https://github.com/pigrok">https://github.com/pigrok</a>           |
+| 팀원 | 조성록 | 날씨API, 상세 페이지, 댓글 기능  | <a href="https://github.com/pigrok">https://github.com/pigrok</a>           |
 | 팀원 | 최수아 | 공공API 데이터 검색 및 필터 기능 | <a href="https://github.com/choisua98">https://github.com/choisua98</a>     |
 
 <br />
@@ -137,11 +137,11 @@
 
 ### 공공데이터API <a href="http://data.seoul.go.kr/dataList/OA-2266/S/1/datasetView.do">서울시 체육시설 공공서비스 예약</a>
 
-• react query, axios 활용하여 서울시 공공API 데이터 GET 요청
-• 검색창 필터링으로 공공데이터 필터기능 구현
-• 필터링 된 API 데이터를 `pagination` 기능으로 `painting`
-• 불러온 API 데이터를 사용자 위치 정보에 따라 가까운 순으로 정렬
-• 거리 순으로 정렬된 데이터를 `react-js-pagination` 라이브러리 활용하여 페이지네이션
+- react query, axios 활용하여 서울시 공공API 데이터 GET 요청
+- 검색창 필터링으로 공공데이터 필터기능 구현
+- 필터링 된 API 데이터를 `pagination` 기능으로 `painting`
+- 불러온 API 데이터를 사용자 위치 정보에 따라 가까운 순으로 정렬
+- 거리 순으로 정렬된 데이터를 `react-js-pagination` 라이브러리 활용하여 페이지네이션
 
 ### 날씨API <a href="https://openweathermap.org/api">Open Weather Map</a>
 
