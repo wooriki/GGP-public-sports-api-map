@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { styled, keyframes } from 'styled-components';
 import { useQuery } from 'react-query';
 import { getWeatherData } from '../../axios/weatherApi';
@@ -7,6 +7,14 @@ import axios from 'axios';
 
 const Weather = () => {
   const location = useSelector((state) => state.location);
+
+  const [oneMinuteTimer, setOneMinuteTimer] = useState(0);
+  const setTimer = useCallback(() => {
+    setInterval(() => {
+      setOneMinuteTimer(oneMinuteTimer + 1);
+    }, 60000);
+  }, [oneMinuteTimer]);
+
   const [koreanAddress, setKoreanAddress] = useState('서울특별시');
   useEffect(() => {
     const fetchKoreanCityName = async () => {
@@ -23,23 +31,27 @@ const Weather = () => {
     fetchKoreanCityName();
   }, [location]);
 
-  const dateBuilder = (d) => {
-    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    // sunday 먼저..!!
-    let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Tur', 'Fri', 'Sat'];
-    let day = days[d.getDay()];
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
-    let date = d.getDate();
-    let hours = d.getHours().toString().padStart(2, '0');
-    let minutes = d.getMinutes().toString().padStart(2, '0');
-    return (
-      <DateBuild>
-        <h3>{`${day} ${date} ${month} ${year}`}</h3>
-        <Timmer>{`${hours}:${minutes}`}</Timmer>
-      </DateBuild>
-    );
-  };
+  const dateBuilder = useCallback(
+    (d) => {
+      let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      // sunday 먼저..!!
+      let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Tur', 'Fri', 'Sat'];
+      let day = days[d.getDay()];
+      let month = months[d.getMonth()];
+      let year = d.getFullYear();
+      let date = d.getDate();
+      let hours = d.getHours().toString().padStart(2, '0');
+      let minutes = d.getMinutes().toString().padStart(2, '0');
+      setTimer();
+      return (
+        <DateBuild>
+          <h3>{`${day} ${date} ${month} ${year}`}</h3>
+          <Timmer>{`${hours}:${minutes}`}</Timmer>
+        </DateBuild>
+      );
+    },
+    [setTimer]
+  );
 
   const {
     data: weatherData,

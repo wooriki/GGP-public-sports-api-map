@@ -3,11 +3,10 @@ import { styled } from 'styled-components';
 import { useRef, useState } from 'react';
 import axios from 'axios';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLocation } from '../redux/modules/userLocation';
-import { reloadMap } from '../redux/modules/maps/reloadMap';
+import { useDispatch } from 'react-redux';
+import { toggleIsFacilityChosen } from '../redux/modules/maps/isFacilityChosen';
 
-const Search = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
+const Search = ({ setFilteredGlobalDataByArea, setGlobalSearch, setFacility }) => {
   const searchIconRef = useRef();
   const searchInputRef = useRef();
   const searchOptionRef = useRef();
@@ -17,7 +16,7 @@ const Search = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
   // 필터링된 지역 상태관리
   const [filteredDataByArea, setFilteredDataByArea] = useState([]);
   const [search, setSearch] = useState('');
-
+  const dispatch = useDispatch();
   // 종목 클릭시 selectedSports에 넣기
   const onSportsButtonClickHandler = (e) => {
     e.preventDefault();
@@ -51,9 +50,14 @@ const Search = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
     setIsOptionSelected(false);
     setGlobalSearch(search);
     setFilteredGlobalDataByArea(null);
+    setFacility(null);
+    dispatch(toggleIsFacilityChosen(false));
   };
 
+  // 검색 함수
   const onSearchFormHandler = (e) => {
+    setFacility(null);
+    dispatch(toggleIsFacilityChosen(false));
     setSelectedSports('');
     setIsOptionSelected(false);
     setFilteredGlobalDataByArea(null);

@@ -11,18 +11,23 @@ const Maps = () => {
   const [map, setMap] = useState(null);
   const { latitude, longitude } = useSelector((state) => state.location);
   const [isItLoading, setIsItLoading] = useState(true);
+  const isLocationAllowed = useSelector((state) => state.isLocationAllowed);
 
   useEffect(() => {
-    if (latitude === 37.551086 && longitude === 126.988033) {
+    if (isLocationAllowed === null) {
       setIsItLoading(true);
-      // 임시 방편 => 사용자가 위치 공유를 하지 않았을 때 어떤걸로 로딩을 감지할지 알아내야함.
+    } else if (isLocationAllowed) {
+      if (latitude === 37.551086 && longitude === 126.988033) {
+        setIsItLoading(true);
+      } else {
+        setIsItLoading(false);
+      }
+    } else {
       setTimeout(() => {
         setIsItLoading(false);
-      }, 5000);
-    } else {
-      setIsItLoading(false);
+      }, 1000);
     }
-  }, [latitude, longitude]);
+  }, [isLocationAllowed, latitude, longitude]);
 
   //===================================//
   // pins => 좌표를 찍을 핀 모음
@@ -36,15 +41,16 @@ const Maps = () => {
   //===================================//
   // 맵 우상단에 있는 아이콘 클릭 시 사용자 위치로 이동하는 함수
   const currentLocationIconClickHandler = () => {
-    // 위치가 기본 위치이면 즉, 사용자가 위치 정보를 공유하지 않으면 => 작동하지 않게 설정
-    if (latitude === 37.551086 && longitude === 126.988033) {
-      return;
-    } else {
+    const locateCurrentLocation = () => {
       const coords = new navermaps.LatLng(latitude, longitude);
       if (map) {
         map.panTo(coords);
         map.setZoom(14, true);
       }
+    };
+    // 사용자가 위치 정보를 공유하지 않으면 => 작동하지 않게 설정
+    if (!navigator.geolocation) {
+      locateCurrentLocation();
     }
   };
   //-----------------------------------//

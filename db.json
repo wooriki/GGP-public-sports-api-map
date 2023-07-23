@@ -167,6 +167,193 @@
       "contents": "3",
       "password": "2",
       "id": "USO6HQJ"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "김환훈",
+      "contents": "13123123123sadf",
+      "password": "123",
+      "id": "GIujAtu"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "김환훈",
+      "contents": "123",
+      "password": "123",
+      "id": "mbzcZuf"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "1",
+      "contents": "23",
+      "password": "2",
+      "id": "nrwhhYq"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "2",
+      "contents": "2",
+      "password": "22312",
+      "id": "Ra39zMj"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "김환훈",
+      "contents": "hi hi hi ",
+      "password": "123",
+      "id": "DwyrH-f"
+    },
+    {
+      "postId": "S230614093622522189",
+      "writer": "test",
+      "contents": "autocomplete 속성은 HTML의 input 요소에 사용되는 속성으로, 웹 브라우저가 자동완성(Autofill) 기능을 제공할 때 사용자가 입력한 내용을 기억하고 이후에 해당 input 요소를 자동으로 완성하는데 사용됩니다. 이를 통해 사용자는 이전에 입력한 정보를 다시 입력하지 않아도 되므로 편의성이 증가하고 사용자 경험이 개선됩니다.",
+      "password": "test",
+      "id": "KWlHjgg"
+    },
+    {
+      "postId": "S230614100242860781",
+      "writer": "김환훈",
+      "contents": "테스트중입니다~!",
+      "password": "1234",
+      "id": "NDvz-_l"
+    },
+    {
+      "postId": "S230614100242860781",
+      "writer": "김환훈",
+      "contents": "테스트중입니다~!",
+      "password": "1234",
+      "id": "mgr6v3J"
+    },
+    {
+      "postId": "S230614100242860781",
+      "writer": "김환훈",
+      "contents": "hi hi hi ",
+      "password": "1234",
+      "id": "4hrTSh3"
+    },
+    {
+      "postId": "S230614100242860781",
+      "writer": "김환훈",
+      "contents": "1234",
+      "password": "1234",
+      "id": "j8-WWbX"
+    },
+    {
+      "postId": "S230614100242860781",
+      "writer": "김환훈",
+      "contents": "사진 기능 추가했어요.,",
+      "password": "1234",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "G5lU2Fn"
+    },
+    {
+      "postId": "S230614095918495271",
+      "writer": "김환훈",
+      "contents": "테스트중입니다~!",
+      "password": "1234",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "03JeAm2"
+    },
+    {
+      "postId": "S230614095918495271",
+      "writer": "김환훈",
+      "contents": "123123",
+      "password": "1234",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "0SO-nOR"
+    },
+    {
+      "postId": "S230614095918495271",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "_P3nIds"
+    },
+    {
+      "postId": "S230614095918495271",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "profilePhoto": "https://i.ibb.co/94bXRDF/avatar-4.jpg",
+      "id": "EZjITbC"
+    },
+    {
+      "postId": "S230614095918495271",
+      "writer": "2133",
+      "contents": "hi hi hi ",
+      "password": "121234",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "tj0T1Ti"
+    },
+    {
+      "postId": "S230614095918495271",
+      "writer": "123",
+      "contents": "123",
+      "password": "123",
+      "profilePhoto": "https://i.ibb.co/WvwjM8w/avatar-2.jpg",
+      "id": "1yBZMYj"
+    },
+    {
+      "postId": "S230614095918495271",
+      "writer": "김환훈",
+      "contents": "hklhl",
+      "password": "kjl",
+      "profilePhoto": "https://i.ibb.co/9TSLzHg/avatar-7.jpg",
+      "id": "d0fMd-p"
+    },
+    {
+      "writer": "김환훈",
+      "contents": "여기 가봤어요",
+      "password": "1234",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "AST8ncW"
+    },
+    {
+      "writer": "김환훈",
+      "contents": "테스트중입니다~!",
+      "password": "1234",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "H5hLbDu"
+    },
+    {
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "ZgQbi3q"
+    },
+    {
+      "writer": "2",
+      "contents": "2",
+      "password": "2",
+      "profilePhoto": "https://i.ibb.co/3cxpjfM/avatar-3.jpg",
+      "id": "dewTRnx"
+    },
+    {
+      "postId": "S230614101107491503",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "profilePhoto": "https://i.ibb.co/xXMxW3P/avatar-6.jpg",
+      "id": "-3sM9Sl"
+    },
+    {
+      "postId": "S230614101107491503",
+      "writer": "2",
+      "contents": "2",
+      "password": "2",
+      "profilePhoto": "https://i.ibb.co/3p4rvbR/avatar-5.jpg",
+      "id": "uC5AmLO"
     }
+  ],
+  "profile-photos": [
+    "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+    "https://i.ibb.co/WvwjM8w/avatar-2.jpg",
+    "https://i.ibb.co/3cxpjfM/avatar-3.jpg",
+    "https://i.ibb.co/94bXRDF/avatar-4.jpg",
+    "https://i.ibb.co/3p4rvbR/avatar-5.jpg",
+    "https://i.ibb.co/xXMxW3P/avatar-6.jpg",
+    "https://i.ibb.co/9TSLzHg/avatar-7.jpg"
   ]
 }

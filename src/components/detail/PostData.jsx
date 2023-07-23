@@ -1,8 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import Comments from './Comments';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import zIndex from '@mui/material/styles/zIndex';
+import { toggleIsFacilityChosen } from '../../redux/modules/maps/isFacilityChosen';
+import { useDispatch } from 'react-redux';
 
 const PostData = ({ setFacility, facility }) => {
+  const [showMessage, setShowMessage] = useState(false);
+  const [messagePosition, setMessagePosition] = useState({ x: 0, y: 0 });
+  //
+
+  //
+  const dispatch = useDispatch();
+  const handleMouseEnter = (e) => {
+    setMessagePosition({ x: e.clientX, y: e.clientY });
+    setShowMessage(true);
+  };
+  const handleMouseLeave = () => {
+    setShowMessage(false);
+  };
+  const handleMouseMove = (e) => {
+    setMessagePosition({ x: e.clientX, y: e.clientY });
+  };
+  const tooltipStyled = {
+    position: 'fixed',
+    top: messagePosition.y,
+    left: messagePosition.x + 15, // 요소의 오른쪽에 띄우기 위해 x 위치에 20px 추가
+    padding: '8px',
+    background: '#444',
+    borderRadius: '4px',
+    display: showMessage ? 'block' : 'none',
+    zIndex: 2,
+    opacity: '0.8'
+  };
+
   const openLink = () => {
     window.open(facility.SVCURL, '');
   };
@@ -16,16 +48,25 @@ const PostData = ({ setFacility, facility }) => {
   if (!facility) {
     return <div>Loading...</div>;
   }
+
   return (
     <PostBOX>
-      <button
+      <ArrowBackIosNewIcon
         id="detail-go-back"
         onClick={() => {
           setFacility(null);
+          dispatch(toggleIsFacilityChosen(false));
         }}
-      >
-        뒤로가기
-      </button>
+        onMouseEnter={(e) => handleMouseEnter(e)}
+        onMouseLeave={(e) => handleMouseLeave(e)}
+        onMouseMove={handleMouseMove}
+      />
+      {showMessage && (
+        <div style={tooltipStyled}>
+          <p>뒤로가기</p>
+        </div>
+      )}
+
       <div id="detail-image-container">
         <img src={facility.IMGURL} alt="facility img" />
         <div id="facility-title">{facility.MAXCLASSNM}</div>
@@ -33,8 +74,12 @@ const PostData = ({ setFacility, facility }) => {
       <div id="detail-title-container">
         <h1>{facility.PLACENM}</h1>
         <div id="detail-status-info">
-          <p>{facility.PAYATNM}</p>
-          <p>{facility.SVCSTATNM}</p>
+          <div>
+            <p>{facility.PAYATNM}</p>
+          </div>
+          <div>
+            <p>{facility.SVCSTATNM}</p>
+          </div>
         </div>
       </div>
       <div id="detail-divider"></div>
@@ -67,6 +112,24 @@ const PostBOX = styled.div`
   gap: 1rem;
   position: relative;
   overflow: auto;
+
+  #detail-go-back {
+    position: sticky;
+    top: 5px;
+    left: 5px;
+    background-color: #18191bdc;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 100;
+    transform: cubic-bezier(0, 0, 0.2, 1) 0.3s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  #detail-image-container {
+    position: relative;
+  }
   #detail-divider {
     width: 30%;
     height: 2px;
@@ -98,20 +161,27 @@ const PostBOX = styled.div`
       font-size: 1.5rem;
       color: #eee;
       font-weight: 600;
-    }
-    p {
-      padding: 3px 6px;
-      background-color: #fafafa;
-      color: #333;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      margin-top: 2px;
+      padding-right: 2rem;
     }
   }
   #detail-status-info {
     display: flex;
     gap: 5px;
+    flex-wrap: wrap;
+    div {
+      padding: 3px 6px;
+      background-color: #fafafa;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-top: 2px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    div > * {
+      color: #333;
+    }
   }
 
   #detail-title {
@@ -141,10 +211,5 @@ const PostBOX = styled.div`
     &:hover {
       background-color: #2b4a63;
     }
-  }
-  #detail-go-back {
-    position: absolute;
-    right: 0;
-    top: 0;
   }
 `;

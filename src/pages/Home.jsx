@@ -24,7 +24,11 @@ const Home = () => {
 
   return (
     <Mother>
-      <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
+      <Header
+        setFilteredGlobalDataByArea={setFilteredGlobalDataByArea}
+        setGlobalSearch={setGlobalSearch}
+        setFacility={setFacility}
+      />
       <ContainerWrapper>
         <StyledDivForLeft>
           <MapComponent />
@@ -60,6 +64,7 @@ const Mother = styled.div`
   flex-direction: column;
   gap: 0.75rem;
   align-items: center;
+  min-width: 1100px;
 `;
 
 const ContainerWrapper = styled.main`

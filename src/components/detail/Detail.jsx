@@ -17,7 +17,7 @@ const PostWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   color: #eee;
-  background-color: #18191bdc;
+  background-color: #18191bee;
   padding: 1rem;
   height: 100%;
 `;
