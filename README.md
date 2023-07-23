@@ -139,7 +139,7 @@
 
 • react query, axios 활용하여 서울시 공공API 데이터 GET 요청
 • 검색창 필터링으로 공공데이터 필터기능 구현
-• 필터링 된 API 데이터를 pagination 기능으로 painting
+• 필터링 된 API 데이터를 `pagination` 기능으로 painting
 • 불러온 API 데이터를 사용자 위치 정보에 따라 가까운 순으로 정렬
 • 거리 순으로 정렬된 데이터를 react-js-pagination 라이브러리 활용하여 페이지네이션
 
