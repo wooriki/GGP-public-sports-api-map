@@ -3,11 +3,13 @@ import { styled } from 'styled-components';
 import Comments from './Comments';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import zIndex from '@mui/material/styles/zIndex';
+import { isFacilityChosen } from '../../redux/modules/maps/isFacilityChosen';
+import { useDispatch } from 'react-redux';
 
 const PostData = ({ setFacility, facility }) => {
   const [showMessage, setShowMessage] = useState(false);
   const [messagePosition, setMessagePosition] = useState({ x: 0, y: 0 });
-
+  const dispatch = useDispatch();
   const handleMouseEnter = (e) => {
     setMessagePosition({ x: e.clientX, y: e.clientY });
     setShowMessage(true);
@@ -49,6 +51,7 @@ const PostData = ({ setFacility, facility }) => {
         id="detail-go-back"
         onClick={() => {
           setFacility(null);
+          dispatch(isFacilityChosen(false));
         }}
         onMouseEnter={(e) => handleMouseEnter(e)}
         onMouseLeave={(e) => handleMouseLeave(e)}

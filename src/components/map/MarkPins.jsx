@@ -14,16 +14,25 @@ const MarkPins = ({ map, boundary }) => {
   const fetchedgroup = useSelector((state) => state['10 Location'].data);
   const [infoWindowOpen, setInfoWindowOpen] = useState(false);
   const [locationDetail, setLocationDetail] = useState({});
+  const isFacilityChosen = useSelector((state) => state.isFacilityChosen);
+  const chosenFacility = useSelector((state) => state.chosenFacility);
 
   // useSaveBoundary의 인자는 앞으로 가져올 데이터의 좌표들
   useSaveBoundary(fetchedgroup);
   //----------------------------------//
   useEffect(() => {
+    if (isFacilityChosen) {
+      const chosenFacilityLocation = new navermaps.LatLng(chosenFacility.Y, chosenFacility.X);
+      if (map) {
+        map.panTo(chosenFacilityLocation);
+        // map.setZoom(20, true);
+      }
+    }
     if (map && boundary) {
       map.panToBounds(boundary);
       setInfoWindowOpen(false); // 움직일 때 (페이지 변경할 때 모달창 열려있으면 닫기)
     }
-  }, [map, boundary]);
+  }, [map, boundary, isFacilityChosen, chosenFacility, navermaps.LatLng]);
 
   // =================================== //
   // 핀 클릭시 이벤트

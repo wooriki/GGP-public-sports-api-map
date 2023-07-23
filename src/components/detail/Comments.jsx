@@ -194,6 +194,7 @@ const Comments = ({ facility }) => {
   return (
     <CommentContainer>
       <h3>이용후기</h3>
+      <DividerThick></DividerThick>
       <WriteCommentContainer>
         {!toggleLeaveComment ? (
           <ArrowRightIcon
@@ -243,7 +244,7 @@ const Comments = ({ facility }) => {
           </div>
         </CommentInputForm>
       )}
-      <Divider></Divider>
+
       <CommentListContainer>
         {comments
           .filter((comment) => comment.postId === facility.SVCID)
@@ -370,8 +371,9 @@ const CommentInputForm = styled.form`
 `;
 const CommentContainer = styled.div`
   h3 {
+    margin: 1rem 0;
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
   }
 
   #comment-input-container {
@@ -379,14 +381,20 @@ const CommentContainer = styled.div`
 `;
 
 const Divider = styled.div`
-  margin: 0.5rem auto;
+  margin: 2rem auto 0 auto;
   width: 90%;
   height: 2px;
-  border-bottom: 2px solid #fff;
+  border-bottom: 1px solid #fff;
+`;
+const DividerThick = styled.div`
+  margin: 0.5rem 0;
+  width: 30%;
+  height: 2px;
+  border-bottom: 4px solid #fff;
 `;
 
 const CommentListContainer = styled.div`
-  margin-top: 2rem;
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
