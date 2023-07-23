@@ -2,24 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { setLocation } from '../redux/modules/userLocation';
-import { styled, keyframes } from 'styled-components';
+import { styled } from 'styled-components';
 import Facilities from '../components/Facilities';
 import MapComponent from '../components/map/MapComponent';
 import Detail from '../components/detail/Detail';
 import Header from '../components/common/Header';
-
-import axios from 'axios';
 import YouTubeApi from '../components/common/YouTubeApi';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { location, error } = useCurrentLocation();
+  const { location } = useCurrentLocation();
   const [facility, setFacility] = useState(null);
   const [filteredGlobalDataByArea, setFilteredGlobalDataByArea] = useState(null);
   const [globalSearch, setGlobalSearch] = useState(null);
-
-  const [isMounted, setIsMounted] = useState(false); // 마운트 여부 상태
-  const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
 
   useEffect(() => {
     if (location) {
@@ -87,12 +82,13 @@ const StyledDivForLeft = styled.div`
 `;
 
 const StyledRecommendation = styled.div`
-  background-color: rgba(25, 25, 25, 0.95);
+  background-color: #18191bdc;
   border-radius: 20px;
   height: 30%;
 
   #recommendation-title {
     height: 20%;
+    margin-top: 10px;
     min-height: 50px;
     display: flex;
     // flex-direction: column;
