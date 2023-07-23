@@ -24,7 +24,11 @@ const Home = () => {
 
   return (
     <Mother>
-      <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
+      <Header
+        setFilteredGlobalDataByArea={setFilteredGlobalDataByArea}
+        setGlobalSearch={setGlobalSearch}
+        setFacility={setFacility}
+      />
       <ContainerWrapper>
         <StyledDivForLeft>
           <MapComponent />
