@@ -37,6 +37,7 @@ const WeatherContainer = styled.header`
   padding: 16px 30px;
   border-radius: 30px;
 `;
+
 const ImgTag = styled.img`
   cursor: pointer;
   width: 150px;

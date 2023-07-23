@@ -1,5 +1,4 @@
 import React from 'react';
-import Comments from '../detail/Comments';
 import PostData from '../detail/PostData';
 import { styled } from 'styled-components';
 
