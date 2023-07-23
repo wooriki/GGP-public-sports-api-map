@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { getComments, createComment, removeComment, updateComment } from '../../axios/comment';
@@ -9,6 +9,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined';
 import CancelPresentationOutlinedIcon from '@mui/icons-material/CancelPresentationOutlined';
+import axios from 'axios';
 
 const Comments = ({ facility }) => {
   const dispatch = useDispatch();
@@ -55,19 +56,27 @@ const Comments = ({ facility }) => {
   });
 
   // 댓글 추가 핸들러
-  const commentCreateHandler = (e) => {
+  const commentCreateHandler = async (e) => {
     e.preventDefault();
     setToggleLeaveComment(!toggleLeaveComment);
     if (!writer || !contents) {
       alert('필수 값이 누락되었습니다. 확인해주세요!');
       return false;
     }
+    //
+    //  수정인: 김환훈
+    // 기능: db.json에 저장되어있는 기본 아바타 사진 7개중에 랜덤으로 한 개 골라서 저장하기
+    const randomNumber = Math.floor(Math.random() * 7);
+    const randomProfilePhoto = (await axios('http://localhost:4000/profile-photos')).data[randomNumber];
+    //
+    //
 
     const newComment = {
       postId: facility.SVCID,
       writer,
       contents,
-      password
+      password,
+      profilePhoto: randomProfilePhoto
     };
 
     const confirmCreate = window.confirm('작성하시겠습니까?');
@@ -186,7 +195,20 @@ const Comments = ({ facility }) => {
     <CommentContainer>
       <h3>이용후기</h3>
       <WriteCommentContainer>
-        <ArrowRightIcon id="comment-write-comment-toggle" onClick={() => setToggleLeaveComment(!toggleLeaveComment)} />
+        {!toggleLeaveComment ? (
+          <ArrowRightIcon
+            style={{ transform: 'rotate(0deg)' }}
+            id="comment-write-comment-toggle"
+            onClick={() => setToggleLeaveComment(!toggleLeaveComment)}
+          />
+        ) : (
+          <ArrowRightIcon
+            style={{ transform: 'rotate(90deg)' }}
+            id="comment-write-comment-toggle"
+            onClick={() => setToggleLeaveComment(!toggleLeaveComment)}
+          />
+        )}
+
         <h4>후기작성하기</h4>
       </WriteCommentContainer>
       {toggleLeaveComment && (
@@ -211,7 +233,12 @@ const Comments = ({ facility }) => {
           </div>
           <input type="text" name="contents" value={contents} onChange={contentsChangeHanlder} placeholder="내용" />
           <div id="comment-button-container">
-            <input type="button" value="취소" id="comment-cancel-button" />
+            <input
+              type="button"
+              value="취소"
+              id="comment-cancel-button"
+              onClick={() => setToggleLeaveComment(!toggleLeaveComment)}
+            />
             <input type="submit" value="작성" id="comment-submit-button" />
           </div>
         </CommentInputForm>
@@ -226,7 +253,7 @@ const Comments = ({ facility }) => {
               <Comment key={comment.id}>
                 <img
                   id="comment-profile-photo"
-                  src="https://i.ibb.co/wK9wmGG/anonymous-avatar-icon-25.png"
+                  src={comment.profilePhoto || 'https://i.ibb.co/wK9wmGG/anonymous-avatar-icon-25.png'}
                   alt="profile-img"
                 />
                 <CommentContent>
@@ -278,6 +305,7 @@ const WriteCommentContainer = styled.div`
   align-items: center;
   #comment-write-comment-toggle {
     font-size: 2rem;
+    transition: cubic-bezier(0, 0, 0.2, 1) 0.3s;
     cursor: pointer;
     border-radius: 5px;
     &:hover {
@@ -286,6 +314,7 @@ const WriteCommentContainer = styled.div`
   }
   h4 {
     font-size: 1.1rem;
+    z-index: 2;
   }
 `;
 const CommentInputForm = styled.form`
