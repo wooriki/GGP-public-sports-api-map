@@ -256,11 +256,3 @@
  <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=slack&logoColor=white">
 </div>
 
-### ⚙️ 배포
-
-- Vercel
-<div align=“center”>
-	  <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
-  </div>
-
-<br />
