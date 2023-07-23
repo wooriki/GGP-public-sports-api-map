@@ -240,9 +240,9 @@
 
 - Git/Github
 <div align=“center”>
- <img src="https://img.shields.io/badge/git-68b2c4?style=for-the-badge&logo=git&logoColor=white">
- <img src="https://img.shields.io/badge/github-4192a6?style=for-the-badge&logo=github&logoColor=white">
- <img src="https://img.shields.io/badge/sourcetree-22697a?style=for-the-badge&logo=github&logoColor=white">
+ <img src="https://img.shields.io/badge/git-7f8c8f?style=for-the-badge&logo=git&logoColor=white">
+ <img src="https://img.shields.io/badge/github-595f61?style=for-the-badge&logo=github&logoColor=white">
+ <img src="https://img.shields.io/badge/sourcetree-373c3d?style=for-the-badge&logo=github&logoColor=white">
 </div>
 
 ### ⚙️ 협업툴
