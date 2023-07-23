@@ -137,9 +137,8 @@ const MarkPins = ({ map, boundary }) => {
       {infoWindowOpen && <MapInfoModal />}
       {fetchedgroup?.map((location) => {
         return (
-          <div key={location.id}>
+          <div key={location.SVCID}>
             <Marker
-              key={location.id}
               position={new navermaps.LatLng(+location.latitude, +location.longitude)}
               onClick={() => markerClickHandler(location)}
             />

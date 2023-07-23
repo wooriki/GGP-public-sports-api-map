@@ -70,10 +70,7 @@ const Comments = ({ facility }) => {
 
     const randomProfilePhoto = (await axios('http://localhost:4000/profile-photos')).data[randomNumber];
     //
-    //
-    console.log('randomNumber', randomNumber);
-    console.log('randomProfilePhoto', randomProfilePhoto);
-    console.log('facility', facility);
+    //;
     const newComment = {
       postId: facility.SVCID,
       writer,

@@ -74,8 +74,12 @@ const PostData = ({ setFacility, facility }) => {
       <div id="detail-title-container">
         <h1>{facility.PLACENM}</h1>
         <div id="detail-status-info">
-          <p>{facility.PAYATNM}</p>
-          <p>{facility.SVCSTATNM}</p>
+          <div>
+            <p>{facility.PAYATNM}</p>
+          </div>
+          <div>
+            <p>{facility.SVCSTATNM}</p>
+          </div>
         </div>
       </div>
       <div id="detail-divider"></div>
@@ -157,20 +161,27 @@ const PostBOX = styled.div`
       font-size: 1.5rem;
       color: #eee;
       font-weight: 600;
-    }
-    p {
-      padding: 3px 6px;
-      background-color: #fafafa;
-      color: #333;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      margin-top: 2px;
+      padding-right: 2rem;
     }
   }
   #detail-status-info {
     display: flex;
     gap: 5px;
+    flex-wrap: wrap;
+    div {
+      padding: 3px 6px;
+      background-color: #fafafa;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-top: 2px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    div > * {
+      color: #333;
+    }
   }
 
   #detail-title {

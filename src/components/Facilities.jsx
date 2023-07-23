@@ -82,7 +82,7 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
 
     // 필터된 데이터들을 스토어에 저장
     dispatch(save10Location(sliceData));
-    console.log('sliceData', sliceData);
+
     dispatch(setSortedData(sortPublicDataByDis));
 
     // Update the sliceData state

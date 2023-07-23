@@ -14,7 +14,6 @@ const Maps = () => {
   const isLocationAllowed = useSelector((state) => state.isLocationAllowed);
 
   useEffect(() => {
-    console.log(isLocationAllowed);
     if (isLocationAllowed === null) {
       setIsItLoading(true);
     } else if (isLocationAllowed) {

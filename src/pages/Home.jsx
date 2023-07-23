@@ -64,6 +64,7 @@ const Mother = styled.div`
   flex-direction: column;
   gap: 0.75rem;
   align-items: center;
+  min-width: 1100px;
 `;
 
 const ContainerWrapper = styled.main`
