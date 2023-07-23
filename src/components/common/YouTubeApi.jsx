@@ -78,31 +78,12 @@ const UlTag = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  overflow-x: hidden; /* 가로 방향 스크롤을 감춥니다. */
-  overflow-y: auto; /* 세로 스크롤을 허용합니다. */
-  // height: 190px;
+  overflow-x: hidden;
+  overflow-y: auto;
   min-height: 200px;
   max-height: calc(
     185vh - 2417px
-  ); /* 최대 높이를 뷰포트 높이 - 200px로 설정하여 유동적으로 스크롤이 생기도록 합니다. */
-
-  /* 스크롤 바 스타일 */
-  ::-webkit-scrollbar {
-    width: 20x;
-  }
-  -webkit-scrollbar-thumb {
-    background-color: #888; /* Chrome, Safari, Edge에 적용되는 스크롤 바 썸네일 색상을 설정합니다. */
-    border-radius: 4px; /* Chrome, Safari, Edge에 적용되는 스크롤 바 썸네일의 모서리를 둥글게 설정합니다. */
-  }
-  -webkit-scrollbar-thumb:hover {
-    background-color: #555; /* 스크롤 바 썸네일에 마우스 오버 효과를 설정합니다. */
-  }
-  -webkit-scrollbar-track {
-    background-color: #ddd; /* Chrome, Safari, Edge에 적용되는 스크롤 바 트랙 색상을 설정합니다. */
-  }
-  -webkit-scrollbar-track:hover {
-    background-color: #eee; /* 스크롤 바 트랙에 마우스 오버 효과를 설정합니다. */
-  }
+  );
 `;
 
 const growAnimation = keyframes`
