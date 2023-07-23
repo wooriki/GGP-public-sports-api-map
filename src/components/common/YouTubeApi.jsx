@@ -83,12 +83,12 @@ const UlTag = styled.div`
   // height: 190px;
   min-height: 200px;
   max-height: calc(
-    185vh - 2170px
+    185vh - 2417px
   ); /* 최대 높이를 뷰포트 높이 - 200px로 설정하여 유동적으로 스크롤이 생기도록 합니다. */
 
   /* 스크롤 바 스타일 */
-  -webkit-scrollbar {
-    width: 8px; /* Chrome, Safari, Edge에 적용되는 스크롤 바 너비를 설정합니다. */
+  ::-webkit-scrollbar {
+    width: 20x;
   }
   -webkit-scrollbar-thumb {
     background-color: #888; /* Chrome, Safari, Edge에 적용되는 스크롤 바 썸네일 색상을 설정합니다. */

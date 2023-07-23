@@ -85,6 +85,7 @@ const StyledRecommendation = styled.div`
   background-color: #18191bdc;
   border-radius: 20px;
   height: 30%;
+  padding: 0 10px;
 
   #recommendation-title {
     height: 20%;
