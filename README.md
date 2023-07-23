@@ -240,9 +240,9 @@
 
 - Git/Github
 <div align=“center”>
- <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
- <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
- <img src="https://img.shields.io/badge/sourcetree-0052CC?style=for-the-badge&logo=github&logoColor=white">
+ <img src="https://img.shields.io/badge/git-9197a3?style=for-the-badge&logo=git&logoColor=white">
+ <img src="https://img.shields.io/badge/github-676b73?style=for-the-badge&logo=github&logoColor=white">
+ <img src="https://img.shields.io/badge/sourcetree-43454a?style=for-the-badge&logo=github&logoColor=white">
 </div>
 
 ### ⚙️ 협업툴
@@ -251,8 +251,8 @@
 - Slack
 - Figma
 <div align=“center”>
- <img src="https://img.shields.io/badge/visualstudio-5C2D91?style=for-the-badge&logo=visualstudio&logoColor=white">
- <img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
- <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=slack&logoColor=white">
+ <img src="https://img.shields.io/badge/visualstudio-d96fb41?style=for-the-badge&logo=visualstudio&logoColor=white">
+ <img src="https://img.shields.io/badge/slack-ad498a?style=for-the-badge&logo=slack&logoColor=white">
+ <img src="https://img.shields.io/badge/figma-822f65?style=for-the-badge&logo=slack&logoColor=white">
 </div>
 
