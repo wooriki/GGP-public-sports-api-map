@@ -32,8 +32,6 @@ const App = () => {
 
 const StyledDiv = styled.div`
   height: 100vh;
-  // background: rgb(15, 32, 39);
-  // background: linear-gradient(81deg, rgba(15, 32, 39, 1) 0%, rgba(32, 58, 67, 1) 50%, rgba(44, 83, 100, 1) 100%);
 `;
 
 export default App;

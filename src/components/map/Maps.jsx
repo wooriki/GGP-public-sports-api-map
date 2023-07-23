@@ -81,7 +81,7 @@ export default Maps;
 const StyledDiv = styled.div`
   overflow: hidden;
   width: 100%;
-  height: 600px;
+  height: 700px;
   border-radius: 15px;
   box-shadow: 1px 1px 10px 0 rgba(39, 39, 39, 0.6);
   #test,
@@ -97,7 +97,7 @@ const StyledDiv = styled.div`
     position: absolute;
     top: 10px;
     right: 10px;
-    z-index: 100;
+    z-index: 1;
     color: #555;
     background-color: #fff;
     padding: 5px;
