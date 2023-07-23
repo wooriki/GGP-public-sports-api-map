@@ -5,7 +5,6 @@ const content = {
   initialState: null,
   reducers: {
     sendFacility: (state, action) => {
-      console.log(action.payload);
       return action.payload;
     }
   }

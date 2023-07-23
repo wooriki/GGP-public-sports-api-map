@@ -7,7 +7,7 @@ import { calDistance } from '../helper/calDistance';
 import { Paging } from './Paging';
 import { save10Location } from '../redux/modules/maps/save10Location';
 import { sendFacility } from '../redux/modules/chosenFacility';
-import { isFacilityChosen } from '../redux/modules/maps/isFacilityChosen';
+import { toggleIsFacilityChosen } from '../redux/modules/maps/isFacilityChosen';
 
 const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => {
   // 선택된 지역과 스포츠 종목 변수 설정
@@ -16,14 +16,26 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
   const [filteredData, setFilteredData] = useState([]);
   const [sliceData, setSliceData] = useState([]);
   const dispatch = useDispatch();
+  const chosenFacility = useSelector((state) => state.chosenFacility);
+  const isFacilityChosen = useSelector((state) => state.isFacilityChosen);
   // 상세 페이지로 이동하는 함수
   // 수정인: 김환훈
   // 추가로직: 상세 시설 정보는 맵과도 연동이 되어야하기 때문에 일단 기존의 state는 놔두고 새로 redux로 스토어에도 저장하게 하여 맵에서도 연동 가능하게 설정합니다.
   const navDetailPage = (facility) => {
+    if (isFacilityChosen) {
+      setFacility(facility);
+      return;
+    }
     setFacility(facility);
-    dispatch(isFacilityChosen(true));
+    dispatch(toggleIsFacilityChosen(true));
     dispatch(sendFacility(facility));
   };
+  // 맵에서 핀 찍으면 isFacilityChosen가 true가 된다. Facilities 컴포넌트에서 isFacilityChosen를 구독하고, 핀을 찍으면 그 시설의 정보를 chosenFacility로 받아서 상세페이지를 자동으로 열어준다.
+  useEffect(() => {
+    if (isFacilityChosen) {
+      navDetailPage(chosenFacility);
+    }
+  }, [isFacilityChosen, chosenFacility]);
 
   const location = useSelector((state) => state.location);
   const { data: publicData, isLoading, isError } = useFetchPublicData();
@@ -70,7 +82,7 @@ const Facilities = ({ setFacility, filteredGlobalDataByArea, globalSearch }) => 
 
     // 필터된 데이터들을 스토어에 저장
     dispatch(save10Location(sliceData));
-
+    console.log('sliceData', sliceData);
     dispatch(setSortedData(sortPublicDataByDis));
 
     // Update the sliceData state

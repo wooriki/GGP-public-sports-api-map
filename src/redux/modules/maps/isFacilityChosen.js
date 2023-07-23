@@ -4,7 +4,7 @@ const content = {
   name: '위치 동의 여부 (Boolean)',
   initialState: false,
   reducers: {
-    isFacilityChosen: (state, action) => {
+    toggleIsFacilityChosen: (state, action) => {
       return action.payload;
     }
   }
@@ -13,4 +13,4 @@ const content = {
 const isFacilityChosenSlice = createSlice(content);
 
 export default isFacilityChosenSlice;
-export const { isFacilityChosen } = isFacilityChosenSlice.actions;
+export const { toggleIsFacilityChosen } = isFacilityChosenSlice.actions;

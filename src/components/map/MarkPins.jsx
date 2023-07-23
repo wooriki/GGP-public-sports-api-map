@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Marker, useNavermaps } from 'react-naver-maps';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useSaveBoundary from '../../hooks/mapHooks/saveBoundary';
 import { styled } from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
+import { sendFacility } from '../../redux/modules/chosenFacility';
+import { toggleIsFacilityChosen } from '../../redux/modules/maps/isFacilityChosen';
 
 // 특정 좌표가 주어 졌을 때, 그 좌표들에 핀을 놓고,
 // 좌표들이 모두 표시될 수 있는 위치에 맵을 보인다.
@@ -16,8 +18,9 @@ const MarkPins = ({ map, boundary }) => {
   const [locationDetail, setLocationDetail] = useState({});
   const isFacilityChosen = useSelector((state) => state.isFacilityChosen);
   const chosenFacility = useSelector((state) => state.chosenFacility);
-
+  const dispatch = useDispatch();
   // useSaveBoundary의 인자는 앞으로 가져올 데이터의 좌표들
+
   useSaveBoundary(fetchedgroup);
   //----------------------------------//
   useEffect(() => {
@@ -37,6 +40,10 @@ const MarkPins = ({ map, boundary }) => {
   // =================================== //
   // 핀 클릭시 이벤트
   const markerClickHandler = async (location) => {
+    if (!isFacilityChosen) {
+      dispatch(sendFacility(location));
+      dispatch(toggleIsFacilityChosen(true));
+    }
     const coords = `${location.longitude},${location.latitude}`;
     const res = (
       await axios('http://localhost:3001', {
@@ -53,9 +60,15 @@ const MarkPins = ({ map, boundary }) => {
       const info = {
         name: location.name,
         reservStatus: location.reservStatus,
-        reservURL: location.reservURL,
-        img: location.img,
-        address: addressInKorean
+        SVCURL: location.SVCURL,
+        IMGURL: location.IMGURL,
+        address: addressInKorean,
+        SVCNM: location.SVCNM,
+        RCPTBGNDT: location.RCPTBGNDT,
+        RCPTENDDT: location.RCPTENDDT,
+        TELNO: location.TELNO,
+        V_MIN: location.V_MIN,
+        V_MAX: location.V_MAX
       };
       return info;
     });
@@ -85,7 +98,7 @@ const MarkPins = ({ map, boundary }) => {
             setInfoWindowOpen(!infoWindowOpen);
           }}
         />
-        <img src={locationDetail.img} alt="체육시설 사진" />
+        <img src={locationDetail.IMGURL} alt="체육시설 사진" />
         <h1>{filteredName}</h1>
         <p>{locationDetail.address}</p>
         <h2
@@ -118,6 +131,7 @@ const MarkPins = ({ map, boundary }) => {
     );
   };
   //
+
   return (
     <>
       {infoWindowOpen && <MapInfoModal />}

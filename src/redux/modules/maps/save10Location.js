@@ -8,13 +8,23 @@ const content = {
     save10Location: (state, action) => {
       const tempObj = action.payload.map((el) => {
         return {
-          id: el.SVCID,
+          SVCID: el.SVCID,
           longitude: el.X,
           latitude: el.Y,
           name: el.PLACENM,
           reservStatus: el.SVCSTATNM,
-          reservURL: el.SVCURL,
-          img: el.IMGURL
+          SVCURL: el.SVCURL,
+          IMGURL: el.IMGURL,
+          SVCNM: el.SVCNM,
+          RCPTBGNDT: el.RCPTBGNDT,
+          RCPTENDDT: el.RCPTENDDT,
+          TELNO: el.TELNO,
+          V_MIN: el.V_MIN,
+          V_MAX: el.V_MAX,
+          MAXCLASSNM: el.MAXCLASSNM,
+          PLACENM: el.PLACENM,
+          PAYATNM: el.PAYATNM,
+          SVCSTATNM: el.SVCSTATNM
         };
       });
 

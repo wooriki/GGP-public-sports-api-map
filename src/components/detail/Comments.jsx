@@ -67,10 +67,13 @@ const Comments = ({ facility }) => {
     //  수정인: 김환훈
     // 기능: db.json에 저장되어있는 기본 아바타 사진 7개중에 랜덤으로 한 개 골라서 저장하기
     const randomNumber = Math.floor(Math.random() * 7);
+
     const randomProfilePhoto = (await axios('http://localhost:4000/profile-photos')).data[randomNumber];
     //
     //
-
+    console.log('randomNumber', randomNumber);
+    console.log('randomProfilePhoto', randomProfilePhoto);
+    console.log('facility', facility);
     const newComment = {
       postId: facility.SVCID,
       writer,

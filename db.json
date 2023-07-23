@@ -301,6 +301,50 @@
       "password": "kjl",
       "profilePhoto": "https://i.ibb.co/9TSLzHg/avatar-7.jpg",
       "id": "d0fMd-p"
+    },
+    {
+      "writer": "김환훈",
+      "contents": "여기 가봤어요",
+      "password": "1234",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "AST8ncW"
+    },
+    {
+      "writer": "김환훈",
+      "contents": "테스트중입니다~!",
+      "password": "1234",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "H5hLbDu"
+    },
+    {
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "profilePhoto": "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
+      "id": "ZgQbi3q"
+    },
+    {
+      "writer": "2",
+      "contents": "2",
+      "password": "2",
+      "profilePhoto": "https://i.ibb.co/3cxpjfM/avatar-3.jpg",
+      "id": "dewTRnx"
+    },
+    {
+      "postId": "S230614101107491503",
+      "writer": "1",
+      "contents": "1",
+      "password": "1",
+      "profilePhoto": "https://i.ibb.co/xXMxW3P/avatar-6.jpg",
+      "id": "-3sM9Sl"
+    },
+    {
+      "postId": "S230614101107491503",
+      "writer": "2",
+      "contents": "2",
+      "password": "2",
+      "profilePhoto": "https://i.ibb.co/3p4rvbR/avatar-5.jpg",
+      "id": "uC5AmLO"
     }
   ],
   "profile-photos": [
