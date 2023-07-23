@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { getComments, createComment, removeComment, updateComment } from '../../axios/comment';
 import { setComments } from '../../redux/modules/commentsSlice';
 import { styled, keyframes } from 'styled-components';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined';
+import CancelPresentationOutlinedIcon from '@mui/icons-material/CancelPresentationOutlined';
+import axios from 'axios';
 
 const Comments = ({ facility }) => {
   const dispatch = useDispatch();
@@ -11,6 +17,7 @@ const Comments = ({ facility }) => {
   const [writer, setWriter] = useState();
   const [contents, setContents] = useState();
   const [password, setPassword] = useState();
+  const [toggleLeaveComment, setToggleLeaveComment] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -49,18 +56,27 @@ const Comments = ({ facility }) => {
   });
 
   // 댓글 추가 핸들러
-  const commentCreateHandler = (e) => {
+  const commentCreateHandler = async (e) => {
     e.preventDefault();
+    setToggleLeaveComment(!toggleLeaveComment);
     if (!writer || !contents) {
       alert('필수 값이 누락되었습니다. 확인해주세요!');
       return false;
     }
+    //
+    //  수정인: 김환훈
+    // 기능: db.json에 저장되어있는 기본 아바타 사진 7개중에 랜덤으로 한 개 골라서 저장하기
+    const randomNumber = Math.floor(Math.random() * 7);
 
+    const randomProfilePhoto = (await axios('http://localhost:4000/profile-photos')).data[randomNumber];
+    //
+    //;
     const newComment = {
       postId: facility.SVCID,
       writer,
       contents,
-      password
+      password,
+      profilePhoto: randomProfilePhoto
     };
 
     const confirmCreate = window.confirm('작성하시겠습니까?');
@@ -177,139 +193,261 @@ const Comments = ({ facility }) => {
 
   return (
     <CommentContainer>
-      <CommentWrapper>
-        <p>댓글을 작성해 주세요</p>
-        <FormTag onSubmit={commentCreateHandler}>
-          <InputTagF type="text" name="writer" value={writer} onChange={writerChangeHandler} placeholder="작성자" />
-          <InputTag type="text" name="contents" value={contents} onChange={contentsChangeHanlder} placeholder="내용" />
-          <InputTag
-            type="password"
-            name="password"
-            value={password}
-            onChange={passwordChangeHandler}
-            placeholder="비밀번호"
+      <h3>이용후기</h3>
+      <DividerThick></DividerThick>
+      <WriteCommentContainer>
+        {!toggleLeaveComment ? (
+          <ArrowRightIcon
+            style={{ transform: 'rotate(0deg)' }}
+            id="comment-write-comment-toggle"
+            onClick={() => setToggleLeaveComment(!toggleLeaveComment)}
           />
-          <Btn>작성</Btn>
-        </FormTag>
-        <div>
-          {comments
-            .filter((comment) => comment.postId == facility.SVCID)
-            .map((comment) => {
-              const isEditMode = editedCommentId === comment.id;
-              return (
-                <CommentBox key={comment.id}>
-                  <Writer>작성자 : {comment.writer}</Writer>
+        ) : (
+          <ArrowRightIcon
+            style={{ transform: 'rotate(90deg)' }}
+            id="comment-write-comment-toggle"
+            onClick={() => setToggleLeaveComment(!toggleLeaveComment)}
+          />
+        )}
+
+        <h4>후기작성하기</h4>
+      </WriteCommentContainer>
+      {toggleLeaveComment && (
+        <CommentInputForm onSubmit={commentCreateHandler}>
+          <div id="input-first-line">
+            <input
+              type="text"
+              name="writer"
+              value={writer}
+              onChange={writerChangeHandler}
+              placeholder="작성자"
+              autocomplete="username"
+            />
+            <input
+              type="password"
+              name="password"
+              value={password}
+              onChange={passwordChangeHandler}
+              placeholder="비밀번호"
+              autocomplete="current-password"
+            />
+          </div>
+          <input type="text" name="contents" value={contents} onChange={contentsChangeHanlder} placeholder="내용" />
+          <div id="comment-button-container">
+            <input
+              type="button"
+              value="취소"
+              id="comment-cancel-button"
+              onClick={() => setToggleLeaveComment(!toggleLeaveComment)}
+            />
+            <input type="submit" value="작성" id="comment-submit-button" />
+          </div>
+        </CommentInputForm>
+      )}
+
+      <CommentListContainer>
+        {comments
+          .filter((comment) => comment.postId === facility.SVCID)
+          .map((comment) => {
+            const isEditMode = editedCommentId === comment.id;
+            return (
+              <Comment key={comment.id}>
+                <img
+                  id="comment-profile-photo"
+                  src={comment.profilePhoto || 'https://i.ibb.co/wK9wmGG/anonymous-avatar-icon-25.png'}
+                  alt="profile-img"
+                />
+                <CommentContent>
                   <div>
+                    <h6>{comment.writer}</h6>
+                  </div>
+                  <CommentContentBody>
                     {isEditMode ? (
                       <>
                         <textarea value={editedContents} onChange={editContentsChangeHanlder} />
                       </>
                     ) : (
-                      <>댓글 : {comment.contents}</>
+                      <p>{comment.contents}</p>
                     )}
-                    {/* 수정 삭제버튼 */}
-                    <Btns>
-                      {isEditMode ? (
-                        <>
-                          <BtnToggle onClick={() => updateCommentHandler(comment)}>저장</BtnToggle>
-                          <BtnToggle onClick={offEditMode}>취소</BtnToggle>
-                        </>
-                      ) : (
-                        <>
-                          <BtnToggle onClick={() => onEditMode(comment)}>수정</BtnToggle>
-                          <BtnToggle onClick={() => removeCommentHandler(comment)}>삭제</BtnToggle>
-                        </>
-                      )}
-                    </Btns>
-                  </div>
-                </CommentBox>
-              );
-            })}
-        </div>
-      </CommentWrapper>
+                  </CommentContentBody>
+                </CommentContent>
+                <CommentModityButtonContainer>
+                  {isEditMode ? (
+                    <>
+                      <SaveAsOutlinedIcon
+                        className="comment-modify-icons"
+                        onClick={() => updateCommentHandler(comment)}
+                      />
+                      <CancelPresentationOutlinedIcon className="comment-modify-icons" onClick={offEditMode} />
+                    </>
+                  ) : (
+                    <>
+                      <EditOutlinedIcon className="comment-modify-icons" onClick={() => onEditMode(comment)} />
+                      <DeleteOutlineOutlinedIcon
+                        className="comment-modify-icons"
+                        onClick={() => removeCommentHandler(comment)}
+                      />
+                    </>
+                  )}
+                </CommentModityButtonContainer>
+              </Comment>
+            );
+          })}
+      </CommentListContainer>
     </CommentContainer>
   );
 };
 
 export default Comments;
 
-const CommentContainer = styled.div`
-  padding: 10px;
-  margin: 10px;
-  width: 500px;
-`;
-const FormTag = styled.form`
+const WriteCommentContainer = styled.div`
   display: flex;
-  justify-content: center;
-  margin-top: 10px;
-`;
-const InputTagF = styled.input`
-  width: 20%;
-  height: 40px;
-  padding-left: 10px;
-  border-radius: 8px 0 0 8px;
-`;
-const InputTag = styled.input`
-  width: 20%;
-  height: 40px;
-  padding-left: 10px;
-`;
-
-const growAnimation = keyframes`
-  0% {
-    transform: scale(1);
+  margin-top: 0.5rem;
+  align-items: center;
+  #comment-write-comment-toggle {
+    font-size: 2rem;
+    transition: cubic-bezier(0, 0, 0.2, 1) 0.3s;
+    cursor: pointer;
+    border-radius: 5px;
+    &:hover {
+      background-color: #262626;
+    }
   }
-  50% {
-    transform: scale(1.025);
-  }
-  100% {
-    transform: scale(1);
-  }
-
-`;
-const Btn = styled.button`
-  padding: 10px;
-  border-radius: 0 8px 8px 0;
-  background-color: rgba(68, 68, 68, 0.671);
-  border: none;
-  color: rgba(212, 212, 212, 0.771);
-  cursor: pointer;
-  &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(138, 138, 138, 0.788);
+  h4 {
+    font-size: 1.1rem;
+    z-index: 2;
   }
 `;
-const CommentWrapper = styled.div`
+const CommentInputForm = styled.form`
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  padding: 0 5px;
+  input {
+    height: 40px;
+    padding: 8px;
+    border-radius: 6px;
+    background-color: #191919;
+    border: #414141 1.3px solid;
+    color: #eee;
+  }
+  input:focus {
+    outline: #1f91f9 1.3px solid;
+  }
 
-  align-items: center;
-  justify-content: center;
+  #input-first-line {
+    display: flex;
+    gap: 5px;
+    & > * {
+      flex: 1 1 auto;
+    }
+  }
+  #comment-button-container {
+    display: flex;
+    gap: 5px;
+    & > * {
+      font-size: 0.95rem;
+      border: transparent;
+      flex: 1 1 auto;
+      cursor: pointer;
+    }
+    & > *:hover {
+      opacity: 0.9;
+    }
+    #comment-cancel-button {
+      color: #fff;
+      background-color: #303030;
+    }
+    #comment-submit-button {
+      color: #fff;
+      background-color: #1f91f9;
+    }
+    #comment-submit-button:disabled {
+      color: #fff;
+      background-color: #fff;
+    }
+  }
+`;
+const CommentContainer = styled.div`
+  h3 {
+    margin: 1rem 0;
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+
+  #comment-input-container {
+  }
 `;
 
-const CommentBox = styled.div`
-  border: 1px solid black;
-  width: 100%;
-  padding: 20px;
-  margin: 10px;
-  width: 300px;
+const Divider = styled.div`
+  margin: 2rem auto 0 auto;
+  width: 90%;
+  height: 2px;
+  border-bottom: 1px solid #fff;
 `;
-const Writer = styled.p`
-  margin-bottom: 10px;
+const DividerThick = styled.div`
+  margin: 0.5rem 0;
+  width: 30%;
+  height: 2px;
+  border-bottom: 4px solid #fff;
 `;
 
-const Btns = styled.button`
-  float: right;
+const CommentListContainer = styled.div`
+  margin-top: 1rem;
   display: flex;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
-const BtnToggle = styled.button`
-  padding: 4px;
-  border-radius: 6px;
-  background-color: rgba(131, 131, 131, 0.671);
-  border: none;
-  color: rgba(212, 212, 212, 0.771);
-  cursor: pointer;
+const Comment = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.25rem 1rem;
+  #comment-profile-photo {
+    margin-top: 0.3rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 100px;
+  }
+`;
+
+const CommentContent = styled.div`
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: space-evenly;
+  h6 {
+    font-weight: 600;
+  }
+`;
+const CommentModityButtonContainer = styled.div`
+  display: flex;
+  gap: 0.2rem;
+  margin: 0.3rem 0;
+  .comment-modify-icons {
+    font-size: 1.5rem;
+    cursor: pointer;
+    &:hover {
+      background-color: #262626;
+    }
+  }
+`;
+
+const CommentContentBody = styled.div`
+  display: flex;
+  textarea {
+    border-radius: 5px;
+    background-color: #191919;
+    color: #eee;
+    font-size: 0.95;
+    flex: 1 1 auto;
+    resize: none;
+    height: auto;
+  }
+  p {
+    color: #ddd;
+    font-size: 0.95rem;
+  }
 `;

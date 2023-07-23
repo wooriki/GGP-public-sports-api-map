@@ -4,13 +4,17 @@ import { Link } from 'react-router-dom';
 import Weather from './Weather';
 import Search from '../Search';
 
-const Header = ({ setFilteredGlobalDataByArea, setGlobalSearch }) => {
+const Header = ({ setFilteredGlobalDataByArea, setGlobalSearch, setFacility }) => {
   return (
     <WeatherContainer>
       <Link to="/">
-        <ImgTag src={process.env.PUBLIC_URL + 'img/Logo.png'} width="180" alt="로고" />
+        <ImgTag src={process.env.PUBLIC_URL + 'img/Logo.png'} alt="로고" />
       </Link>
-      <Search setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
+      <Search
+        setFilteredGlobalDataByArea={setFilteredGlobalDataByArea}
+        setGlobalSearch={setGlobalSearch}
+        setFacility={setFacility}
+      />
       <Weather />
     </WeatherContainer>
   );
@@ -28,18 +32,19 @@ const growAnimation = keyframes`
   }
 `;
 const WeatherContainer = styled.header`
-  width: 70%;
+  width: 85%;
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(51, 51, 51, 0.85);
+  background-color: #18191bdc;
   padding: 16px 30px;
   border-radius: 30px;
 `;
+
 const ImgTag = styled.img`
   cursor: pointer;
-  width: 150px;
+  width: 180px;
   &:hover {
     animation: ${growAnimation} 0.5s ease-in-out;
   }
