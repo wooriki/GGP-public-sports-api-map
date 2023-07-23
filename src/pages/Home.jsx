@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { setLocation } from '../redux/modules/userLocation';
-import { styled, keyframes } from 'styled-components';
+import { styled } from 'styled-components';
 import Facilities from '../components/Facilities';
 import MapComponent from '../components/map/MapComponent';
 import Detail from '../components/detail/Detail';
 import Header from '../components/common/Header';
+import YouTubeApi from '../components/common/YouTubeApi';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { location, error } = useCurrentLocation();
+  const { location } = useCurrentLocation();
   const [facility, setFacility] = useState(null);
   const [filteredGlobalDataByArea, setFilteredGlobalDataByArea] = useState(null);
   const [globalSearch, setGlobalSearch] = useState(null);
@@ -24,20 +24,21 @@ const Home = () => {
 
   return (
     <Mother>
-      <Header setFilteredGlobalDataByArea={setFilteredGlobalDataByArea} setGlobalSearch={setGlobalSearch} />
+      <Header
+        setFilteredGlobalDataByArea={setFilteredGlobalDataByArea}
+        setGlobalSearch={setGlobalSearch}
+        setFacility={setFacility}
+      />
       <ContainerWrapper>
-        <StyledMain>
-          <div>
-            <MapComponent />
-          </div>
-          <TextTag>💥추천 영상</TextTag>
-          <UlTag>
-            <LiTag>1</LiTag>
-            <LiTag>2</LiTag>
-            <LiTag>3</LiTag>
-            <LiTag>4</LiTag>
-          </UlTag>
-        </StyledMain>
+        <StyledDivForLeft>
+          <MapComponent />
+          <StyledRecommendation>
+            <div id="recommendation-title">
+              <h2>💥GoGo PlayList</h2>
+            </div>
+            <YouTubeApi />
+          </StyledRecommendation>
+        </StyledDivForLeft>
         <StyledDivForRight>
           {facility ? (
             <Detail setFacility={setFacility} facility={facility} />
@@ -61,69 +62,52 @@ export default Home;
 const Mother = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   align-items: center;
+  min-width: 1100px;
 `;
 
 const ContainerWrapper = styled.main`
+  width: 85%;
+  height: 80vh;
   overflow: hidden;
-  width: 70%;
-  margin: 0 auto;
-  margin-top: 20px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(41, 41, 41, 0.247);
-  border-radius: 30px;
-`;
-const StyledMain = styled.div`
-  width: 65%;
-  color: rgba(236, 236, 236, 0.89);
-  background-color: rgba(41, 41, 41, 0.747);
-  border-radius: 30px 0 0 30px;
-`;
-const TitleTag = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  width: 250px;
-  background-color: rgba(77, 77, 77, 0.776);
-  border-radius: 14px 0 0;
-`;
-const TextTag = styled.h2`
-  font-size: 1.5rem;
-  margin-top: 20px;
-`;
-const UlTag = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-`;
-const growAnimation = keyframes`
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
+  border-radius: 20px;
+  gap: 0.75rem;
 `;
 
-const LiTag = styled.li`
-  border: 1px black solid;
-  margin: 40px 10px 20px;
-  padding: 40px 60px;
-  border-radius: 10px;
-  border: none;
-  background-color: rgba(179, 179, 179, 0.476);
-  cursor: pointer;
-  &:hover {
-    animation: ${growAnimation} 0.5s ease-in-out;
-    background-color: rgba(225, 225, 225, 0.45);
+const StyledDivForLeft = styled.div`
+  height: 100%;
+  width: 60%;
+  color: rgba(236, 236, 236, 0.89);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+const StyledRecommendation = styled.div`
+  background-color: #18191bdc;
+  border-radius: 20px;
+  height: 30%;
+  padding: 0 10px;
+
+  #recommendation-title {
+    height: 20%;
+    margin-top: 10px;
+    min-height: 50px;
+    display: flex;
+    // flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    h2 {
+      font-size: 1.5rem;
+    }
   }
 `;
 
 const StyledDivForRight = styled.div`
-  /* width: 500px; */
+  width: 40%;
+  border-radius: 20px;
+  overflow: auto;
 `;
