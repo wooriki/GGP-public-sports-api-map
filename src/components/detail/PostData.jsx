@@ -1,8 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import Comments from './Comments';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import zIndex from '@mui/material/styles/zIndex';
 
 const PostData = ({ setFacility, facility }) => {
+  const [showMessage, setShowMessage] = useState(false);
+  const [messagePosition, setMessagePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseEnter = (e) => {
+    setMessagePosition({ x: e.clientX, y: e.clientY });
+    setShowMessage(true);
+  };
+  const handleMouseLeave = () => {
+    setShowMessage(false);
+  };
+  const handleMouseMove = (e) => {
+    setMessagePosition({ x: e.clientX, y: e.clientY });
+  };
+  const tooltipStyled = {
+    position: 'fixed',
+    top: messagePosition.y,
+    left: messagePosition.x + 15, // 요소의 오른쪽에 띄우기 위해 x 위치에 20px 추가
+    padding: '8px',
+    background: '#444',
+    borderRadius: '4px',
+    display: showMessage ? 'block' : 'none',
+    zIndex: 2,
+    opacity: '0.8'
+  };
+
   const openLink = () => {
     window.open(facility.SVCURL, '');
   };
@@ -18,14 +45,23 @@ const PostData = ({ setFacility, facility }) => {
   }
   return (
     <PostBOX>
-      <button
-        id="detail-go-back"
-        onClick={() => {
-          setFacility(null);
-        }}
-      >
-        뒤로가기
-      </button>
+      <div id="detail-go-back-container">
+        <ArrowBackIosNewIcon
+          id="detail-go-back"
+          onClick={() => {
+            setFacility(null);
+          }}
+          onMouseEnter={(e) => handleMouseEnter(e)}
+          onMouseLeave={(e) => handleMouseLeave(e)}
+          onMouseMove={handleMouseMove}
+        />
+        {showMessage && (
+          <div style={tooltipStyled}>
+            <p>뒤로가기</p>
+          </div>
+        )}
+      </div>
+
       <div id="detail-image-container">
         <img src={facility.IMGURL} alt="facility img" />
         <div id="facility-title">{facility.MAXCLASSNM}</div>
@@ -67,6 +103,24 @@ const PostBOX = styled.div`
   gap: 1rem;
   position: relative;
   overflow: auto;
+
+  #detail-go-back-container {
+    position: sticky;
+    top: 5px;
+    left: 5px;
+    background-color: #18191bdc;
+    width: 24px;
+    border-radius: 5px;
+    z-index: 20;
+  }
+  #detail-go-back {
+    cursor: pointer;
+    z-index: 100;
+  }
+
+  #detail-image-container {
+    position: relative;
+  }
   #detail-divider {
     width: 30%;
     height: 2px;
@@ -141,10 +195,5 @@ const PostBOX = styled.div`
     &:hover {
       background-color: #2b4a63;
     }
-  }
-  #detail-go-back {
-    position: absolute;
-    right: 0;
-    top: 0;
   }
 `;
