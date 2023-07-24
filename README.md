@@ -20,8 +20,6 @@
 
 <a href="https://gong-gong-play.vercel.app/">GONG GONG PLAY</a>
 
-서울 
-
 <br />
 
 ### 🕰️ 개발 기간
