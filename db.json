@@ -1,5 +1,38 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "postId": "S230601164554768313",
+      "writer": "조성록",
+      "contents": "코트가 관리가 아주 좋아요!!",
+      "password": "1111",
+      "profilePhoto": "https://i.ibb.co/xXMxW3P/avatar-6.jpg",
+      "id": 1
+    },
+    {
+      "postId": "S211228124346504458",
+      "writer": "방물장수",
+      "contents": "잔디가 길이가 적당해요",
+      "password": "1111",
+      "profilePhoto": "https://i.ibb.co/xXMxW3P/avatar-6.jpg",
+      "id": 2
+    },
+    {
+      "postId": "S230330173318102901",
+      "writer": "우리동네배드민턴",
+      "contents": "코트가 매우 많고, 에어컨이 잘나와요 ㅎㅎㅎ",
+      "password": "1111",
+      "profilePhoto": "https://i.ibb.co/9TSLzHg/avatar-7.jpg",
+      "id": 3
+    },
+    {
+      "postId": "S230601164554768313",
+      "writer": "나윤빈",
+      "contents": "오 ㅋㅋㅋ ",
+      "password": "1111",
+      "profilePhoto": "https://i.ibb.co/9TSLzHg/avatar-7.jpg",
+      "id": 4
+    }
+  ],
   "profile-photos": [
     "https://i.ibb.co/nRsRCpL/avatar-1.jpg",
     "https://i.ibb.co/WvwjM8w/avatar-2.jpg",
