@@ -244,7 +244,7 @@
 <div align=“center”>
  <img src="https://img.shields.io/badge/git-7f8c8f?style=for-the-badge&logo=git&logoColor=white">
  <img src="https://img.shields.io/badge/github-595f61?style=for-the-badge&logo=github&logoColor=white">
- <img src="https://img.shields.io/badge/sourcetree-373c3d?style=for-the-badge&logo=github&logoColor=white">
+ <img src="https://img.shields.io/badge/sourcetree-373c3d?style=for-the-badge&logo=sourcetree&logoColor=white">
 </div>
 
 ### ⚙️ 협업툴
@@ -253,7 +253,7 @@
 - Slack
 - Figma
 <div align=“center”>
- <img src="https://img.shields.io/badge/visualstudio-cf72ae?style=for-the-badge&logo=visualstudio&logoColor=white">
+ <img src="https://img.shields.io/badge/visual studio code-cf72ae?style=for-the-badge&logo=visualstudiocode&logoColor=white">
  <img src="https://img.shields.io/badge/slack-ad498a?style=for-the-badge&logo=slack&logoColor=white">
  <img src="https://img.shields.io/badge/figma-822f65?style=for-the-badge&logo=slack&logoColor=white">
 </div>
