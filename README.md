@@ -20,6 +20,19 @@
 
 <a href="https://gong-gong-play.vercel.app/">GONG GONG PLAY</a>
 
+<details>
+<summary>배포 사이트 이용 시 설정 참고</summary>
+<br />
+
+- 서울시 api는 https를 지원하지 않아서 브라우저 설정 필요
+- 크롬 기준 아래 캡쳐와 같이 url 주소창 왼쪽 `자물쇠` 클릭 - `사이트 설정` 선택 - 안전하지 않은 콘텐츠 `허용` 후 새로고침
+	
+<img src="https://github.com/xoxojw/algorithm/assets/124491335/f634527b-b2a1-4f5b-84c5-6e78fd08f948" height="370px" /> <img src="https://github.com/xoxojw/algorithm/assets/124491335/bebd05d3-e4f3-4b5c-9385-a0f60b40cb71" height="370px" />
+
+<br />
+
+</details>
+
 <br />
 
 ### 🕰️ 개발 기간
@@ -136,11 +149,11 @@
 
 ### 공공데이터API <a href="http://data.seoul.go.kr/dataList/OA-2266/S/1/datasetView.do">서울시 체육시설 공공서비스 예약</a>
 
-- react query, axios 활용하여 서울시 공공API 데이터 GET 요청
-- 검색창 필터링으로 공공데이터 필터기능 구현
+- `react query`, `axios` 활용하여 서울시 공공API 데이터 GET 요청한다
+- 검색창 필터링으로 공공데이터 필터기능을 구현한다
 - 필터링 된 API 데이터를 `pagination` 기능으로 `painting`
-- 불러온 API 데이터를 사용자 위치 정보에 따라 가까운 순으로 정렬
-- 거리 순으로 정렬된 데이터를 `react-js-pagination` 라이브러리 활용하여 페이지네이션
+- 불러온 API 데이터를 사용자 위치 정보에 따라 가까운 순으로 정렬한다
+- 거리 순으로 정렬된 데이터를 `react-js-pagination` 라이브러리 활용하여 페이지네이션한다
 
 ### 날씨API <a href="https://openweathermap.org/api">Open Weather Map</a>
 
