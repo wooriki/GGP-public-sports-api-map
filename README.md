@@ -18,7 +18,9 @@
 
 ### 📍 사이트 주소
 
-// 배포시 주소넣기
+<a href="https://gong-gong-play.vercel.app/">GONG GONG PLAY</a>
+
+서울 
 
 <br />
 
