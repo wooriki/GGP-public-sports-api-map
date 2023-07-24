@@ -27,7 +27,7 @@
 - 서울시 api는 https를 지원하지 않아서 브라우저 설정 필요
 - 크롬 기준 아래 캡쳐와 같이 url 주소창 왼쪽 `자물쇠` 클릭 - `사이트 설정` 선택 - 안전하지 않은 콘텐츠 `허용` 후 새로고침
 	
-<img src="https://github.com/xoxojw/algorithm/assets/124491335/f634527b-b2a1-4f5b-84c5-6e78fd08f948" height="370px" /> <img src="https://github.com/xoxojw/algorithm/assets/124491335/bebd05d3-e4f3-4b5c-9385-a0f60b40cb71" height="370px" />
+<img src="https://github.com/xoxojw/algorithm/assets/124491335/f634527b-b2a1-4f5b-84c5-6e78fd08f948" width="500px" /> <img src="https://github.com/xoxojw/algorithm/assets/124491335/bebd05d3-e4f3-4b5c-9385-a0f60b40cb71" width="500px" />
 
 <br />
 
@@ -65,7 +65,7 @@
 <summary>펼칠 시 파일 상세 구조</summary>
   
 ```
-┣ 📂axios
+ ┣ 📂axios
  ┃ ┣ 📜comment.js
  ┃ ┣ 📜publicDataAPI.js
  ┃ ┗ 📜weatherApi.js
