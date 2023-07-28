@@ -26,7 +26,7 @@
 
 - 서울시 api는 https를 지원하지 않아서 브라우저 설정 필요
 - 크롬 기준 아래 캡쳐와 같이 url 주소창 왼쪽 `자물쇠` 클릭 - `사이트 설정` 선택 - 안전하지 않은 콘텐츠 `허용` 후 새로고침
-	
+
 <img src="https://github.com/xoxojw/algorithm/assets/124491335/f634527b-b2a1-4f5b-84c5-6e78fd08f948" width="500px" /> <img src="https://github.com/xoxojw/algorithm/assets/124491335/bebd05d3-e4f3-4b5c-9385-a0f60b40cb71" width="500px" />
 
 <br />
@@ -37,7 +37,7 @@
 
 ### 🕰️ 개발 기간
 
-2023.07.17 - 2023.07.23
+2023.07.17 ~ 2023.07.23
 
 <br />
 
@@ -130,13 +130,13 @@
 - 팀명 : 내 코드 왜2러조
 - 팀원 및 담당 구현 기능
 
-| 역할 | 이름   | 담당 구현 기능                             | GitHub                                                                      |
-| ---- | ------ | ------------------------------------------ | --------------------------------------------------------------------------- |
-| 팀장 | 김환훈 | 지도 API, express 서버, 컴포넌트간 데이터 연결                                   | <a href="https://github.com/kimhwanhoon">https://github.com/kimhwanhoon</a> |
-| 팀원 | 김우리 | 날씨API, 유튜브 API                        | <a href="https://github.com/wooriki">https://github.com/wooriki</a>         |
-| 팀원 | 박지원 | 공공API 데이터 페이지네이션                | <a href="https://github.com/xoxojw">https://github.com/xoxojw</a>           |
-| 팀원 | 조성록 | 날씨API, 상세 페이지, 댓글 기능, 검색 기능 | <a href="https://github.com/pigrok">https://github.com/pigrok</a>           |
-| 팀원 | 최수아 | 공공API 데이터 검색 및 필터 기능           | <a href="https://github.com/choisua98">https://github.com/choisua98</a>     |
+| 역할 | 이름   | 담당 구현 기능                                 | GitHub                                                                      |
+| ---- | ------ | ---------------------------------------------- | --------------------------------------------------------------------------- |
+| 팀장 | 김환훈 | 지도 API, express 서버, 컴포넌트간 데이터 연결 | <a href="https://github.com/kimhwanhoon">https://github.com/kimhwanhoon</a> |
+| 팀원 | 김우리 | 날씨API, 유튜브 API                            | <a href="https://github.com/wooriki">https://github.com/wooriki</a>         |
+| 팀원 | 박지원 | 공공API 데이터 페이지네이션                    | <a href="https://github.com/xoxojw">https://github.com/xoxojw</a>           |
+| 팀원 | 조성록 | 날씨API, 상세 페이지, 댓글 기능, 검색 기능     | <a href="https://github.com/pigrok">https://github.com/pigrok</a>           |
+| 팀원 | 최수아 | 공공API 데이터 검색 및 필터 기능               | <a href="https://github.com/choisua98">https://github.com/choisua98</a>     |
 
 <br />
 
@@ -174,14 +174,14 @@
 ### 🎬 페이지 스크린샷
 
 #### 1. 메인화면
-   
- ![01 main](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/5ab477e2-534a-46ff-97c6-e4a09e8ffa23)
 
-	1) Header - 검색창 카테고리 필터 : 사용자가 운동종목과 지역구를 선택하여 데이터 필터링
-	2) Header - 날씨 API : 사용자 현재 위치에 따른 날씨 및 시간 보여주기
-	3) Body - map API :  사용자 현재 위치에서 가까운 데이터 보여주기
-	4) Body - Youtube API : 추천 음악 리스트 가져오기 ( 새로고침 할 때 새로운 리스트로 바뀜 )
-	5) Body - 공공데이터 API : 사용자 현재 위치와 가까운 순으로 데이터 페이지네이션
+![01 main](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/5ab477e2-534a-46ff-97c6-e4a09e8ffa23)
+
+    1) Header - 검색창 카테고리 필터 : 사용자가 운동종목과 지역구를 선택하여 데이터 필터링
+    2) Header - 날씨 API : 사용자 현재 위치에 따른 날씨 및 시간 보여주기
+    3) Body - map API :  사용자 현재 위치에서 가까운 데이터 보여주기
+    4) Body - Youtube API : 추천 음악 리스트 가져오기 ( 새로고침 할 때 새로운 리스트로 바뀜 )
+    5) Body - 공공데이터 API : 사용자 현재 위치와 가까운 순으로 데이터 페이지네이션
 
 <br />
 
@@ -207,16 +207,15 @@
 
 ![05 comment](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/2a0a4e0f-ce44-4032-95fa-72288c4d4933)
 
-	1) 댓글 수정/삭제기능 구현
- 	2) 랜덤으로 프로필 사진 생성
-  
+    1) 댓글 수정/삭제기능 구현
+
+2. 랜덤으로 프로필 사진 생성
+
 <br />
 
 #### 6. 반응형 구현
 
 ![small](https://github.com/kimhwanhoon/20230724_team_project/assets/109304556/d6907671-c743-49dd-8bca-b504238a363f)
-
-
 
 <br />
 
@@ -270,4 +269,3 @@
  <img src="https://img.shields.io/badge/slack-ad498a?style=for-the-badge&logo=slack&logoColor=white">
  <img src="https://img.shields.io/badge/figma-822f65?style=for-the-badge&logo=slack&logoColor=white">
 </div>
-
